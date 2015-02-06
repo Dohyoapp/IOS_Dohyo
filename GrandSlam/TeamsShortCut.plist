@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ManchesterUtd</key>
+	<string>MUN</string>
+	<key>Chelsea</key>
+	<string>CHE</string>
+	<key>Arsenal</key>
+	<string>ARS</string>
+	<key>WestBrom</key>
+	<string>WBA</string>
+	<key>Tottenham</key>
+	<string>TOT</string>
+	<key>WestHam</key>
+	<string>WHU</string>
+	<key>Southampton</key>
+	<string>SOU</string>
+	<key>Liverpool</key>
+	<string>LIV</string>
+	<key>Swansea</key>
+	<string>SWA</string>
+	<key>Stoke</key>
+	<string>STK</string>
+	<key>ManchesterCity</key>
+	<string>MCI</string>
+	<key>Newcastle</key>
+	<string>NEW</string>
+	<key>Everton</key>
+	<string>EVE</string>
+	<key>CrystalPalace</key>
+	<string>CRY</string>
+	<key>Hull</key>
+	<string>HUL</string>
+	<key>Burnley</key>
+	<string>BUR</string>
+	<key>Sunderland</key>
+	<string>SUN</string>
+	<key>AstonVilla</key>
+	<string>AVL</string>
+	<key>QPR</key>
+	<string>QPR</string>
+	<key>Leicester</key>
+	<string>LEI</string>
+</dict>
+</plist>

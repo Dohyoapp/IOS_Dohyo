@@ -11,12 +11,14 @@ import Foundation
 let SHARE_TEXXT = "Spread the word!"
 
 
-class GSProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class GSProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     var tableView       = UITableView(frame:CGRectZero)
     var tableViewData   = NSMutableArray()
     
     var imageUserView:UIImageView!
+    var emailLabel:UITextField!
+    var userNameLabel:UITextField!
     
     var socialShareViewController:GSSocialShareViewController!
     
@@ -32,7 +34,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         let leagues = GSMainViewController.getMainViewControllerInstance().leagues
         var league:PFObject
         for league in leagues{
-            tableViewData.addObject(league["title"] as NSString)
+            tableViewData.addObject(league["name"] as NSString)
         }
         tableViewData.addObject("")
         tableViewData.addObject(SHARE_TEXXT)
@@ -47,12 +49,23 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         tableView.delegate      = self
         tableView.backgroundColor = UIColor.whiteColor()
         tableView.separatorStyle  = .None
+        tableView.addGestureRecognizer( UITapGestureRecognizer(target: self, action:Selector("hideKeyBoard")) )
         self.view.addSubview(tableView)
     }
     
     func closeView(){
         
         SVProgressHUD.dismiss()
+        
+        // userNameEmailChanges
+        var username: AnyObject! = PFUser.currentUser().objectForKey("username")
+        var email: AnyObject! = PFUser.currentUser().objectForKey("email")
+        if(username != nil && email != nil && (userNameLabel.text != username as NSString || emailLabel.text != email as NSString) ){
+            PFUser.currentUser().setValue(userNameLabel.text, forKey: "username")
+            PFUser.currentUser().setValue(emailLabel.text, forKey: "email")
+            PFUser.currentUser().save()
+        }
+        
         self.view.removeFromSuperview()
         GSMainViewController.getMainViewControllerInstance().createAccountView = false
     }
@@ -85,18 +98,22 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         cell.addSubview(imageView)
         
         
-        let userNameLabel = UILabel(frame: CGRectMake(50, 145, 220, 33))
+        userNameLabel = UITextField(frame: CGRectMake(50, 145, 220, 33))
+        userNameLabel.delegate = self
         userNameLabel.text = PFUser.currentUser()["username"] as NSString
         userNameLabel.textAlignment = .Center
         userNameLabel.font = UIFont(name:FONT1, size:15)
         userNameLabel.textColor = SPECIALBLUE
+        userNameLabel.tag = 55
         cell.addSubview(userNameLabel)
         
-        let emailLabel = UILabel(frame: CGRectMake(50, 170, 220, 33))
+        emailLabel = UITextField(frame: CGRectMake(50, 170, 220, 33))
+        emailLabel.delegate = self
         emailLabel.text = PFUser.currentUser()["email"] as NSString
         emailLabel.textAlignment = .Center
         emailLabel.font = UIFont(name:FONT1, size:15)
         emailLabel.textColor = SPECIALBLUE
+        emailLabel.tag = 66
         cell.addSubview(emailLabel)
     }
     
@@ -193,8 +210,10 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
                 PFFacebookUtils.session().closeAndClearTokenInformation()
                // PFFacebookUtils.session().close()
             }
-            PFUser.logOut()
+            
             self.closeView()
+            PFUser.logOut()
+            GSMainViewController.getMainViewControllerInstance().getCustomLeagues()
         }
     }
     
@@ -288,5 +307,45 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         self.imageUserView.image = UIImage(named:"Profile_Plus")
         PFUser.currentUser().removeObjectForKey("image")
         PFUser.currentUser().save()
+    }
+    
+    
+    
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool{
+        
+        var tableViewFrame = tableView.frame
+        if(tableViewFrame.size.height > self.view.frame.size.height-KEYBOARD_HEIGHT){
+            tableViewFrame.size.height = tableViewFrame.size.height-KEYBOARD_HEIGHT-36
+            tableView.frame = tableViewFrame
+        }
+        
+        //tableView.scrollToRowAtIndexPath(NSIndexPath(forRow:0, inSection:1), atScrollPosition: .Top, animated: false)
+        
+        return true
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool{
+        
+        if(textField.tag == 55){
+            
+            emailLabel.becomeFirstResponder()
+        }
+        if(textField.tag == 66){
+            
+            hideKeyBoard()
+        }
+        
+        PFUser.currentUser().setValue(userNameLabel.text, forKey: "username")
+        PFUser.currentUser().setValue(emailLabel.text, forKey: "email")
+        PFUser.currentUser().save()
+        
+        return true
+    }
+    
+    func hideKeyBoard (){
+        self.view.endEditing(true)
+        var tableViewFrame = tableView.frame
+        tableViewFrame.size.height = self.view.frame.size.height-yStart
+        tableView.frame = tableViewFrame
     }
 }

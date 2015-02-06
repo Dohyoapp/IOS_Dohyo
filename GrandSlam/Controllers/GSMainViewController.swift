@@ -53,8 +53,7 @@ class GSMainViewController: UIViewController, CustomLeagueCaller {
         launchImageView = UIImageView(image: UIImage(named: imageName))
         self.view.addSubview(launchImageView)
         
-       // ParseConfig.getLeagues(self)
-        GSCustomLeagues.getCustomLeagues(self, user:PFUser.currentUser())
+        
         
         profileButton.backgroundColor = UIColor.whiteColor()
         profileButton.setImage(UIImage(named: "Profile_Icon"), forState: .Normal)
@@ -65,6 +64,7 @@ class GSMainViewController: UIViewController, CustomLeagueCaller {
         
         let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewObject:")
         self.navigationItem.rightBarButtonItem = addButton*/
+        endGetCustomLeagues([])
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -86,6 +86,11 @@ class GSMainViewController: UIViewController, CustomLeagueCaller {
     }
     
     
+    func getCustomLeagues(){
+        
+        GSCustomLeagues.getCustomLeagues(self, user:PFUser.currentUser())
+    }
+    
     func endGetCustomLeagues(data: NSArray){
         
         leagues = data
@@ -104,6 +109,10 @@ class GSMainViewController: UIViewController, CustomLeagueCaller {
     var createAccountView = false
     
     func profileTap(sender: UIButton!){
+        
+        if(navigationBar.customLeagueViewControlelr != nil){
+            navigationBar.customLeagueViewControlelr.closeView()
+        }
         
         var email: AnyObject? = PFUser.currentUser().valueForKey("email")
         

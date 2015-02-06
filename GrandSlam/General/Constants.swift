@@ -7,13 +7,15 @@
 //
 
 #if LIVE_VERSION
-    let URL_ROOT = "http://www.yahoo.fr"
+    let URL_ROOT = "https://api.ladbrokes.com/"
 #elseif DEV_VERSION
     let URL_ROOT = "https://api.ladbrokes.com/"
 #else
-    let URL_ROOT = "http://www.toto.fr"
+    let URL_ROOT = "https://api.ladbrokes.com/"
 #endif
 
+
+let TEAMS_IMAGES_URL_ROOT = "https://s3.amazonaws.com/grandslam-explovia/"
 
 let KEYBOARD_HEIGHT = 216 as CGFloat
 

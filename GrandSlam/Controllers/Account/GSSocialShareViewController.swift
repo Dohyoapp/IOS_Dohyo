@@ -19,7 +19,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor.clearColor()
         
         var yButtons = 10 as CGFloat
         

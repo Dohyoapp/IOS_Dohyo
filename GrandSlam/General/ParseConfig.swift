@@ -8,14 +8,12 @@
 
 import Foundation
 
-protocol LeagueCaller {
-    func endGetLeagues(data : NSArray)
-}
 
 protocol FaceBookDelegate {
     func endFaceBookLogIn()
     func endGetFacebookData()
 }
+
 
 
 class ParseConfig: NSObject {
@@ -44,23 +42,13 @@ class ParseConfig: NSObject {
     }
     
     
-    class func getLeagues(object : LeagueCaller){
-        
-        var query = PFQuery(className:"League")
-        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            if (error != nil) {
-                object.endGetLeagues([])
-            }
-            else{
-                object.endGetLeagues(objects)
-            }
-        }
-    }
+    
+    
     
     class func fbLogin1(object: FaceBookDelegate){
         
         SVProgressHUD.show()
-        PFFacebookUtils.logInWithPermissions(["friends_about_me", "email"], { (user: PFUser!, error: NSError!) -> Void in
+        PFFacebookUtils.logInWithPermissions(["email"], { (user: PFUser!, error: NSError!) -> Void in
             if(error != nil){
                 SVProgressHUD.dismiss()
             }
@@ -179,8 +167,8 @@ class ParseConfig: NSObject {
         var idFBUser:NSString = data.objectForKey("id") as NSString
         var imageLink = NSString(format:"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", idFBUser)
         
-        var imageView = UIImageView(frame: CGRectMake(0, 0, 80, 80))
-        var urlRequest = NSURLRequest(URL:NSURL(string: imageLink)!)
+        var imageView   = UIImageView(frame: CGRectMake(0, 0, 80, 80))
+        var urlRequest  = NSURLRequest(URL:NSURL(string: imageLink)!)
         imageView.setImageWithURLRequest( urlRequest, placeholderImage: nil, success: { (url, response, image) -> Void in
             
                 SVProgressHUD.dismiss()

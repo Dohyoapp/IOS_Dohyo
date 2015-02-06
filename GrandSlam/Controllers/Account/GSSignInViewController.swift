@@ -68,8 +68,8 @@ class GSSignInViewController: UIViewController, UITextFieldDelegate {
     
     func singInTap(sender: UIButton!){
         
-        var name:NSString = userNameField.text
-        var password:NSString = passwordField.text
+        var name:NSString       = userNameField.text
+        var password:NSString   = passwordField.text
         
         if(name.length < 2){
             var alertView = UIAlertView(title: "", message: "Please enter your user name", delegate: nil, cancelButtonTitle: "Ok")
@@ -96,6 +96,7 @@ class GSSignInViewController: UIViewController, UITextFieldDelegate {
             if user != nil {
                 // Do stuff after successful login.
                 self.closeView()
+                GSMainViewController.getMainViewControllerInstance().getCustomLeagues()
             } else {
                 // The login failed. Check error to see why.
                 var alertView = UIAlertView(title: "", message: "User name / Password don't match. Please try again.", delegate: nil, cancelButtonTitle: "Ok")
@@ -104,6 +105,8 @@ class GSSignInViewController: UIViewController, UITextFieldDelegate {
             SVProgressHUD.dismiss()
         }
     }
+    
+
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool{
         

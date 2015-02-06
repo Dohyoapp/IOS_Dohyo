@@ -38,6 +38,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         tableView.delegate      = self
         tableView.backgroundColor = UIColor.whiteColor()
         tableView.separatorStyle  = .None
+        tableView.addGestureRecognizer( UITapGestureRecognizer(target: self, action:Selector("hideKeyBoard")) )
         self.view.addSubview(tableView)
         
     }
@@ -105,6 +106,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
             cell.textField.attributedPlaceholder = NSAttributedString(string:placeHolderText,
                 attributes:[NSForegroundColorAttributeName: SPECIALBLUE])
             cell.textField.delegate = self
+            cell.textField.tag = indexPath.row
             
             cell.textField.secureTextEntry = false
             if(indexPath.row == 2 || indexPath.row == 3){
@@ -195,6 +197,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
     
     func endGetFacebookData(){
         self.closeView()
+        GSMainViewController.getMainViewControllerInstance().getCustomLeagues()
     }
     
     
@@ -281,12 +284,16 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool{
         
         var tableViewFrame = tableView.frame
-        if(tableViewFrame.size.height > 400){
+        if(tableViewFrame.size.height > self.view.frame.size.height-KEYBOARD_HEIGHT){
             tableViewFrame.size.height = tableViewFrame.size.height-KEYBOARD_HEIGHT-36
             tableView.frame = tableViewFrame
         }
         
         tableView.scrollToRowAtIndexPath(NSIndexPath(forRow:0, inSection:1), atScrollPosition: .Top, animated: false)
+        
+        if(textField.tag == 2 || textField.tag == 3){
+            tableView.scrollToRowAtIndexPath(NSIndexPath(forRow:3, inSection:1), atScrollPosition: .Top, animated: false)
+        }
         
         return true
     }
@@ -305,6 +312,13 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         }
     
         return true;
+    }
+    
+    func hideKeyBoard (){
+        self.view.endEditing(true)
+        var tableViewFrame = tableView.frame
+        tableViewFrame.size.height = self.view.frame.size.height-yStart
+        tableView.frame = tableViewFrame
     }
 
 }

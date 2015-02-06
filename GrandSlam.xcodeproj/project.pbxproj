@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		83DD0C0AA9BF81DFDD390D0E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0075AB03032BAD4A88F45A3 /* libPods.a */; };
 		899C07BBDE04517AC785E9F6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0075AB03032BAD4A88F45A3 /* libPods.a */; };
+		D12905841A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12905831A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift */; };
+		D12905851A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12905831A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift */; };
+		D12905871A827B3E00DA1F0C /* TeamsShortCut.plist in Resources */ = {isa = PBXBuildFile; fileRef = D12905861A827B3E00DA1F0C /* TeamsShortCut.plist */; };
+		D12905881A827B3E00DA1F0C /* TeamsShortCut.plist in Resources */ = {isa = PBXBuildFile; fileRef = D12905861A827B3E00DA1F0C /* TeamsShortCut.plist */; };
 		D131DC4E1A7F9D490094F8CE /* Profile_Plus.png in Resources */ = {isa = PBXBuildFile; fileRef = D131DC4D1A7F9D490094F8CE /* Profile_Plus.png */; };
 		D131DC4F1A7F9D490094F8CE /* Profile_Plus.png in Resources */ = {isa = PBXBuildFile; fileRef = D131DC4D1A7F9D490094F8CE /* Profile_Plus.png */; };
 		D131DC511A7F9E200094F8CE /* Profile_Icon_Holder.png in Resources */ = {isa = PBXBuildFile; fileRef = D131DC501A7F9E200094F8CE /* Profile_Icon_Holder.png */; };
@@ -20,6 +24,18 @@
 		D13D8BB51A70163E00303DF3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13D8B801A7013B600303DF3 /* AppDelegate.swift */; };
 		D13D8BB81A70163E00303DF3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D13D8B861A7013B600303DF3 /* Main.storyboard */; };
 		D13D8BBA1A70163E00303DF3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D13D8B891A7013B600303DF3 /* Images.xcassets */; };
+		D16A92E01A82997E00B11604 /* Button_Down.png in Resources */ = {isa = PBXBuildFile; fileRef = D16A92DE1A82997E00B11604 /* Button_Down.png */; };
+		D16A92E11A82997E00B11604 /* Button_Down.png in Resources */ = {isa = PBXBuildFile; fileRef = D16A92DE1A82997E00B11604 /* Button_Down.png */; };
+		D16A92E21A82997E00B11604 /* Button_Up.png in Resources */ = {isa = PBXBuildFile; fileRef = D16A92DF1A82997E00B11604 /* Button_Up.png */; };
+		D16A92E31A82997E00B11604 /* Button_Up.png in Resources */ = {isa = PBXBuildFile; fileRef = D16A92DF1A82997E00B11604 /* Button_Up.png */; };
+		D16A92E51A83E5A800B11604 /* GSWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16A92E41A83E5A800B11604 /* GSWebViewController.swift */; };
+		D16A92E61A83E5A800B11604 /* GSWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16A92E41A83E5A800B11604 /* GSWebViewController.swift */; };
+		D16A92EA1A84D21400B11604 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D16A92E81A84D21400B11604 /* Crashlytics.framework */; };
+		D16A92EB1A84D21400B11604 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D16A92E81A84D21400B11604 /* Crashlytics.framework */; };
+		D16A92EC1A84D21400B11604 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D16A92E91A84D21400B11604 /* Fabric.framework */; };
+		D16A92ED1A84D21400B11604 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D16A92E91A84D21400B11604 /* Fabric.framework */; };
+		D16A92EF1A84EB1400B11604 /* GSLeague.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16A92EE1A84EB1400B11604 /* GSLeague.swift */; };
+		D16A92F01A84EB1400B11604 /* GSLeague.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16A92EE1A84EB1400B11604 /* GSLeague.swift */; };
 		D16CEF591A728B3300964056 /* GSMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16CEF581A728B3300964056 /* GSMainViewController.swift */; };
 		D16CEF5A1A728B3300964056 /* GSMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16CEF581A728B3300964056 /* GSMainViewController.swift */; };
 		D16CEF5C1A728E7A00964056 /* GSNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16CEF5B1A728E7A00964056 /* GSNavigationBar.swift */; };
@@ -101,8 +117,8 @@
 		D1D1C2321A7FD0B1007C6FC8 /* SmsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2301A7FD0B1007C6FC8 /* SmsModule.swift */; };
 		D1D1C2341A7FD876007C6FC8 /* GSCustomLeagues.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2331A7FD876007C6FC8 /* GSCustomLeagues.swift */; };
 		D1D1C2351A7FD876007C6FC8 /* GSCustomLeagues.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2331A7FD876007C6FC8 /* GSCustomLeagues.swift */; };
-		D1D1C2371A7FDA2C007C6FC8 /* GSCreateCustomLeague.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeague.swift */; };
-		D1D1C2381A7FDA2C007C6FC8 /* GSCreateCustomLeague.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeague.swift */; };
+		D1D1C2371A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift */; };
+		D1D1C2381A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift */; };
 		D1F2C0981A7BCF83009DF72D /* GSProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F2C0971A7BCF83009DF72D /* GSProfileCell.swift */; };
 		D1F2C0991A7BCF83009DF72D /* GSProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F2C0971A7BCF83009DF72D /* GSProfileCell.swift */; };
 		D1F2C09F1A7BD4BF009DF72D /* chat.png in Resources */ = {isa = PBXBuildFile; fileRef = D1F2C09A1A7BD4BF009DF72D /* chat.png */; };
@@ -133,6 +149,8 @@
 		A9D86365CDF5FDF8DB1A055A /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		B0075AB03032BAD4A88F45A3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE6B5BA41C0358D67B43E080 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		D12905831A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSCustomLeagueViewControlelr.swift; sourceTree = "<group>"; };
+		D12905861A827B3E00DA1F0C /* TeamsShortCut.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TeamsShortCut.plist; sourceTree = "<group>"; };
 		D131DC4D1A7F9D490094F8CE /* Profile_Plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Profile_Plus.png; sourceTree = "<group>"; };
 		D131DC501A7F9E200094F8CE /* Profile_Icon_Holder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Profile_Icon_Holder.png; sourceTree = "<group>"; };
 		D13D8B7B1A7013B600303DF3 /* GrandSlam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GrandSlam.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -144,6 +162,12 @@
 		D13D8B971A7013B700303DF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D13D8B981A7013B700303DF3 /* GrandSlamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrandSlamTests.swift; sourceTree = "<group>"; };
 		D13D8BBE1A70163E00303DF3 /* GrandSlam copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GrandSlam copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D16A92DE1A82997E00B11604 /* Button_Down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Button_Down.png; sourceTree = "<group>"; };
+		D16A92DF1A82997E00B11604 /* Button_Up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Button_Up.png; sourceTree = "<group>"; };
+		D16A92E41A83E5A800B11604 /* GSWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSWebViewController.swift; sourceTree = "<group>"; };
+		D16A92E81A84D21400B11604 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = GrandSlam/Crashlytics.framework; sourceTree = "<group>"; };
+		D16A92E91A84D21400B11604 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = GrandSlam/Fabric.framework; sourceTree = "<group>"; };
+		D16A92EE1A84EB1400B11604 /* GSLeague.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSLeague.swift; sourceTree = "<group>"; };
 		D16CEF581A728B3300964056 /* GSMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSMainViewController.swift; sourceTree = "<group>"; };
 		D16CEF5B1A728E7A00964056 /* GSNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSNavigationBar.swift; sourceTree = "<group>"; };
 		D19668541A764BB4003D4F8D /* RestKitConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestKitConfig.swift; sourceTree = "<group>"; };
@@ -198,7 +222,7 @@
 		D1D1C22D1A7FC7BF007C6FC8 /* TwitterFaceBookModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterFaceBookModule.swift; sourceTree = "<group>"; };
 		D1D1C2301A7FD0B1007C6FC8 /* SmsModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmsModule.swift; sourceTree = "<group>"; };
 		D1D1C2331A7FD876007C6FC8 /* GSCustomLeagues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSCustomLeagues.swift; sourceTree = "<group>"; };
-		D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeague.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSCreateCustomLeague.swift; sourceTree = "<group>"; };
+		D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSCreateCustomLeagueViewController.swift; sourceTree = "<group>"; };
 		D1F2C0971A7BCF83009DF72D /* GSProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSProfileCell.swift; sourceTree = "<group>"; };
 		D1F2C09A1A7BD4BF009DF72D /* chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat.png; sourceTree = "<group>"; };
 		D1F2C09B1A7BD4BF009DF72D /* email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = email.png; sourceTree = "<group>"; };
@@ -218,9 +242,11 @@
 				D19668B01A769E5F003D4F8D /* Social.framework in Frameworks */,
 				D19668AF1A769E51003D4F8D /* libsqlite3.dylib in Frameworks */,
 				D19668AE1A769E48003D4F8D /* libz.dylib in Frameworks */,
+				D16A92EC1A84D21400B11604 /* Fabric.framework in Frameworks */,
 				D19668AC1A769E22003D4F8D /* CoreLocation.framework in Frameworks */,
 				D19668AB1A769E1D003D4F8D /* AudioToolbox.framework in Frameworks */,
 				D19668AA1A769E0B003D4F8D /* CoreGraphics.framework in Frameworks */,
+				D16A92EA1A84D21400B11604 /* Crashlytics.framework in Frameworks */,
 				D19668A91A769DFF003D4F8D /* libstdc++.6.dylib in Frameworks */,
 				D19668741A767103003D4F8D /* ParseUI.framework in Frameworks */,
 				83DD0C0AA9BF81DFDD390D0E /* libPods.a in Frameworks */,
@@ -246,6 +272,7 @@
 				D196690F1A7AA499003D4F8D /* QuartzCore.framework in Frameworks */,
 				D196689C1A767512003D4F8D /* Accounts.framework in Frameworks */,
 				D196689A1A7674F7003D4F8D /* libstdc++.6.dylib in Frameworks */,
+				D16A92ED1A84D21400B11604 /* Fabric.framework in Frameworks */,
 				D19668981A7674AE003D4F8D /* Twitter.framework in Frameworks */,
 				D19668941A7673E7003D4F8D /* Social.framework in Frameworks */,
 				D196688B1A76738B003D4F8D /* libsqlite3.dylib in Frameworks */,
@@ -253,6 +280,7 @@
 				D19668901A7673D7003D4F8D /* FacebookSDK.framework in Frameworks */,
 				D19668921A7673D7003D4F8D /* FBAudienceNetwork.framework in Frameworks */,
 				D196687D1A767354003D4F8D /* CoreLocation.framework in Frameworks */,
+				D16A92EB1A84D21400B11604 /* Crashlytics.framework in Frameworks */,
 				D196687B1A76734D003D4F8D /* CoreGraphics.framework in Frameworks */,
 				D19668771A767340003D4F8D /* AudioToolbox.framework in Frameworks */,
 				D19668751A767103003D4F8D /* ParseUI.framework in Frameworks */,
@@ -278,6 +306,8 @@
 		8442204DD4C7204A47C12B9D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D16A92E81A84D21400B11604 /* Crashlytics.framework */,
+				D16A92E91A84D21400B11604 /* Fabric.framework */,
 				D196689B1A767512003D4F8D /* Accounts.framework */,
 				D19668991A7674F7003D4F8D /* libstdc++.6.dylib */,
 				D19668971A7674AE003D4F8D /* Twitter.framework */,
@@ -332,6 +362,7 @@
 				D13D8B861A7013B600303DF3 /* Main.storyboard */,
 				D13D8B891A7013B600303DF3 /* Images.xcassets */,
 				D13D8B7E1A7013B600303DF3 /* Supporting Files */,
+				D12905861A827B3E00DA1F0C /* TeamsShortCut.plist */,
 			);
 			path = GrandSlam;
 			sourceTree = "<group>";
@@ -368,7 +399,9 @@
 				D19668DF1A796046003D4F8D /* Account */,
 				D16CEF581A728B3300964056 /* GSMainViewController.swift */,
 				D16CEF5B1A728E7A00964056 /* GSNavigationBar.swift */,
-				D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeague.swift */,
+				D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift */,
+				D12905831A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift */,
+				D16A92E41A83E5A800B11604 /* GSWebViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -376,6 +409,8 @@
 		D16CEF671A72966000964056 /* AppImages */ = {
 			isa = PBXGroup;
 			children = (
+				D16A92DE1A82997E00B11604 /* Button_Down.png */,
+				D16A92DF1A82997E00B11604 /* Button_Up.png */,
 				D131DC501A7F9E200094F8CE /* Profile_Icon_Holder.png */,
 				D131DC4D1A7F9D490094F8CE /* Profile_Plus.png */,
 				D1F2C09A1A7BD4BF009DF72D /* chat.png */,
@@ -454,6 +489,7 @@
 			children = (
 				D1A2883C1A716EBB00D978B6 /* GSUser.swift */,
 				D1D1C2331A7FD876007C6FC8 /* GSCustomLeagues.swift */,
+				D16A92EE1A84EB1400B11604 /* GSLeague.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -522,6 +558,7 @@
 				D13D8B781A7013B600303DF3 /* Frameworks */,
 				D13D8B791A7013B600303DF3 /* Resources */,
 				60E125604270E6F54969B261 /* Copy Pods Resources */,
+				D16A92E71A84D15C00B11604 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -580,6 +617,7 @@
 				TargetAttributes = {
 					D13D8B7A1A7013B600303DF3 = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = 9RJ2JN3DNK;
 					};
 					D13D8B911A7013B700303DF3 = {
 						CreatedOnToolsVersion = 6.1;
@@ -612,6 +650,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D16A92E21A82997E00B11604 /* Button_Up.png in Resources */,
 				D19668B41A793FA0003D4F8D /* launch-screen-iphone4@2x.png in Resources */,
 				D196690A1A7AA46A003D4F8D /* SVProgressHUD.bundle in Resources */,
 				D13D8B881A7013B600303DF3 /* Main.storyboard in Resources */,
@@ -621,10 +660,12 @@
 				D131DC511A7F9E200094F8CE /* Profile_Icon_Holder.png in Resources */,
 				D1F2C0A11A7BD4BF009DF72D /* email.png in Resources */,
 				D13D8B8A1A7013B600303DF3 /* Images.xcassets in Resources */,
+				D16A92E01A82997E00B11604 /* Button_Down.png in Resources */,
 				D1F2C0A51A7BD4BF009DF72D /* twitter.png in Resources */,
 				D19668DD1A795D95003D4F8D /* Profile_Icon.png in Resources */,
 				D1F2C0A71A7BD4BF009DF72D /* whatsapp.png in Resources */,
 				D19668B61A793FA0003D4F8D /* launch-screen-iphone5@2x.png in Resources */,
+				D12905871A827B3E00DA1F0C /* TeamsShortCut.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -639,6 +680,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D16A92E31A82997E00B11604 /* Button_Up.png in Resources */,
 				D19668B51A793FA0003D4F8D /* launch-screen-iphone4@2x.png in Resources */,
 				D196690B1A7AA46A003D4F8D /* SVProgressHUD.bundle in Resources */,
 				D13D8BB81A70163E00303DF3 /* Main.storyboard in Resources */,
@@ -648,10 +690,12 @@
 				D131DC521A7F9E200094F8CE /* Profile_Icon_Holder.png in Resources */,
 				D1F2C0A21A7BD4BF009DF72D /* email.png in Resources */,
 				D13D8BBA1A70163E00303DF3 /* Images.xcassets in Resources */,
+				D16A92E11A82997E00B11604 /* Button_Down.png in Resources */,
 				D1F2C0A61A7BD4BF009DF72D /* twitter.png in Resources */,
 				D19668DE1A795D95003D4F8D /* Profile_Icon.png in Resources */,
 				D1F2C0A81A7BD4BF009DF72D /* whatsapp.png in Resources */,
 				D19668B71A793FA0003D4F8D /* launch-screen-iphone5@2x.png in Resources */,
+				D12905881A827B3E00DA1F0C /* TeamsShortCut.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -718,6 +762,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D16A92E71A84D15C00B11604 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run 45190a17174d5369010e19cc2a47dd057b37066f 06bf925f294877b168963efb362e582cf1c7da610523165d69c3357259e97a42";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -737,10 +794,13 @@
 				D19668E11A796061003D4F8D /* GSCreateAccountViewController.swift in Sources */,
 				D16CEF5C1A728E7A00964056 /* GSNavigationBar.swift in Sources */,
 				D1D1C2341A7FD876007C6FC8 /* GSCustomLeagues.swift in Sources */,
+				D12905841A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift in Sources */,
 				D1A288441A716EF100D978B6 /* DeviceExtention.swift in Sources */,
+				D16A92E51A83E5A800B11604 /* GSWebViewController.swift in Sources */,
 				D196690C1A7AA46A003D4F8D /* SVProgressHUD.m in Sources */,
 				D1A2883D1A716EBB00D978B6 /* GSUser.swift in Sources */,
 				D19668E71A7A5E61003D4F8D /* GSCreateAccountCell.swift in Sources */,
+				D16A92EF1A84EB1400B11604 /* GSLeague.swift in Sources */,
 				D1F2C0981A7BCF83009DF72D /* GSProfileCell.swift in Sources */,
 				D1D1C22E1A7FC7BF007C6FC8 /* TwitterFaceBookModule.swift in Sources */,
 				D19669141A7B8575003D4F8D /* GSForgotPasswordViewController.swift in Sources */,
@@ -749,7 +809,7 @@
 				D19668E41A7A5B06003D4F8D /* GSSignInViewController.swift in Sources */,
 				D13D8B811A7013B600303DF3 /* AppDelegate.swift in Sources */,
 				D19669111A7AA667003D4F8D /* GSProfileViewController.swift in Sources */,
-				D1D1C2371A7FDA2C007C6FC8 /* GSCreateCustomLeague.swift in Sources */,
+				D1D1C2371A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -777,10 +837,13 @@
 				D19668E21A796061003D4F8D /* GSCreateAccountViewController.swift in Sources */,
 				D16CEF5D1A728E7A00964056 /* GSNavigationBar.swift in Sources */,
 				D1D1C2351A7FD876007C6FC8 /* GSCustomLeagues.swift in Sources */,
+				D12905851A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift in Sources */,
 				D1A288451A716EF100D978B6 /* DeviceExtention.swift in Sources */,
+				D16A92E61A83E5A800B11604 /* GSWebViewController.swift in Sources */,
 				D196690D1A7AA46A003D4F8D /* SVProgressHUD.m in Sources */,
 				D1A2883E1A716EBB00D978B6 /* GSUser.swift in Sources */,
 				D19668E81A7A5E61003D4F8D /* GSCreateAccountCell.swift in Sources */,
+				D16A92F01A84EB1400B11604 /* GSLeague.swift in Sources */,
 				D1F2C0991A7BCF83009DF72D /* GSProfileCell.swift in Sources */,
 				D1D1C22F1A7FC7BF007C6FC8 /* TwitterFaceBookModule.swift in Sources */,
 				D19669151A7B8575003D4F8D /* GSForgotPasswordViewController.swift in Sources */,
@@ -789,7 +852,7 @@
 				D19668E51A7A5B06003D4F8D /* GSSignInViewController.swift in Sources */,
 				D13D8BB51A70163E00303DF3 /* AppDelegate.swift in Sources */,
 				D19669121A7AA667003D4F8D /* GSProfileViewController.swift in Sources */,
-				D1D1C2381A7FDA2C007C6FC8 /* GSCreateCustomLeague.swift in Sources */,
+				D1D1C2381A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -908,6 +971,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/GrandSlam/parse-library-1.6.1",
 					"$(PROJECT_DIR)/GrandSlam/FacebookSDK",
+					"$(PROJECT_DIR)/GrandSlam",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				INFOPLIST_FILE = "GrandSlam/GrandSlam-Info.plist";
@@ -930,6 +994,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/GrandSlam/parse-library-1.6.1",
 					"$(PROJECT_DIR)/GrandSlam/FacebookSDK",
+					"$(PROJECT_DIR)/GrandSlam",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "GrandSlam/GrandSlam-Info.plist";
@@ -985,6 +1050,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/GrandSlam/parse-library-1.6.1",
 					"$(PROJECT_DIR)/GrandSlam/FacebookSDK",
+					"$(PROJECT_DIR)/GrandSlam",
 				);
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
@@ -1009,6 +1075,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/GrandSlam/parse-library-1.6.1",
 					"$(PROJECT_DIR)/GrandSlam/FacebookSDK",
+					"$(PROJECT_DIR)/GrandSlam",
 				);
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = "";

@@ -8,7 +8,7 @@
 
 import Foundation
 
-var createCustomLeague:GSCreateCustomLeague!
+var createCustomLeague:GSCreateCustomLeagueViewController!
 
 
 class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
@@ -18,6 +18,10 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
     }
     
     var buttonsArray:NSMutableArray = NSMutableArray()
+    var cacheCustomLeagues:NSArray!
+    
+    var customLeagueViewControlelr:GSCustomLeagueViewControlelr!
+    
     
     init(frame: CGRect, objects: NSArray) {
         
@@ -26,6 +30,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         self.backgroundColor = UIColor.whiteColor()
         
         self.delegate = self;
+        cacheCustomLeagues = objects
         
         var sizeTextLabel   = UILabel()
         sizeTextLabel.font  = UIFont(name:FONT1, size:18)
@@ -64,7 +69,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         var league:PFObject
         for league in objects{
             
-            var leagueName = league.valueForKey("title") as NSString
+            var leagueName = league.valueForKey("name") as NSString
             
             sizeTextLabel.frame = CGRectMake(0, 0, 260, NAVIGATIONBAR_HEIGHT)
             sizeTextLabel.text = leagueName
@@ -102,22 +107,50 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         sender.font  = UIFont(name:FONT2, size:18)
     }
     
+    func closeAccountViewIfNeeded(){
+        
+        if(GSMainViewController.getMainViewControllerInstance().createAccountView){
+            
+            var email: AnyObject? = PFUser.currentUser().valueForKey("email")
+            if(email == nil){
+                GSMainViewController.getMainViewControllerInstance().createAccountViewController.closeView()
+            }
+            else{
+                GSMainViewController.getMainViewControllerInstance().profileViewController.closeView()
+            }
+        }
+    }
+    
     
     func createTap(recognizer: UITapGestureRecognizer!){
+        closeAccountViewIfNeeded()
         setButtonFont(recognizer.view as UILabel);
         
-        createCustomLeague = GSCreateCustomLeague()
+        createCustomLeague = GSCreateCustomLeagueViewController()
         GSMainViewController.getMainViewControllerInstance().view.addSubview(createCustomLeague.view)
+
+        if(customLeagueViewControlelr != nil){
+            customLeagueViewControlelr.closeView()
+        }
     }
     
     func joinTap(recognizer: UITapGestureRecognizer!){
+        closeAccountViewIfNeeded()
         setButtonFont(recognizer.view as UILabel);
         
+        if(customLeagueViewControlelr != nil){
+            customLeagueViewControlelr.closeView()
+        }
     }
     
     func otherButtonTap(recognizer: UITapGestureRecognizer!){
-        setButtonFont(recognizer.view as UILabel);
+        closeAccountViewIfNeeded()
+        var label = recognizer.view as UILabel
+        setButtonFont(label);
         
+        customLeagueViewControlelr = GSCustomLeagueViewControlelr()
+        customLeagueViewControlelr.customLeague = cacheCustomLeagues[label.tag] as PFObject
+        GSMainViewController.getMainViewControllerInstance().view.addSubview(customLeagueViewControlelr.view)
     }
     
     

@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import Fabric
+import Crashlytics
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, LeagueCaller {
 
     var window: UIWindow?
 
@@ -22,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //GSUser.autho(objectManager)
        // GSUser.getClasses(objectManager)
         ParseConfig.initialization()
+        Fabric.with([Crashlytics()])
         
         return true
     }
@@ -47,6 +50,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        GSMainViewController.getMainViewControllerInstance().getCustomLeagues()
+        GSLeague.getLeagues(self)
+        
         FBAppCall.handleDidBecomeActiveWithSession(PFFacebookUtils.session())
     }
 
