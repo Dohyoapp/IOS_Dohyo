@@ -45,8 +45,8 @@ class GSLeague {
                 
                 var sortedArray = sorted(matches) { (obj1, obj2) in
                     
-                    let p1 = GSCustomLeagues.getDateMatche(obj1 as PFObject)
-                    let p2 = GSCustomLeagues.getDateMatche(obj2 as PFObject)
+                    let p1 = GSCustomLeague.getDateMatche(obj1 as PFObject)
+                    let p2 = GSCustomLeague.getDateMatche(obj2 as PFObject)
                     return p1.timeIntervalSinceDate(p2) < 0
                 }
                 
@@ -84,7 +84,7 @@ class GSLeague {
         }
     }
 
-    class func getCacheLeagues(nameLeague: NSString) -> GSLeague{
+    class func getLeagueFromCache(nameLeague: NSString) -> GSLeague{
         
         var league:GSLeague!
         for league in cacheLeagues{

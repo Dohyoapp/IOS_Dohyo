@@ -13,6 +13,12 @@
 		D12905851A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12905831A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift */; };
 		D12905871A827B3E00DA1F0C /* TeamsShortCut.plist in Resources */ = {isa = PBXBuildFile; fileRef = D12905861A827B3E00DA1F0C /* TeamsShortCut.plist */; };
 		D12905881A827B3E00DA1F0C /* TeamsShortCut.plist in Resources */ = {isa = PBXBuildFile; fileRef = D12905861A827B3E00DA1F0C /* TeamsShortCut.plist */; };
+		D130EE4C1A88D2D4002FCD6F /* GSJoinCustomLeagueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D130EE4B1A88D2D4002FCD6F /* GSJoinCustomLeagueViewController.swift */; };
+		D130EE4D1A88D2D4002FCD6F /* GSJoinCustomLeagueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D130EE4B1A88D2D4002FCD6F /* GSJoinCustomLeagueViewController.swift */; };
+		D130EE4F1A89166C002FCD6F /* GSLeaderBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D130EE4E1A89166C002FCD6F /* GSLeaderBoardViewController.swift */; };
+		D130EE501A89166C002FCD6F /* GSLeaderBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D130EE4E1A89166C002FCD6F /* GSLeaderBoardViewController.swift */; };
+		D130EE531A891CCD002FCD6F /* GSLeaderBoardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D130EE521A891CCD002FCD6F /* GSLeaderBoardCell.swift */; };
+		D130EE541A891CCD002FCD6F /* GSLeaderBoardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D130EE521A891CCD002FCD6F /* GSLeaderBoardCell.swift */; };
 		D131DC4E1A7F9D490094F8CE /* Profile_Plus.png in Resources */ = {isa = PBXBuildFile; fileRef = D131DC4D1A7F9D490094F8CE /* Profile_Plus.png */; };
 		D131DC4F1A7F9D490094F8CE /* Profile_Plus.png in Resources */ = {isa = PBXBuildFile; fileRef = D131DC4D1A7F9D490094F8CE /* Profile_Plus.png */; };
 		D131DC511A7F9E200094F8CE /* Profile_Icon_Holder.png in Resources */ = {isa = PBXBuildFile; fileRef = D131DC501A7F9E200094F8CE /* Profile_Icon_Holder.png */; };
@@ -115,8 +121,8 @@
 		D1D1C22F1A7FC7BF007C6FC8 /* TwitterFaceBookModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C22D1A7FC7BF007C6FC8 /* TwitterFaceBookModule.swift */; };
 		D1D1C2311A7FD0B1007C6FC8 /* SmsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2301A7FD0B1007C6FC8 /* SmsModule.swift */; };
 		D1D1C2321A7FD0B1007C6FC8 /* SmsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2301A7FD0B1007C6FC8 /* SmsModule.swift */; };
-		D1D1C2341A7FD876007C6FC8 /* GSCustomLeagues.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2331A7FD876007C6FC8 /* GSCustomLeagues.swift */; };
-		D1D1C2351A7FD876007C6FC8 /* GSCustomLeagues.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2331A7FD876007C6FC8 /* GSCustomLeagues.swift */; };
+		D1D1C2341A7FD876007C6FC8 /* GSCustomLeague.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2331A7FD876007C6FC8 /* GSCustomLeague.swift */; };
+		D1D1C2351A7FD876007C6FC8 /* GSCustomLeague.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2331A7FD876007C6FC8 /* GSCustomLeague.swift */; };
 		D1D1C2371A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift */; };
 		D1D1C2381A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift */; };
 		D1F2C0981A7BCF83009DF72D /* GSProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F2C0971A7BCF83009DF72D /* GSProfileCell.swift */; };
@@ -151,6 +157,9 @@
 		CE6B5BA41C0358D67B43E080 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		D12905831A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSCustomLeagueViewControlelr.swift; sourceTree = "<group>"; };
 		D12905861A827B3E00DA1F0C /* TeamsShortCut.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TeamsShortCut.plist; sourceTree = "<group>"; };
+		D130EE4B1A88D2D4002FCD6F /* GSJoinCustomLeagueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSJoinCustomLeagueViewController.swift; sourceTree = "<group>"; };
+		D130EE4E1A89166C002FCD6F /* GSLeaderBoardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSLeaderBoardViewController.swift; sourceTree = "<group>"; };
+		D130EE521A891CCD002FCD6F /* GSLeaderBoardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSLeaderBoardCell.swift; sourceTree = "<group>"; };
 		D131DC4D1A7F9D490094F8CE /* Profile_Plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Profile_Plus.png; sourceTree = "<group>"; };
 		D131DC501A7F9E200094F8CE /* Profile_Icon_Holder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Profile_Icon_Holder.png; sourceTree = "<group>"; };
 		D13D8B7B1A7013B600303DF3 /* GrandSlam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GrandSlam.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -221,7 +230,7 @@
 		D1D1C22A1A7FBF2B007C6FC8 /* EmailModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailModule.swift; sourceTree = "<group>"; };
 		D1D1C22D1A7FC7BF007C6FC8 /* TwitterFaceBookModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterFaceBookModule.swift; sourceTree = "<group>"; };
 		D1D1C2301A7FD0B1007C6FC8 /* SmsModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmsModule.swift; sourceTree = "<group>"; };
-		D1D1C2331A7FD876007C6FC8 /* GSCustomLeagues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSCustomLeagues.swift; sourceTree = "<group>"; };
+		D1D1C2331A7FD876007C6FC8 /* GSCustomLeague.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSCustomLeague.swift; sourceTree = "<group>"; };
 		D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSCreateCustomLeagueViewController.swift; sourceTree = "<group>"; };
 		D1F2C0971A7BCF83009DF72D /* GSProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSProfileCell.swift; sourceTree = "<group>"; };
 		D1F2C09A1A7BD4BF009DF72D /* chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat.png; sourceTree = "<group>"; };
@@ -329,6 +338,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D130EE511A891CA7002FCD6F /* CustomLeague */ = {
+			isa = PBXGroup;
+			children = (
+				D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift */,
+				D12905831A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift */,
+				D130EE4B1A88D2D4002FCD6F /* GSJoinCustomLeagueViewController.swift */,
+				D130EE4E1A89166C002FCD6F /* GSLeaderBoardViewController.swift */,
+				D130EE521A891CCD002FCD6F /* GSLeaderBoardCell.swift */,
+			);
+			name = CustomLeague;
+			sourceTree = "<group>";
+		};
 		D13D8B721A7013B600303DF3 = {
 			isa = PBXGroup;
 			children = (
@@ -396,11 +417,10 @@
 		D16CEF571A728B1200964056 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D130EE511A891CA7002FCD6F /* CustomLeague */,
 				D19668DF1A796046003D4F8D /* Account */,
 				D16CEF581A728B3300964056 /* GSMainViewController.swift */,
 				D16CEF5B1A728E7A00964056 /* GSNavigationBar.swift */,
-				D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift */,
-				D12905831A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift */,
 				D16A92E41A83E5A800B11604 /* GSWebViewController.swift */,
 			);
 			path = Controllers;
@@ -488,7 +508,7 @@
 			isa = PBXGroup;
 			children = (
 				D1A2883C1A716EBB00D978B6 /* GSUser.swift */,
-				D1D1C2331A7FD876007C6FC8 /* GSCustomLeagues.swift */,
+				D1D1C2331A7FD876007C6FC8 /* GSCustomLeague.swift */,
 				D16A92EE1A84EB1400B11604 /* GSLeague.swift */,
 			);
 			path = Model;
@@ -782,18 +802,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D130EE4F1A89166C002FCD6F /* GSLeaderBoardViewController.swift in Sources */,
 				D1A288421A716EF100D978B6 /* Constants.swift in Sources */,
 				D1F2C0AA1A7BD50E009DF72D /* GSSocialShareViewController.swift in Sources */,
 				D1D1C22B1A7FBF2B007C6FC8 /* EmailModule.swift in Sources */,
+				D130EE4C1A88D2D4002FCD6F /* GSJoinCustomLeagueViewController.swift in Sources */,
 				D1D1C2311A7FD0B1007C6FC8 /* SmsModule.swift in Sources */,
 				D19668EA1A7A8674003D4F8D /* FieldsValidator.swift in Sources */,
+				D130EE531A891CCD002FCD6F /* GSLeaderBoardCell.swift in Sources */,
 				D19668551A764BB4003D4F8D /* RestKitConfig.swift in Sources */,
 				D19668641A767077003D4F8D /* ParseConfig.swift in Sources */,
 				D19668F11A7A9916003D4F8D /* GPGuardPost.m in Sources */,
 				D19669081A7AA46A003D4F8D /* SVIndefiniteAnimatedView.m in Sources */,
 				D19668E11A796061003D4F8D /* GSCreateAccountViewController.swift in Sources */,
 				D16CEF5C1A728E7A00964056 /* GSNavigationBar.swift in Sources */,
-				D1D1C2341A7FD876007C6FC8 /* GSCustomLeagues.swift in Sources */,
+				D1D1C2341A7FD876007C6FC8 /* GSCustomLeague.swift in Sources */,
 				D12905841A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift in Sources */,
 				D1A288441A716EF100D978B6 /* DeviceExtention.swift in Sources */,
 				D16A92E51A83E5A800B11604 /* GSWebViewController.swift in Sources */,
@@ -825,18 +848,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D130EE501A89166C002FCD6F /* GSLeaderBoardViewController.swift in Sources */,
 				D1A288431A716EF100D978B6 /* Constants.swift in Sources */,
 				D1F2C0AB1A7BD50E009DF72D /* GSSocialShareViewController.swift in Sources */,
 				D1D1C22C1A7FBF2B007C6FC8 /* EmailModule.swift in Sources */,
+				D130EE4D1A88D2D4002FCD6F /* GSJoinCustomLeagueViewController.swift in Sources */,
 				D1D1C2321A7FD0B1007C6FC8 /* SmsModule.swift in Sources */,
 				D19668EB1A7A8674003D4F8D /* FieldsValidator.swift in Sources */,
+				D130EE541A891CCD002FCD6F /* GSLeaderBoardCell.swift in Sources */,
 				D19668561A764BB4003D4F8D /* RestKitConfig.swift in Sources */,
 				D19668651A767077003D4F8D /* ParseConfig.swift in Sources */,
 				D19668F21A7A9916003D4F8D /* GPGuardPost.m in Sources */,
 				D19669091A7AA46A003D4F8D /* SVIndefiniteAnimatedView.m in Sources */,
 				D19668E21A796061003D4F8D /* GSCreateAccountViewController.swift in Sources */,
 				D16CEF5D1A728E7A00964056 /* GSNavigationBar.swift in Sources */,
-				D1D1C2351A7FD876007C6FC8 /* GSCustomLeagues.swift in Sources */,
+				D1D1C2351A7FD876007C6FC8 /* GSCustomLeague.swift in Sources */,
 				D12905851A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift in Sources */,
 				D1A288451A716EF100D978B6 /* DeviceExtention.swift in Sources */,
 				D16A92E61A83E5A800B11604 /* GSWebViewController.swift in Sources */,

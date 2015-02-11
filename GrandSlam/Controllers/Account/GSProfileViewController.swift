@@ -8,7 +8,7 @@
 
 import Foundation
 
-let SHARE_TEXXT = "Spread the word!"
+let SHARE_TEXXT = "Invite Friends!"
 
 
 class GSProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
@@ -175,6 +175,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
             cell.viewWithTag(556)?.removeFromSuperview()
             if(indexPath.row == tableViewData.count-2){
                 socialShareViewController = GSSocialShareViewController()
+                socialShareViewController.isProfileView = true
                 socialShareViewController.view.frame = CGRectMake(0, 0, 320, 40)
                 socialShareViewController.view.tag = 556
                 cell.addSubview(socialShareViewController.view)

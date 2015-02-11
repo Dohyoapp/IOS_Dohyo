@@ -239,15 +239,17 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate 
         inviteLabel.font  = UIFont(name:FONT3, size:18)
         inviteLabel.textColor = SPECIALBLUE
         scrollView.addSubview(inviteLabel)
-        //inviteLabel.alpha = 0
+        inviteLabel.alpha = 0
         
         socialShareViewController = GSSocialShareViewController()
         socialShareViewController.view.frame = CGRectMake(0, 820, 320, 40)
         scrollView.addSubview(socialShareViewController.view)
-        //socialShareViewController.view.alpha = 0
+        socialShareViewController.view.alpha = 0
         
-        
-        scrollView.contentSize = CGSizeMake(320, 900)
+        //scrollView.contentSize = CGSizeMake(320, 900)
+
+        scrollView.contentSize = CGSizeMake(320, 760)
+
         
         datePicker = UIDatePicker()
         datePicker.datePickerMode = UIDatePickerMode.Date
@@ -259,6 +261,11 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate 
         finishDateLabel.inputView = datePicker2
         datePicker2.addTarget(self, action: Selector("handleDatePicker2"), forControlEvents: UIControlEvents.ValueChanged)
 
+    }
+    
+    func closeView(){
+        
+        
     }
     
     func handleDatePicker() {
@@ -388,7 +395,9 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate 
             endOfSeason = true
         }
         
+        hideKeyBoard()
         
+        SVProgressHUD.show()
         var customLeague = PFObject(className:"CustomLeague")
         customLeague["name"]            = leagueName
         customLeague["public"]          = publicLeague
@@ -398,8 +407,13 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate 
         customLeague["endOfSeason"]     = endOfSeason
         customLeague["prize"]           = prize
         customLeague["leagueTitle"]     = "Premier League"
-        customLeague["mainUser"]        = PFUser.currentUser()
-        customLeague.saveInBackgroundWithBlock { (success, error) -> Void in
+        customLeague["mainUser"]        = PFUser.currentUser().objectId
+        customLeague.save()
+        var relation = PFUser.currentUser().relationForKey("myCustomLeagues")
+        relation.addObject(customLeague)
+        PFUser.currentUser().saveInBackgroundWithBlock { (success, error) -> Void in
+            
+            SVProgressHUD.dismiss()
             self.startButton.alpha = 0.4
             self.startButton.enabled = false
             
@@ -407,6 +421,17 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate 
             alertView.show()
             
             GSMainViewController.getMainViewControllerInstance().getCustomLeagues()
+            
+            self.scrollView.contentSize = CGSizeMake(320, 900)
+            self.inviteLabel.alpha = 1
+            self.socialShareViewController.view.alpha = 1
+            self.socialShareViewController.customLeagueId = customLeague.objectId
+            
+            var endView = UIView(frame:CGRectMake(0, 0, 320, 780))
+            endView.backgroundColor = UIColor.whiteColor()
+            endView.alpha = 0.4
+            self.scrollView.addSubview(endView)
+            self.scrollView.scrollRectToVisible(CGRectMake(0, 880, 320, 900), animated: true)
         }
 
     }

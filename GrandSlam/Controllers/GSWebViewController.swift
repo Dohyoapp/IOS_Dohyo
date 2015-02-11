@@ -13,6 +13,8 @@ class GSWebViewController: UIViewController, UIWebViewDelegate {
     
     var webView:UIWebView!
     
+    var timer:NSTimer!
+    
     let yStart = NAVIGATIONBAR_HEIGHT+20
     
     
@@ -42,11 +44,14 @@ class GSWebViewController: UIViewController, UIWebViewDelegate {
     func closeTap(sender: UIButton!){
         
         SVProgressHUD.dismiss()
-        self.dismissViewControllerAnimated(true, nil)
+        dismissViewControllerAnimated(true, nil)
+        if(timer != nil){
+            timer.invalidate()
+        }
     }
     
     func webViewDidStartLoad(webView: UIWebView){
-        var timer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "dismissLoading", userInfo: nil, repeats: false)
+        timer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "dismissLoading", userInfo: nil, repeats: false)
     }
     
     func dismissLoading() {

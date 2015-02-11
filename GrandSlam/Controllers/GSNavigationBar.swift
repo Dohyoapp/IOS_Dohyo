@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 var createCustomLeague:GSCreateCustomLeagueViewController!
 
 
@@ -18,9 +19,16 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
     }
     
     var buttonsArray:NSMutableArray = NSMutableArray()
-    var cacheCustomLeagues:NSArray!
+    
     
     var customLeagueViewControlelr:GSCustomLeagueViewControlelr!
+    var joinCustomLeagueViewController:GSJoinCustomLeagueViewController!
+    
+    
+    var fakeTextField = UITextField(frame:CGRectZero)
+    
+    
+    var joinNumber:UILabel!
     
     
     init(frame: CGRect, objects: NSArray) {
@@ -30,7 +38,6 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         self.backgroundColor = UIColor.whiteColor()
         
         self.delegate = self;
-        cacheCustomLeagues = objects
         
         var sizeTextLabel   = UILabel()
         sizeTextLabel.font  = UIFont(name:FONT1, size:18)
@@ -64,6 +71,18 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         self.addSubview(joinButton)
         self.buttonsArray.addObject(joinButton)
         
+        
+        joinNumber = UILabel(frame: CGRectMake(45, 7, 15, 15))
+        joinNumber.layer.cornerRadius = 7
+        joinNumber.clipsToBounds = true
+        joinNumber.text = ""
+        joinNumber.textAlignment = .Center
+        joinNumber.font  = UIFont(name:FONT1, size:12)
+        joinNumber.textColor = UIColor.whiteColor()
+        joinNumber.backgroundColor = UIColor.redColor()
+        joinButton.addSubview(joinNumber)
+        joinNumber.hidden = true
+        
         var i = 0
         var xViews = createWidth+joinWidth
         var league:PFObject
@@ -93,9 +112,14 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         self.contentSize = CGSizeMake(xViews+40, 44)
         self.showsHorizontalScrollIndicator = false
         
-        var gestures:NSArray = (createButton as UIView).gestureRecognizers!
-        var tapGestureRecognizer:UITapGestureRecognizer = gestures[0] as UITapGestureRecognizer
-        createTap(tapGestureRecognizer)
+        if(createCustomLeague == nil){//app launch only
+
+            var gestures:NSArray = (createButton as UIView).gestureRecognizers!
+            var tapGestureRecognizer:UITapGestureRecognizer = gestures[0] as UITapGestureRecognizer
+            createTap(tapGestureRecognizer)
+        }
+        
+        self.addSubview(fakeTextField)
     }
     
     
@@ -108,6 +132,9 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
     }
     
     func closeAccountViewIfNeeded(){
+        
+        fakeTextField.becomeFirstResponder()
+        fakeTextField.resignFirstResponder()
         
         if(GSMainViewController.getMainViewControllerInstance().createAccountView){
             
@@ -132,11 +159,18 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         if(customLeagueViewControlelr != nil){
             customLeagueViewControlelr.closeView()
         }
+        if(joinCustomLeagueViewController != nil){
+            joinCustomLeagueViewController.closeView()
+        }
     }
     
     func joinTap(recognizer: UITapGestureRecognizer!){
         closeAccountViewIfNeeded()
         setButtonFont(recognizer.view as UILabel);
+        
+        joinCustomLeagueViewController = GSJoinCustomLeagueViewController()
+        joinCustomLeagueViewController.countArray = countArray
+        GSMainViewController.getMainViewControllerInstance().view.addSubview(joinCustomLeagueViewController.view)
         
         if(customLeagueViewControlelr != nil){
             customLeagueViewControlelr.closeView()
@@ -149,13 +183,31 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         setButtonFont(label);
         
         customLeagueViewControlelr = GSCustomLeagueViewControlelr()
-        customLeagueViewControlelr.customLeague = cacheCustomLeagues[label.tag] as PFObject
+        customLeagueViewControlelr.customLeague = GSCustomLeague.getCacheCustomLeagues()[label.tag] as GSCustomLeague
         GSMainViewController.getMainViewControllerInstance().view.addSubview(customLeagueViewControlelr.view)
+        
+        if(joinCustomLeagueViewController != nil){
+            joinCustomLeagueViewController.closeView()
+        }
     }
     
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
         
+    }
+    
+    
+    var countArray:NSArray!
+    func addNotificationNumber(result: NSArray){
+        
+        var total:Int = (result.firstObject as Int) + (result.lastObject as Int)
+        if(total > 0){
+            joinNumber.hidden = false
+            joinNumber.text = String(total)
+        }else{
+            joinNumber.hidden = true
+        }
+        countArray = result
     }
 }

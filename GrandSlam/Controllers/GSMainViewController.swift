@@ -17,7 +17,7 @@ var profileButton:UIButton = UIButton(frame: CGRectMake(279, 20, 41, 40))
 
 var mainViewControllerInstance:GSMainViewController!
 
-class GSMainViewController: UIViewController, CustomLeagueCaller {
+class GSMainViewController: UIViewController, CustomLeagueCaller{
     
     var launchImageView:UIImageView!
     
@@ -59,11 +59,6 @@ class GSMainViewController: UIViewController, CustomLeagueCaller {
         profileButton.setImage(UIImage(named: "Profile_Icon"), forState: .Normal)
         profileButton.addTarget(self, action:"profileTap:", forControlEvents:.TouchUpInside)
         
-        // Do any additional setup after loading the view, typically from a nib.
-        /*self.navigationItem.leftBarButtonItem = self.editButtonItem()
-        
-        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewObject:")
-        self.navigationItem.rightBarButtonItem = addButton*/
         endGetCustomLeagues([])
     }
     
@@ -88,7 +83,7 @@ class GSMainViewController: UIViewController, CustomLeagueCaller {
     
     func getCustomLeagues(){
         
-        GSCustomLeagues.getCustomLeagues(self, user:PFUser.currentUser())
+        GSCustomLeague.getCustomLeagues(self, user:PFUser.currentUser())
     }
     
     func endGetCustomLeagues(data: NSArray){
@@ -101,6 +96,8 @@ class GSMainViewController: UIViewController, CustomLeagueCaller {
         self.navigationController?.view.addSubview(navigationBar)
         self.navigationController?.view.addSubview(profileButton)
         launchImageView.hidden = true
+        
+        GSCustomLeague.getNewJoinLeagueNumber()
     }
     
     
@@ -139,4 +136,7 @@ class GSMainViewController: UIViewController, CustomLeagueCaller {
         }
     }
     
+    func refreshJoinCount(result : NSArray){
+        navigationBar.addNotificationNumber(result)
+    }
 }

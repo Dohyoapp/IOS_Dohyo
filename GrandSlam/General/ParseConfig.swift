@@ -16,6 +16,8 @@ protocol FaceBookDelegate {
 
 
 
+var appConfigData:PFObject!
+
 class ParseConfig: NSObject {
     
     class func initialization(){
@@ -38,6 +40,13 @@ class ParseConfig: NSObject {
         PFInstallation.currentInstallation().saveInBackgroundWithBlock { (success, error) -> Void in
             PFUser.currentUser().setObject(PFInstallation.currentInstallation(), forKey:"installation")
             PFUser.currentUser().save()
+        }
+        
+        var query = PFQuery(className:"AppConfigData")
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            if(objects.count > 0){
+                appConfigData = (objects as NSArray).firstObject as PFObject
+            }
         }
     }
     

@@ -95,5 +95,117 @@ class TwitterFaceBookModule: NSObject{
         }
     }
     
+    
+    func getFBUrl(theUrl: NSString){
+        
+        var appId =  NSNumber(int:(appConfigData["itunesAppId"] as NSString).intValue)
+        let jsonObject = NSMutableArray()
+        jsonObject.addObject(["url": theUrl, "app_store_id": appId , "app_name": "Dohyo"])
+        var jsonData:NSData = NSJSONSerialization.dataWithJSONObject(jsonObject, options: nil, error: nil)!
+        
+        let dataStr = NSString(data: jsonData, encoding: NSUTF8StringEncoding)
+        
+        var params = NSMutableDictionary(object:"Dohyo", forKey:"name")
+        params.setObject(dataStr!, forKey: "ios")
+        params.setObject("{\"should_fallback\": false}", forKey: "web")
+        params.setObject("770143146388459|pAUH5kY_4BjfqJDsRHysDy7mgzA", forKey: "access_token")
+        
+        FBRequestConnection.startWithGraphPath("/770143146388459/app_link_hosts", parameters: params, HTTPMethod: "POST",
+            completionHandler: { (connection , result, error) -> Void in
+                
+                if (error != nil) {
+                    
+                }else{
+                    NSLog("Result = %@",result as NSDictionary)
+                    
+                    var newLink: NSString = (result as NSDictionary).objectForKey("id") as NSString
+                    self.facebook(MESSAGE_TEXT2, image: UIImage(), link: String(format:"https://fb.me/%@", newLink) )
+                }
+        })
+    }
+    
+    
+    
+    
+    func sendRequest() {
+        
+        let jsonObject: AnyObject? = ["social_karma": "5", "badge_of_awesomeness": "1"]
+        var jsonData:NSData = NSJSONSerialization.dataWithJSONObject(jsonObject!, options: nil, error: nil)!
+        
+        let dataStr = NSString(data: jsonData, encoding: NSUTF8StringEncoding)
+        
+        var params = NSMutableDictionary(object: dataStr!, forKey: "data")
+        
+        // Display the requests dialog
+        FBWebDialogs.presentRequestsDialogModallyWithSession(nil, message:"Learn how to make your iOS apps social.", title:"hi", parameters:params,
+            handler: { (result:FBWebDialogResult, resultURL:NSURL!, error)  in
+                if (error != nil) {
+                    // Error launching the dialog or sending the request.
+                    NSLog("Error sending request.");
+                } else {
+                    if (result == .DialogNotCompleted) {
+                        // User clicked the "x" icon
+                        NSLog("User canceled request.");
+                    } else {
+                        // Handle the send request callback
+                        var urlParams : NSDictionary = self.parseURLParams(resultURL.query!)
+                        if (urlParams.valueForKey("request") == nil) {
+                            // User clicked the Cancel button
+                            NSLog("User canceled request.");
+                        } else {
+                            // User clicked the Send button
+                            var requestID:NSString = urlParams.valueForKey("request") as NSString
+                            NSLog("Request ID: %@", requestID);
+                        }
+                    }
+                }
+        })
+        
+    }
+    
+    
+    func parseURLParams(query : NSString) -> NSDictionary {
+        var pairs:NSArray = query.componentsSeparatedByString("&")
+        var params:NSMutableDictionary = NSMutableDictionary()
+        for pair in pairs {
+            var kv:NSArray = pair.componentsSeparatedByString("=")
+            var val:NSString = kv[1].stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+            params[kv[0] as NSString] = val
+        }
+        return params;
+    }
+    
+    var friendPickerController:FBFriendPickerViewController!
+
+    func sendToFriends(){
+
+        friendPickerController = FBFriendPickerViewController()
+        friendPickerController.title = "Pick Friends"
+        friendPickerController.loadData()
+        //friendPickerController.delegate = self
+        //friendPickerController.presentModallyFromViewController(self, animated:true, handler:nil)
+    }
+    
+    func facebookViewControllerDoneWasPressed(sender:AnyObject)
+    {/*
+        var users = NSMutableArray()
+        
+        for user in self.friendPickerController.selection {
+        var dico = user as NSDictionary
+        users.addObject(dico.objectForKey("id") as NSString)
+        NSLog("Friend selected: %@", dico.objectForKey("name") as NSString)
+        }
+        */
+        var params:FBLinkShareParams = FBLinkShareParams()
+        params.link = NSURL(string : "https://developers.facebook.com/docs/ios/share/")
+        params.friends = self.friendPickerController.selection
+        
+        FBDialogs.presentShareDialogWithParams(params, clientState: nil, handler: { (call:FBAppCall!, result, error) -> Void in
+            
+        })
+        
+        friendPickerController.dismissViewControllerAnimated(false, completion: nil)
+    }
+    
 }
 

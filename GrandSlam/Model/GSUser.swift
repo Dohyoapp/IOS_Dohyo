@@ -76,5 +76,43 @@ class GSUser:NSObject{
                 var j = 0
         })
     }
-}
     
+    
+    
+    class func parseUrl(url: NSString){
+
+                
+                var dataArray = url.componentsSeparatedByString("/") as NSArray
+    
+                if(dataArray.count > 3){
+                    
+                    var friendId:NSString = dataArray[1] as NSString
+                    
+                    var friends: AnyObject! = PFUser.currentUser()["friends"]
+                    if(friends == nil){
+                        friends = NSMutableArray()
+                    }
+                    if( !(friends as NSArray).containsObject(friendId) ){
+                        friends.addObject(friendId)
+                    }
+                    PFUser.currentUser()["friends"] = friends
+                    PFUser.currentUser().saveInBackground()
+                    
+                    var query = PFQuery(className:"CustomLeague")
+                    query.getObjectInBackgroundWithId(dataArray[3] as NSString) {
+                        (customLeague: PFObject!, error: NSError!) -> Void in
+                        if error == nil {
+                            GSCustomLeague.joinCurrentUserToCustomLeague(customLeague)
+                        } else {
+                            NSLog("%@", error)
+                        }
+                    }
+                    
+                }
+ 
+    }
+    
+    
+    
+}
+

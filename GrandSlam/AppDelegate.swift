@@ -31,7 +31,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LeagueCaller {
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String, annotation: AnyObject?) -> Bool {
         
-        return FBAppCall.handleOpenURL(url, sourceApplication:sourceApplication, withSession:PFFacebookUtils.session())
+        return FBAppCall.handleOpenURL(url, sourceApplication:sourceApplication, withSession:PFFacebookUtils.session(), fallbackHandler: { (call:FBAppCall!) -> Void in
+            
+            var parsedUrl = BFURL(inboundURL: url, sourceApplication:sourceApplication)
+            if (parsedUrl.appLinkData != nil && url.scheme == "Dohyo") {
+               GSUser.parseUrl(url.path!)
+            }
+        })
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -52,6 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LeagueCaller {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         GSMainViewController.getMainViewControllerInstance().getCustomLeagues()
         GSLeague.getLeagues(self)
+        GSCustomLeague.getNewJoinLeagueNumber()
         
         FBAppCall.handleDidBecomeActiveWithSession(PFFacebookUtils.session())
     }

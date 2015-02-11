@@ -9,14 +9,16 @@
 import Foundation
 
 
-let cellHeihgt:CGFloat = 181
+let CELLHEIGHT:CGFloat = 181
+
+let BETTLABEL_TEXT1 = "Submit prediction"
 
 
 class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, LeagueCaller {
     
     var scrollView:UIScrollView!
     
-    var customLeague:PFObject!
+    var customLeague:GSCustomLeague!
     
     var validMatches:NSArray!
     
@@ -24,6 +26,7 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
     
     
     var webViewController:GSWebViewController!
+    var gsLeaderBoardViewController:GSLeaderBoardViewController!
     
     
     override func viewDidLoad() {
@@ -62,24 +65,25 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
     
     func loadMatches(){
         
-        var leagueName = customLeague.valueForKey("leagueTitle") as NSString
-        var league = GSLeague.getCacheLeagues(leagueName)
+        var leagueName = customLeague.pfCustomLeague.valueForKey("leagueTitle") as NSString
+        var league = GSLeague.getLeagueFromCache(leagueName)
         
         if(league.matches == nil){
             GSLeague.getLeagues(self)
             return
         }
         
+        
+        
         var matches:NSArray = league.matches
-        validMatches = GSCustomLeagues.getValidMatches(matches , customLeague:customLeague)
+        validMatches = customLeague.getValidMatches(matches)
         var count:CGFloat = 0
         for validMatche in validMatches{
+            
             self.createMatcheCell(validMatche as PFObject, num:count)
             count = count+1
         }
-        self.scrollView.contentSize = CGSizeMake(320, cellHeihgt*count)
-        
-        var k = 0;
+        self.scrollView.contentSize = CGSizeMake(320, CELLHEIGHT*count)
     }
     
     func endGetLeagues(data : NSArray){
@@ -98,18 +102,21 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
 
     func leaderBoardTap(sender: UIButton!){
         
+        gsLeaderBoardViewController = GSLeaderBoardViewController()
+        gsLeaderBoardViewController.customLeague = customLeague
+        self.view.addSubview(gsLeaderBoardViewController.view)
     }
 
 
     
     func createMatcheCell(matche:PFObject, num:CGFloat){
         
-        var cell = UIView(frame:CGRectMake(0, num*cellHeihgt, 320, cellHeihgt))
+        var cell = UIView(frame:CGRectMake(0, num*CELLHEIGHT, 320, CELLHEIGHT))
         cell.tag = Int(num)
         cell.backgroundColor = UIColor.whiteColor()
         scrollView.addSubview(cell)
         
-        var teamsNames = GSCustomLeagues.getShortTitle(matche.valueForKey("title") as NSString)
+        var teamsNames = GSCustomLeague.getShortTitle(matche.valueForKey("title") as NSString)
         
         var leftName:NSString   = teamsNames.firstObject as NSString
         var rightName:NSString  = teamsNames.lastObject as NSString
@@ -144,21 +151,25 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         cell.addSubview(rightImageTeamView)
         
         var leftUpButton = UIButton(frame: CGRectMake(65, 40, 30, 30))
+        leftUpButton.tag = 666
         leftUpButton.setImage(UIImage(named:"Button_Up"), forState: .Normal)
         leftUpButton.addTarget(self, action:"leftUpTap:", forControlEvents:.TouchUpInside)
         cell.addSubview(leftUpButton)
         
         var leftDownButton = UIButton(frame: CGRectMake(65, 71, 30, 30))
+        leftDownButton.tag = 667
         leftDownButton.setImage(UIImage(named:"Button_Down"), forState: .Normal)
         leftDownButton.addTarget(self, action:"leftDownTap:", forControlEvents:.TouchUpInside)
         cell.addSubview(leftDownButton)
         
         var rightUpButton = UIButton(frame: CGRectMake(220, 40, 30, 30))
+        rightUpButton.tag = 668
         rightUpButton.setImage(UIImage(named:"Button_Up"), forState: .Normal)
         rightUpButton.addTarget(self, action:"rightUpTap:", forControlEvents:.TouchUpInside)
         cell.addSubview(rightUpButton)
         
         var righttDownButton = UIButton(frame: CGRectMake(220, 71, 30, 30))
+        righttDownButton.tag = 669
         righttDownButton.setImage(UIImage(named:"Button_Down"), forState: .Normal)
         righttDownButton.addTarget(self, action:"rightDownTap:", forControlEvents:.TouchUpInside)
         cell.addSubview(righttDownButton)
@@ -181,7 +192,7 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         
         var rightScoreLabel     = UILabel(frame:CGRectMake(160, 26, 60, 100))
         rightScoreLabel.tag     = 999
-        rightScoreLabel.text    = "0"
+        rightScoreLabel.text = "0"
         rightScoreLabel.textAlignment = .Center
         rightScoreLabel.font    = UIFont(name:FONT2, size:44)
         rightScoreLabel.textColor = SPECIALBLUE
@@ -193,12 +204,36 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         cell.addSubview(bettButton)
         
         var bettLabel     = UILabel(frame:CGRectMake(0, 0, bettButton.frame.size.width, bettButton.frame.size.height))
+        bettLabel.tag = 777
         bettLabel.numberOfLines = 0
-        bettLabel.text    = "Now make it real with \nLadbrokes"
+        bettLabel.text    = BETTLABEL_TEXT1
         bettLabel.textAlignment = .Center
         bettLabel.font    = UIFont(name:FONT3, size:13)
         bettLabel.textColor = UIColor.whiteColor()
         bettButton.addSubview(bettLabel)
+        
+        var score = customLeague.getMatcheScore(matche.objectId)
+        var scores:NSArray = score.componentsSeparatedByString(" - ")
+        if(scores.count > 1){
+            desableBtnsCell(cell)
+            leftScoreLabel.text = scores.firstObject as NSString
+            rightScoreLabel.text = scores.lastObject as NSString
+        }
+    }
+    
+    func desableBtnsCell(cell: UIView){
+        
+        var leftUpButton = (cell.viewWithTag(666) as UIButton)
+        leftUpButton.enabled = false
+        var leftDownButton = (cell.viewWithTag(667) as UIButton)
+        leftDownButton.enabled = false
+        var rightUpButton = (cell.viewWithTag(668) as UIButton)
+        rightUpButton.enabled = false
+        var righttDownButton = (cell.viewWithTag(669) as UIButton)
+        righttDownButton.enabled = false
+        
+        var bettLabel = (cell.viewWithTag(777) as UILabel)
+        bettLabel.text = "Now make it real with \nLadbrokes"
     }
     
     
@@ -252,46 +287,59 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         
         var leftScore:NSString  = (cell.viewWithTag(888) as UILabel).text!
         var rightScore:NSString = (cell.viewWithTag(999) as UILabel).text!
-
-
+        
+        var bettLabel = (cell.viewWithTag(777) as UILabel)
+        
         var currentSelectionName:NSString = "Draw "+leftScore+" - "+rightScore
         if(leftScore != rightScore){
             var longTitle = matche.valueForKey("title") as NSString
             var names:NSArray = longTitle.componentsSeparatedByString(" V ")
             
             if(leftScore.intValue > rightScore.intValue ){
-                 currentSelectionName = (names.firstObject as NSString)+" "+leftScore+" - "+rightScore
+                currentSelectionName = (names.firstObject as NSString)+" "+leftScore+" - "+rightScore
             }else{
-                 currentSelectionName = (names.lastObject as NSString)+" "+rightScore+" - "+leftScore
+                currentSelectionName = (names.lastObject as NSString)+" "+rightScore+" - "+leftScore
             }
         }
         
         
-        
-        var selections: AnyObject! = matche.objectForKey("selection")
-        
-        if(selections != nil){
-            getSelection(selections as NSArray, selectionName:currentSelectionName)
+        if(bettLabel.text == BETTLABEL_TEXT1){
+            var score = leftScore+" - "+rightScore
+            saveUserMatchDetails(matche, details:score, cell:cell)
         }
         else{
-            loadMatcheSelection(matche, selectionName:currentSelectionName)
+           getSelection(matche, selectionName: currentSelectionName)
         }
+        
     }
-
     
-    func getSelection(selections:NSArray, selectionName:NSString){
+    func saveUserMatchDetails(matche:PFObject, details:NSString, cell:UIView){
         
-        var currentPrice:NSDictionary!  ///denPrice = 1; numPrice = 100;
-        var selectionKey:AnyObject!
+        SVProgressHUD.show()
         
-        var selection:NSDictionary
-        for selection in selections {
+        var cluMatche = PFObject(className:"CLUMatche")
+        cluMatche["matcheId"] = matche.objectId
+        cluMatche["userId"]   = PFUser.currentUser().objectId
+        cluMatche["savePScore"] = details
+        cluMatche.save()
+        
+        var relation = customLeague.pfCustomLeague.relationForKey("lcuMatches")
+        relation.addObject(cluMatche)
+        customLeague.pfCustomLeague.saveInBackgroundWithBlock({ (success, error) -> Void in
             
-            if(selection.objectForKey("selectionName") as NSString == selectionName){
-                currentPrice = selection.objectForKey("currentPrice") as NSDictionary
-                selectionKey = selection.objectForKey("selectionKey")
-            }
-        }
+            SVProgressHUD.dismiss()
+            self.customLeague.getCluMatches()
+            self.desableBtnsCell(cell)
+        })
+    }
+    
+    
+    
+
+    func goToLadBrokes(selection: NSDictionary){
+        
+        var currentPrice:NSDictionary!  = selection.objectForKey("currentPrice") as NSDictionary //denPrice = 1; numPrice = 100;
+        var selectionKey:AnyObject!     = selection.objectForKey("selectionKey")
         
         if(selectionKey != nil){
             var intSelectionKey = Int(selectionKey as NSNumber)
@@ -306,6 +354,38 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
             alertView.show()
         }
     }
+
+    
+    func getSelection(matche:PFObject, selectionName:NSString){
+        
+        var selections: AnyObject! = matche.objectForKey("selection")
+        
+        if(selections == nil){
+            loadMatcheSelection(matche, selectionName: selectionName)
+        }
+        else{
+            
+            var selection:NSDictionary
+            for selection in (selections as NSArray) {
+                
+                if(selection.objectForKey("selectionName") as NSString == selectionName){
+                    
+                    SVProgressHUD.dismiss()
+                    
+                    
+                    self.goToLadBrokes(selection as NSDictionary)
+                }
+            }
+        }
+    }
+    
+    
+    
+    /*
+dispatch_after(1, dispatch_get_main_queue(), {
+// your function here
+getSelection(matche, selectionName:selectionName)
+})*/
     
     
     
@@ -313,7 +393,7 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
     func loadMatcheSelection(matche:PFObject, selectionName:NSString){
         
         var leagueName      = customLeague.valueForKey("leagueTitle") as NSString
-        var league:PFObject = (GSLeague.getCacheLeagues(leagueName) as GSLeague).pfLeague
+        var league:PFObject = (GSLeague.getLeagueFromCache(leagueName) as GSLeague).pfLeague
         
         var classKey:NSString   = String(Int(league["classKey"] as NSNumber))
         var typeKey:NSString    = String(Int(league["typeKey"] as NSNumber))
@@ -328,32 +408,24 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         SVProgressHUD.show()
         var request = NSMutableURLRequest(URL: NSURL(string: urlMatcheSelection)!)
         request.addValue("application/json", forHTTPHeaderField: "Accept")
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {(data, response, error) in
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {  (data, response, error) in
             
             
             var err: NSError?
             var jsonData:NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as NSDictionary
             var marketsEventArray:NSArray = ((jsonData["event"] as NSDictionary)["markets"] as NSDictionary)["market"] as NSArray
             
-            SVProgressHUD.dismiss()
             
             var marketJson:NSDictionary
             for marketJson in marketsEventArray {
                 
                 if((marketJson["marketName"] as NSString == "Correct score")){
                     
-                    dataArray = (marketJson["selections"] as NSDictionary)["selection"] as NSArray
-                    
-                    dispatch_after(1, dispatch_get_main_queue(), {
-                        // your function here
-                        SVProgressHUD.dismiss()
-                        self.getSelection(dataArray, selectionName:selectionName)
-                    })
-                    
-                    
-                    matche["selection"] = dataArray
+                    matche["selection"] = (marketJson["selections"] as NSDictionary)["selection"] as NSArray
                     matche.saveInBackgroundWithBlock({ (success, error) -> Void in
+                        SVProgressHUD.dismiss()
                     })
+                    self.getSelection(matche, selectionName:selectionName)
                 }
             }
             
