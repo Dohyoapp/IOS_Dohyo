@@ -59,6 +59,14 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
         prizeNameLabel.textColor = SPECIALBLUE
         self.view.addSubview(prizeNameLabel)
         
+        
+        tableView         = UITableView(frame:CGRectMake(0, yPrize+50, self.view.frame.size.width, self.view.frame.size.height-yPrize-50))
+        tableView.dataSource    = self
+        tableView.delegate      = self
+        tableView.backgroundColor = UIColor.whiteColor()
+        tableView.separatorStyle  = .None
+        self.view.addSubview(tableView)
+        
         tableViewData = []
         
         var usersArray = NSMutableArray()
@@ -70,26 +78,21 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
             usersArray.addObjectsFromArray(users)
         }
         getUsers(usersArray)
-        
-        tableView         = UITableView(frame:CGRectMake(0, yPrize+50, self.view.frame.size.width, self.view.frame.size.height-yPrize-50))
-        tableView.dataSource    = self
-        tableView.delegate      = self
-        tableView.backgroundColor = UIColor.whiteColor()
-        tableView.separatorStyle  = .None
-        self.view.addSubview(tableView)
     }
     
     
     func getUsers(usersId: NSArray){
         
+        SVProgressHUD.show()
         PFCloud.callFunctionInBackground("getUsersByuserId", withParameters:["usersId" : usersId]) { (result: AnyObject!, error: NSError!) -> Void in
+            
             if error == nil {
                 self.tableViewData = result as NSArray
                 if(self.tableView != nil){
                     self.tableView.reloadData()
                 }
-                
             }
+            SVProgressHUD.dismiss()
         }
     }
     
@@ -115,7 +118,7 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
             var user = tableViewData[indexPath.row] as PFObject
             cell.nameLabel.text = user["username"] as NSString
         
-        cell.pointsLabel.text = NSString(format:"%d points", 54)
+            cell.pointsLabel.text = NSString(format:"%d points", 54)
         
             return cell
     }

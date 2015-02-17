@@ -112,6 +112,8 @@ class ParseConfig: NSObject {
                 var email:AnyObject! = data.objectForKey("email")
                 if(email != nil){
                     
+                    var user = PFUser.currentUser()
+                    
                     var query = PFUser.query()
                     query.whereKey("email", equalTo:email)
                     query.findObjectsInBackgroundWithBlock { (objects: [AnyObject]!, error: NSError!) -> Void in
@@ -120,11 +122,11 @@ class ParseConfig: NSObject {
                             if(objects != nil && objects.count > 0){
                                 var pfUser:PFUser = objects[0] as PFUser
                                 
-                                PFFacebookUtils.unlinkUserInBackground(PFUser.currentUser()) { (success, error) -> Void in
+                                PFFacebookUtils.unlinkUserInBackground(user) { (success, error) -> Void in
                                     
-                                    var userId:AnyObject! = PFUser.currentUser().objectId
+                                    var userId:AnyObject! = user.objectId
                                     if(userId != nil){
-                                        PFUser.currentUser().delete()
+                                        user.delete()
                                     }
                                     var username = pfUser["username"] as NSString
                                     var password = email as NSString
@@ -169,9 +171,11 @@ class ParseConfig: NSObject {
     
     class func saveUserData(data: NSDictionary, object: FaceBookDelegate){
         
-        PFUser.currentUser().setValue(data.objectForKey("name"), forKey: "username")
-        PFUser.currentUser().setValue(data.objectForKey("email"), forKey: "email")
-        PFUser.currentUser().setValue(data.objectForKey("email"), forKey: "password")
+        var user = PFUser.currentUser()
+        
+        user.setValue(data.objectForKey("name"), forKey: "username")
+        user.setValue(data.objectForKey("email"), forKey: "email")
+        user.setValue(data.objectForKey("email"), forKey: "password")
         
         var idFBUser:NSString = data.objectForKey("id") as NSString
         var imageLink = NSString(format:"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", idFBUser)
@@ -181,11 +185,11 @@ class ParseConfig: NSObject {
         imageView.setImageWithURLRequest( urlRequest, placeholderImage: nil, success: { (url, response, image) -> Void in
             
                 SVProgressHUD.dismiss()
-                var userId:AnyObject! = PFUser.currentUser().objectId
+                var userId:AnyObject! = user.objectId
                 if(userId != nil){
                     let imageFile = PFFile(name:NSString(format:"image%@.png", userId as NSString), data:UIImagePNGRepresentation(image))
-                    PFUser.currentUser().setObject(imageFile, forKey: "image")
-                    PFUser.currentUser().saveInBackgroundWithBlock({ (success, error) -> Void in
+                    user.setObject(imageFile, forKey: "image")
+                    user.saveInBackgroundWithBlock({ (success, error) -> Void in
                         object.endGetFacebookData()
                     })
                 }
@@ -194,7 +198,7 @@ class ParseConfig: NSObject {
                 }
             }, failure: { (url, response, error) -> Void in
                 
-                PFUser.currentUser().save()
+                user.save()
                 object.endGetFacebookData()
         })
     }

@@ -84,6 +84,7 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
     func getCustomLeagues(){
         
         GSCustomLeague.getCustomLeagues(self, user:PFUser.currentUser())
+        GSUser.pendingInvitations()
     }
     
     func endGetCustomLeagues(data: NSArray){

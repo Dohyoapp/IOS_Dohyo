@@ -11,7 +11,8 @@ import Foundation
 
 @objc protocol CustomLeagueCaller {
     optional func endGetCustomLeagues(data : NSArray)
-    optional func endGetAllPublicCustomLeagues (data : NSArray)
+    optional func endGetAllPublicCustomLeagues(data : NSArray)
+    optional func endGetAllPrivateCustomLeagues(data : NSArray)
 }
 
 var myDict:NSDictionary = NSDictionary(contentsOfFile: NSBundle.mainBundle().pathForResource("TeamsShortCut", ofType: "plist")!)!
@@ -35,14 +36,8 @@ class GSCustomLeague: NSObject {
     
     class func getNewJoinLeagueNumber(){
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        //defaults.removeObjectForKey("JoinViewDate")
-        var date: AnyObject! = defaults.objectForKey("JoinViewDate")
-        if(date == nil){
-            return
-        }
-            
-        PFCloud.callFunctionInBackground("NewJoinLeagueNumber", withParameters:["JoinViewDate" : date as NSDate]) { (result: AnyObject!, error: NSError!) -> Void in
+        // params: ["JoinViewDate" : date as NSDate]
+        PFCloud.callFunctionInBackground("NewJoinLeagueNumber", withParameters:[:]) { (result: AnyObject!, error: NSError!) -> Void in
             if error == nil {
                 GSMainViewController.getMainViewControllerInstance().refreshJoinCount(result as NSArray)
             }
@@ -51,8 +46,9 @@ class GSCustomLeague: NSObject {
 
     class func getCustomLeagues(delegate: CustomLeagueCaller, user: PFUser){
         
-        var email: AnyObject? = PFUser.currentUser().valueForKey("email")
-        if(email == nil){
+        var user = PFUser.currentUser()
+        
+        if(user.valueForKey("email") == nil){
             self.cacheCustomLeagues([])
             delegate.endGetCustomLeagues!([])
         }
@@ -60,6 +56,7 @@ class GSCustomLeague: NSObject {
         var relation = user.relationForKey("myCustomLeagues")
         relation.query().findObjectsInBackgroundWithBlock {    (objects: [AnyObject]!, error: NSError!) -> Void in
             if error != nil {
+                SVProgressHUD.dismiss()
                 self.cacheCustomLeagues([])
                 delegate.endGetCustomLeagues!([])
             } else {
@@ -68,7 +65,7 @@ class GSCustomLeague: NSObject {
                 var otherArray = NSMutableArray()
                 for customLeague in objects as NSArray{
                     
-                    if(customLeague["mainUser"] as NSString == PFUser.currentUser().objectId){
+                    if(customLeague["mainUser"] as NSString == user.objectId){
                         orrderArray.addObject(customLeague)
                     }else{
                         otherArray.addObject(customLeague)
@@ -99,6 +96,8 @@ class GSCustomLeague: NSObject {
     
     func getCluMatches(){
 
+        var user = PFUser.currentUser()
+        
         var relation = pfCustomLeague.relationForKey("lcuMatches")
         relation.query().findObjectsInBackgroundWithBlock {    (objects: [AnyObject]!, error: NSError!) -> Void in
             if error != nil {
@@ -108,7 +107,7 @@ class GSCustomLeague: NSObject {
                 var data = NSMutableArray()
                 for clusMatche in objects as NSArray{
                     
-                    if(clusMatche["userId"] as NSString == PFUser.currentUser().objectId){
+                    if(clusMatche["userId"] as NSString == user.objectId){
                         data.addObject(clusMatche)
                     }
                 }
@@ -185,9 +184,12 @@ class GSCustomLeague: NSObject {
         return matches
     }
     
-    
-    
-    
+    /*
+    func refreshJoinUsers(){
+
+        pfCustomLeague
+    }
+    */
     
     
     
@@ -199,19 +201,21 @@ class GSCustomLeague: NSObject {
         
         SVProgressHUD.show()
         
+        var user = PFUser.currentUser()
+        
         var joinedUsers: AnyObject! = toCustomLeague["joinUsers"]
         if(joinedUsers == nil){
             joinedUsers = NSMutableArray()
         }
-        if( !(joinedUsers as NSArray).containsObject(PFUser.currentUser().objectId) ){
-            joinedUsers.addObject(PFUser.currentUser().objectId)
+        if( !(joinedUsers as NSArray).containsObject(user.objectId) ){
+            joinedUsers.addObject(user.objectId)
         }
         toCustomLeague["joinUsers"] = joinedUsers
         toCustomLeague.saveInBackgroundWithBlock({ (success, error) -> Void in
             
-            var relation = PFUser.currentUser().relationForKey("myCustomLeagues")
+            var relation = user.relationForKey("myCustomLeagues")
             relation.addObject(toCustomLeague)
-            PFUser.currentUser().saveInBackgroundWithBlock { (success, error) -> Void in
+            user.saveInBackgroundWithBlock { (success, error) -> Void in
                 
                 SVProgressHUD.dismiss()
                 GSMainViewController.getMainViewControllerInstance().getCustomLeagues()
@@ -259,19 +263,21 @@ class GSCustomLeague: NSObject {
     
     class func getAllPublicCustomLeagues(delegate: CustomLeagueCaller){
         
-        var email: AnyObject? = PFUser.currentUser().valueForKey("email")
-        if(email == nil){
+        var user = PFUser.currentUser()
+        
+        if(user.valueForKey("email") == nil){
             return
         }
 
+        SVProgressHUD.show()
         var query = PFQuery(className:"CustomLeague")
         query.whereKey("public", equalTo:true)
-        query.whereKey("mainUser", notEqualTo:PFUser.currentUser().objectId)
+        query.whereKey("mainUser", notEqualTo:user.objectId)
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             
             SVProgressHUD.dismiss()
             if (error != nil) {
-                delegate.endGetAllPublicCustomLeagues!([])
+                delegate.endGetAllPublicCustomLeagues!(self.splitCustomLeagueByDate([]))
             }
             else{
                 
@@ -284,7 +290,7 @@ class GSCustomLeague: NSObject {
                     if(joinedUsers? != nil){
                         for userId in joinedUsers as NSArray{
                             
-                            if(userId as NSString == PFUser.currentUser().objectId){
+                            if(userId as NSString == user.objectId){
                                 currentUserJoined = true
                             }
                         }
@@ -293,10 +299,104 @@ class GSCustomLeague: NSObject {
                         data.addObject(customLeague)
                     }
                 }
-                delegate.endGetAllPublicCustomLeagues!(data)
+                delegate.endGetAllPublicCustomLeagues!(self.splitCustomLeagueByDate(data))
             }
         }
 
+    }
+    
+    
+    class func getAllPrivateCustomLeagues(delegate: CustomLeagueCaller){
+        
+        var user = PFUser.currentUser()
+        
+        if(user.valueForKey("email") == nil){
+            return
+        }
+        
+        SVProgressHUD.show()
+        var query = PFQuery(className:"CustomLeague")
+        query.whereKey("public", equalTo:false)
+        query.whereKey("mainUser", notEqualTo:user.objectId)
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            
+            SVProgressHUD.dismiss()
+            if (error != nil) {
+                delegate.endGetAllPrivateCustomLeagues!(self.splitCustomLeagueByDate([]))
+            }
+            else{
+                
+                var data = NSMutableArray()
+                for customLeague in objects{
+                    
+                    var currentUserJoined = false
+                    
+                    var joinedUsers = customLeague["joinUsers"]
+                    if(joinedUsers? != nil){
+                        for userId in joinedUsers as NSArray{
+                            
+                            if(userId as NSString == user.objectId){
+                                currentUserJoined = true
+                            }
+                        }
+                    }
+                    if(!currentUserJoined){
+                        data.addObject(customLeague)
+                    }
+                }
+                
+                var finalData = NSMutableArray()
+                for customLeague2 in data{
+
+                    if(user["friends"] != nil){
+                        for friendId in (user["friends"] as NSArray){
+                            var mainUser = customLeague2["mainUser"] as NSString
+                            if(friendId as NSString == mainUser){
+                                finalData.addObject(customLeague2)
+                            }
+                        }
+                    }
+                }
+                
+                
+                delegate.endGetAllPrivateCustomLeagues!(self.splitCustomLeagueByDate(finalData))
+            }
+        }
+        
+    }
+    
+    
+    class func splitCustomLeagueByDate(data : NSArray) -> NSArray{
+        
+        var user = PFUser.currentUser()
+        
+        var lastDate: AnyObject! = user["LastJoinViewDate"]
+        
+        var arrayNew = NSMutableArray()
+        var arrayOld = NSMutableArray()
+        
+        if(lastDate != nil){
+            
+            for customLeague in data{
+                
+                var createdAt: AnyObject! = (customLeague as PFObject).createdAt
+                if(createdAt != nil){
+                    
+                    if( (createdAt as NSDate).timeIntervalSinceDate(lastDate as NSDate) > 0 ){
+                        
+                        arrayNew.addObject(customLeague)
+                    }
+                    else{
+                        arrayOld.addObject(customLeague)
+                    }
+                }
+            }
+            
+        }else{
+            arrayOld = data as NSMutableArray
+        }
+        
+        return [arrayNew, arrayOld]
     }
     
 }

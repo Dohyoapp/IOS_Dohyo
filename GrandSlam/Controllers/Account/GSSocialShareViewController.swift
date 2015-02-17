@@ -10,7 +10,7 @@ import Foundation
 
 
 var MESSAGE_TEXT1 = "I challenge you to beat my Premier League predictions on Dohyō! Join me here:"
-var MESSAGE_TEXT2 = "I've just created a Premier League predictions contest on Dohyō . I challenge you to beat score! Join my league here:"
+var MESSAGE_TEXT2 = "I've just created a Premier League predictions contest on Dohyō. I challenge you to beat score! Join my league here:"
 
 
 class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnFBTWSDelegate, SendSMSDelegate, FBFriendPickerDelegate {
@@ -26,6 +26,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     var customLeagueId:NSString!
     
     override func viewDidLoad() {
+
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.clearColor()
@@ -62,8 +63,8 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     }
     
     override func viewWillAppear(animated: Bool) {
-        var cacheDescriptor = FBFriendPickerViewController.cacheDescriptor()
-        cacheDescriptor.prefetchAndCacheForSession(FBSession.activeSession())
+        
+        super.viewWillAppear(animated)
     }
     
     
@@ -75,8 +76,8 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
         
         twitterFaceBookModule = TwitterFaceBookModule(delegate:self)
         if(!isProfileView){
-            var link = String(format:"Dohyo://userId/%@/costumLeagueId/%@", PFUser.currentUser().objectId, customLeagueId)
-            twitterFaceBookModule.getFBUrl(link)
+            var link = String(format:"%@appLaunch.html?userId=%@&costumLeagueId=%@", TEAMS_IMAGES_URL_ROOT, PFUser.currentUser().objectId, customLeagueId)
+            twitterFaceBookModule.facebook(MESSAGE_TEXT2, image: UIImage(), link: link)
             
         }else{
             twitterFaceBookModule.facebook(MESSAGE_TEXT1, image: UIImage(), link: appConfigData["itunesAppUrl"] as NSString)
@@ -92,9 +93,11 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     
     
     func twitterButtonTap(sender: UIButton!){
+        
         twitterFaceBookModule = TwitterFaceBookModule(delegate:self)
         if(!isProfileView){
-            var link = String(format:"Dohyo://userId=%@&costumLeagueId=%@", PFUser.currentUser().objectId, customLeagueId)
+            
+            var link = String(format:"%@appLaunch.html?userId=%@&costumLeagueId=%@", TEAMS_IMAGES_URL_ROOT, PFUser.currentUser().objectId, customLeagueId)
             twitterFaceBookModule.twitter(MESSAGE_TEXT2, image: UIImage(), link: link)
             
         }else{
@@ -112,7 +115,11 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     
     func whatsAppButtonTap(sender: UIButton!){
         
-        var message = "hello"
+        var message = String(format:"%@ %@", MESSAGE_TEXT1, appConfigData["itunesAppUrl"] as NSString)
+        if(!isProfileView){
+            var link = String(format:"Dohyo://userId/%@/costumLeagueId/%@", PFUser.currentUser().objectId, customLeagueId)
+            message = String(format:"%@ %@", MESSAGE_TEXT2, link)
+        }
         
         var text  = NSString(format:"whatsapp://send?text=%@", message)
         var escapedUrlString  = text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
@@ -132,8 +139,15 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     
     var smsModule:SmsModule!
     func smsButtonTap(sender: UIButton!){
+        
+        var message = String(format:"%@ %@", MESSAGE_TEXT1, appConfigData["itunesAppUrl"] as NSString)
+        if(!isProfileView){
+            var link = String(format:"Dohyo://userId/%@/costumLeagueId/%@", PFUser.currentUser().objectId, customLeagueId)
+            message = String(format:"%@ %@", MESSAGE_TEXT2, link)
+        }
+        
         smsModule = SmsModule(delegate: self)
-        smsModule.sendSms("body", adresses:nil)
+        smsModule.sendSms(message, adresses:nil)
     }
     
     func sendSmsSuccesFinish(){
@@ -146,8 +160,14 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     var emailModule:EmailModule!
     func mailButtonTap(sender: UIButton!){
         
+        var message = String(format:"%@ %@", MESSAGE_TEXT1, appConfigData["itunesAppUrl"] as NSString)
+        if(!isProfileView){
+            var link = String(format:"%@appLaunch.html?userId=%@&costumLeagueId=%@", TEAMS_IMAGES_URL_ROOT, PFUser.currentUser().objectId, customLeagueId)
+            message = String(format:"%@ %@", MESSAGE_TEXT2, link)
+        }
+        
         emailModule = EmailModule(delegate:self)
-        emailModule.sendSimpleMail("my title", adresses:nil, body: "hello body")
+        emailModule.sendSimpleMail("Dohyō", adresses:nil, body: message)
     }
     
     func sendEmailSuccesFinish(){

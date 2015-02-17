@@ -275,6 +275,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
             PFUser.currentUser().saveInBackgroundWithBlock({ (success, error) -> Void in
                 SVProgressHUD.dismiss()
                 self.closeView()
+                GSMainViewController.getMainViewControllerInstance().getCustomLeagues()
             })
         }
     }

@@ -95,7 +95,7 @@ class TwitterFaceBookModule: NSObject{
         }
     }
     
-    
+    /*
     func getFBUrl(theUrl: NSString){
         
         var appId =  NSNumber(int:(appConfigData["itunesAppId"] as NSString).intValue)
@@ -123,45 +123,9 @@ class TwitterFaceBookModule: NSObject{
                 }
         })
     }
+    */
     
     
-    
-    
-    func sendRequest() {
-        
-        let jsonObject: AnyObject? = ["social_karma": "5", "badge_of_awesomeness": "1"]
-        var jsonData:NSData = NSJSONSerialization.dataWithJSONObject(jsonObject!, options: nil, error: nil)!
-        
-        let dataStr = NSString(data: jsonData, encoding: NSUTF8StringEncoding)
-        
-        var params = NSMutableDictionary(object: dataStr!, forKey: "data")
-        
-        // Display the requests dialog
-        FBWebDialogs.presentRequestsDialogModallyWithSession(nil, message:"Learn how to make your iOS apps social.", title:"hi", parameters:params,
-            handler: { (result:FBWebDialogResult, resultURL:NSURL!, error)  in
-                if (error != nil) {
-                    // Error launching the dialog or sending the request.
-                    NSLog("Error sending request.");
-                } else {
-                    if (result == .DialogNotCompleted) {
-                        // User clicked the "x" icon
-                        NSLog("User canceled request.");
-                    } else {
-                        // Handle the send request callback
-                        var urlParams : NSDictionary = self.parseURLParams(resultURL.query!)
-                        if (urlParams.valueForKey("request") == nil) {
-                            // User clicked the Cancel button
-                            NSLog("User canceled request.");
-                        } else {
-                            // User clicked the Send button
-                            var requestID:NSString = urlParams.valueForKey("request") as NSString
-                            NSLog("Request ID: %@", requestID);
-                        }
-                    }
-                }
-        })
-        
-    }
     
     
     func parseURLParams(query : NSString) -> NSDictionary {

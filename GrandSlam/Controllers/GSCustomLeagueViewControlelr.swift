@@ -20,7 +20,7 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
     
     var customLeague:GSCustomLeague!
     
-    var validMatches:NSArray!
+    var validMatches:NSMutableArray!
     
     let yStart = NAVIGATIONBAR_HEIGHT+20
     
@@ -74,13 +74,17 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         }
         
         
+        validMatches = NSMutableArray()
+        var tempMatches:NSArray = customLeague.getValidMatches(league.matches)
+        for matche in tempMatches{
+            
+            validMatches.addObject(GSMatcheSelection(matche: matche as PFObject, customLeague: customLeague.pfCustomLeague))
+        }
         
-        var matches:NSArray = league.matches
-        validMatches = customLeague.getValidMatches(matches)
         var count:CGFloat = 0
         for validMatche in validMatches{
             
-            self.createMatcheCell(validMatche as PFObject, num:count)
+            self.createMatcheCell(validMatche as GSMatcheSelection, num:count)
             count = count+1
         }
         self.scrollView.contentSize = CGSizeMake(320, CELLHEIGHT*count)
@@ -104,19 +108,36 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         
         gsLeaderBoardViewController = GSLeaderBoardViewController()
         gsLeaderBoardViewController.customLeague = customLeague
+        gsLeaderBoardViewController.customLeague.pfCustomLeague.fetch()
         self.view.addSubview(gsLeaderBoardViewController.view)
     }
 
 
     
-    func createMatcheCell(matche:PFObject, num:CGFloat){
+    func createMatcheCell(matche:GSMatcheSelection, num:CGFloat){
         
-        var cell = UIView(frame:CGRectMake(0, num*CELLHEIGHT, 320, CELLHEIGHT))
+        var cell = UIScrollView(frame:CGRectMake(0, num*CELLHEIGHT, 320, CELLHEIGHT))
+        cell.pagingEnabled = true
+        cell.showsHorizontalScrollIndicator = false
         cell.tag = Int(num)
-        cell.backgroundColor = UIColor.whiteColor()
         scrollView.addSubview(cell)
         
-        var teamsNames = GSCustomLeague.getShortTitle(matche.valueForKey("title") as NSString)
+        cell.addSubview(createMatchView(matche))
+        
+        cell.addSubview(createCrowdPredictionView(matche))
+
+        cell.contentSize = CGSizeMake(640, CELLHEIGHT)
+    }
+    
+    
+    func createTopView(topView:UIView, title:NSString, isCrowd:Bool){
+        
+        var startX:CGFloat = 78
+        if(isCrowd){
+            startX = 118
+        }
+        
+        var teamsNames = GSCustomLeague.getShortTitle(title)
         
         var leftName:NSString   = teamsNames.firstObject as NSString
         var rightName:NSString  = teamsNames.lastObject as NSString
@@ -126,53 +147,65 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         var imageRight  = TEAMS_IMAGES_URL_ROOT+rightName+".png"
         
         var urlLeftRequest      = NSURLRequest(URL:NSURL(string: imageLeft)!)
-        var leftImageTeamView   = UIImageView(frame: CGRectMake(65, 5, 30, 30))
+        var leftImageTeamView   = UIImageView(frame: CGRectMake(startX-13, 5, 30, 30))
         leftImageTeamView.setImageWithURLRequest( urlLeftRequest, placeholderImage: nil, success: { (url, response, image) -> Void in
             leftImageTeamView.image = image
-        }, failure: { (url, response, error) -> Void in
+            }, failure: { (url, response, error) -> Void in
         })
-        cell.addSubview(leftImageTeamView)
+        topView.addSubview(leftImageTeamView)
         
         
-        var matcheLabel     = UILabel(frame:CGRectMake(78, 8, 160, 30))
+        var matcheLabel     = UILabel(frame:CGRectMake(startX, 8, 160, 30))
         matcheLabel.text    = title
         matcheLabel.textAlignment = .Center
         matcheLabel.font    = UIFont(name:FONT3, size:18)
         matcheLabel.textColor = SPECIALBLUE
-        cell.addSubview(matcheLabel)
+        if(isCrowd){
+            matcheLabel.textColor = UIColor.whiteColor()
+        }
+        topView.addSubview(matcheLabel)
         
         
         var urlRighttRequest    = NSURLRequest(URL:NSURL(string: imageRight)!)
-        var rightImageTeamView  = UIImageView(frame: CGRectMake(220, 5, 30, 30))
+        var rightImageTeamView  = UIImageView(frame: CGRectMake(138+startX, 5, 30, 30))
         rightImageTeamView.setImageWithURLRequest( urlRighttRequest, placeholderImage: nil, success: { (url, response, image) -> Void in
             rightImageTeamView.image = image
             }, failure: { (url, response, error) -> Void in
         })
-        cell.addSubview(rightImageTeamView)
+        topView.addSubview(rightImageTeamView)
+    }
+    
+    func createMatchView(matche:GSMatcheSelection) -> UIView{
+        
+        var matchView = UIView(frame:CGRectMake(0, 0, 320, CELLHEIGHT))
+        matchView.backgroundColor = UIColor.whiteColor()
+        
+        createTopView(matchView, title:matche.pfMatche.valueForKey("title") as NSString, isCrowd:false)
+        
         
         var leftUpButton = UIButton(frame: CGRectMake(65, 40, 30, 30))
         leftUpButton.tag = 666
         leftUpButton.setImage(UIImage(named:"Button_Up"), forState: .Normal)
         leftUpButton.addTarget(self, action:"leftUpTap:", forControlEvents:.TouchUpInside)
-        cell.addSubview(leftUpButton)
+        matchView.addSubview(leftUpButton)
         
         var leftDownButton = UIButton(frame: CGRectMake(65, 71, 30, 30))
         leftDownButton.tag = 667
         leftDownButton.setImage(UIImage(named:"Button_Down"), forState: .Normal)
         leftDownButton.addTarget(self, action:"leftDownTap:", forControlEvents:.TouchUpInside)
-        cell.addSubview(leftDownButton)
+        matchView.addSubview(leftDownButton)
         
         var rightUpButton = UIButton(frame: CGRectMake(220, 40, 30, 30))
         rightUpButton.tag = 668
         rightUpButton.setImage(UIImage(named:"Button_Up"), forState: .Normal)
         rightUpButton.addTarget(self, action:"rightUpTap:", forControlEvents:.TouchUpInside)
-        cell.addSubview(rightUpButton)
+        matchView.addSubview(rightUpButton)
         
         var righttDownButton = UIButton(frame: CGRectMake(220, 71, 30, 30))
         righttDownButton.tag = 669
         righttDownButton.setImage(UIImage(named:"Button_Down"), forState: .Normal)
         righttDownButton.addTarget(self, action:"rightDownTap:", forControlEvents:.TouchUpInside)
-        cell.addSubview(righttDownButton)
+        matchView.addSubview(righttDownButton)
         
         
         var leftScoreLabel  = UILabel(frame:CGRectMake(95, 26, 60, 100))
@@ -181,14 +214,14 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         leftScoreLabel.textAlignment = .Center
         leftScoreLabel.font = UIFont(name:FONT2, size:44)
         leftScoreLabel.textColor = SPECIALBLUE
-        cell.addSubview(leftScoreLabel)
+        matchView.addSubview(leftScoreLabel)
         
         var centerScoreLabel    = UILabel(frame:CGRectMake(127, 40, 60, 60))
         centerScoreLabel.text   = "-"
         centerScoreLabel.textAlignment = .Center
         centerScoreLabel.font   = UIFont(name:FONT2, size:44)
         centerScoreLabel.textColor = SPECIALBLUE
-        cell.addSubview(centerScoreLabel)
+        matchView.addSubview(centerScoreLabel)
         
         var rightScoreLabel     = UILabel(frame:CGRectMake(160, 26, 60, 100))
         rightScoreLabel.tag     = 999
@@ -196,12 +229,12 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         rightScoreLabel.textAlignment = .Center
         rightScoreLabel.font    = UIFont(name:FONT2, size:44)
         rightScoreLabel.textColor = SPECIALBLUE
-        cell.addSubview(rightScoreLabel)
+        matchView.addSubview(rightScoreLabel)
         
         var bettButton = UIButton(frame: CGRectMake(90, 115, 140, 43))
         bettButton.backgroundColor = SPECIALBLUE
         bettButton.addTarget(self, action:"bettButtonTap:", forControlEvents:.TouchUpInside)
-        cell.addSubview(bettButton)
+        matchView.addSubview(bettButton)
         
         var bettLabel     = UILabel(frame:CGRectMake(0, 0, bettButton.frame.size.width, bettButton.frame.size.height))
         bettLabel.tag = 777
@@ -212,14 +245,18 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         bettLabel.textColor = UIColor.whiteColor()
         bettButton.addSubview(bettLabel)
         
-        var score = customLeague.getMatcheScore(matche.objectId)
+        var score = customLeague.getMatcheScore(matche.pfMatche.objectId)
         var scores:NSArray = score.componentsSeparatedByString(" - ")
         if(scores.count > 1){
-            desableBtnsCell(cell)
+            desableBtnsCell(matchView)
             leftScoreLabel.text = scores.firstObject as NSString
             rightScoreLabel.text = scores.lastObject as NSString
         }
+        
+        return matchView
     }
+    
+    
     
     func desableBtnsCell(cell: UIView){
         
@@ -278,37 +315,254 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
     }
     
     
+    func createCrowdPredictionView(matche:GSMatcheSelection) -> UIView{
+        
+        var crowdPredictionView = UIView(frame:CGRectMake(280, 0, 360, CELLHEIGHT-40))
+        crowdPredictionView.backgroundColor = SPECIALBLUE
+        
+        createTopView(crowdPredictionView, title:matche.pfMatche.valueForKey("title") as NSString, isCrowd:true)
+        
+        var crowdLabel  = UILabel(frame:CGRectMake(-50, 50, 140, 40))
+        crowdLabel.textAlignment = .Center
+        crowdLabel.font = UIFont(name:FONT1, size:14)
+        crowdLabel.textColor = UIColor.whiteColor()
+        crowdLabel.text = "Crowd prediction"
+        let transform = CGAffineTransformRotate(CGAffineTransformIdentity, -3.14/2);
+        crowdLabel.transform = transform;
+        crowdPredictionView.addSubview(crowdLabel)
+        
+        var backLabel  = UILabel(frame:CGRectMake(-15, 50, 150, 40))
+        backLabel.backgroundColor = UIColor.whiteColor()
+        backLabel.textAlignment = .Center
+        backLabel.font = UIFont(name:FONT1, size:14)
+        backLabel.textColor = SPECIALBLUE
+        backLabel.text = "Back"
+        backLabel.transform = transform;
+        crowdPredictionView.addSubview(backLabel)
+        
+        if(matche.correctScoreSelections != nil){
+            
+            var bestSelection:NSDictionary = matche.bestCorrectScoreSelection
+            
+            
+            var scoreArray:NSArray = getScoresFromSelectionName(bestSelection.objectForKey("selectionName") as NSString, titleMatche: matche.pfMatche.valueForKey("title") as NSString)
+            
+            var leftScore:NSString  = scoreArray.firstObject as NSString
+            var rightScore:NSString = scoreArray.lastObject as NSString
+            
+            
+            var leftScoreLabel  = UILabel(frame:CGRectMake(125, 6, 60, 100))
+            leftScoreLabel.text = leftScore
+            leftScoreLabel.textAlignment = .Center
+            leftScoreLabel.font = UIFont(name:FONT2, size:44)
+            leftScoreLabel.textColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(leftScoreLabel)
+            
+            var centerScoreLabel    = UILabel(frame:CGRectMake(157, 20, 60, 60))
+            centerScoreLabel.text   = "-"
+            centerScoreLabel.textAlignment = .Center
+            centerScoreLabel.font   = UIFont(name:FONT2, size:44)
+            centerScoreLabel.textColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(centerScoreLabel)
+            
+            var rightScoreLabel     = UILabel(frame:CGRectMake(190, 6, 60, 100))
+            rightScoreLabel.text    = rightScore
+            rightScoreLabel.textAlignment = .Center
+            rightScoreLabel.font    = UIFont(name:FONT2, size:44)
+            rightScoreLabel.textColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(rightScoreLabel)
+            
+            
+            var currentPrice = bestSelection.objectForKey("currentPrice") as NSDictionary
+            var denPrice = currentPrice.objectForKey("denPrice") as CGFloat
+            var numPrice = currentPrice.objectForKey("numPrice") as CGFloat
+            
+            var odd = String(Int(numPrice))+"/"+String(Int(denPrice))
+            
+            var oddLabel     = UILabel(frame:CGRectMake(240, 36, 50, 40))
+            oddLabel.text    = odd
+            oddLabel.textAlignment = .Center
+            oddLabel.font    = UIFont(name:FONT2, size:18)
+            oddLabel.textColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(oddLabel)
+            
+            var oddButton = UIButton(frame: CGRectMake(295, 42, 60, 28))
+            oddButton.titleLabel!.font = UIFont(name:FONT3, size:14)
+            oddButton.backgroundColor = UIColor.whiteColor()
+            oddButton.setTitleColor(SPECIALBLUE, forState: .Normal)
+            oddButton.setTitle("Bet Now", forState: .Normal)
+            oddButton.addTarget(self, action:"oddButtonTap:", forControlEvents:.TouchUpInside)
+            crowdPredictionView.addSubview(oddButton)
+            
+            
+            
+            
+            var matchBettingSelections = matche.matchBettingSelections
+            
+            var teamsNames:NSArray = GSCustomLeague.getShortTitle(matche.pfMatche.valueForKey("title") as NSString)
+            
+            var firstTeamLabel     = UILabel(frame:CGRectMake(125, 74, 100, 30))
+            firstTeamLabel.text    = teamsNames.firstObject as NSString
+            firstTeamLabel.font    = UIFont(name:FONT2, size:18)
+            firstTeamLabel.textColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(firstTeamLabel)
+            
+            var firstTeamSelection = matchBettingSelections[0] as NSDictionary
+            var firstTeamCurrentPrice = firstTeamSelection.objectForKey("currentPrice") as NSDictionary
+            var firstTeamDenPrice = firstTeamCurrentPrice.objectForKey("denPrice") as CGFloat
+            var firstTeamNumPrice = firstTeamCurrentPrice.objectForKey("numPrice") as CGFloat
+            
+            var firstTeamOdd = String(Int(firstTeamNumPrice))+"/"+String(Int(firstTeamDenPrice))
+            
+            var firstTeamOddLabel     = UILabel(frame:CGRectMake(240, 70, 50, 40))
+            firstTeamOddLabel.text    = firstTeamOdd
+            firstTeamOddLabel.textAlignment = .Center
+            firstTeamOddLabel.font    = UIFont(name:FONT2, size:18)
+            firstTeamOddLabel.textColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(firstTeamOddLabel)
+            
+            var firstTeamOddButton = UIButton(frame: CGRectMake(295, 76, 60, 28))
+            firstTeamOddButton.titleLabel!.font = UIFont(name:FONT3, size:14)
+            firstTeamOddButton.backgroundColor = UIColor.whiteColor()
+            firstTeamOddButton.setTitleColor(SPECIALBLUE, forState: .Normal)
+            firstTeamOddButton.setTitle("Bet Now", forState: .Normal)
+            firstTeamOddButton.addTarget(self, action:"firstTeamOddButtonTap:", forControlEvents:.TouchUpInside)
+            crowdPredictionView.addSubview(firstTeamOddButton)
+            
+            
+            
+            
+            var drawLabel     = UILabel(frame:CGRectMake(125, 94, 100, 30))
+            drawLabel.text    = "Draw"
+            drawLabel.font    = UIFont(name:FONT2, size:18)
+            drawLabel.textColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(drawLabel)
+            
+            var drawSelection = matchBettingSelections[2] as NSDictionary
+            var drawCurrentPrice = drawSelection.objectForKey("currentPrice") as NSDictionary
+            var drawDenPrice = drawCurrentPrice.objectForKey("denPrice") as CGFloat
+            var drawNumPrice = drawCurrentPrice.objectForKey("numPrice") as CGFloat
+            
+            var drawOdd = String(Int(drawNumPrice))+"/"+String(Int(drawDenPrice))
+            
+            var drawOddLabel     = UILabel(frame:CGRectMake(240, 90, 50, 40))
+            drawOddLabel.text    = drawOdd
+            drawOddLabel.textAlignment = .Center
+            drawOddLabel.font    = UIFont(name:FONT2, size:18)
+            drawOddLabel.textColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(drawOddLabel)
+            
+            var drawOddButton = UIButton(frame: CGRectMake(295, 96, 60, 28))
+            drawOddButton.titleLabel!.font = UIFont(name:FONT3, size:14)
+            drawOddButton.backgroundColor = UIColor.whiteColor()
+            drawOddButton.setTitleColor(SPECIALBLUE, forState: .Normal)
+            drawOddButton.setTitle("Bet Now", forState: .Normal)
+            drawOddButton.addTarget(self, action:"drawOddButtonTap:", forControlEvents:.TouchUpInside)
+            crowdPredictionView.addSubview(drawOddButton)
+            
+            
+            var secondTeamLabel     = UILabel(frame:CGRectMake(125, 114, 100, 30))
+            secondTeamLabel.text    = teamsNames.lastObject as NSString
+            secondTeamLabel.font    = UIFont(name:FONT2, size:18)
+            secondTeamLabel.textColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(secondTeamLabel)
+            
+            var secondTeamSelection = matchBettingSelections[1] as NSDictionary
+            var secondTeamCurrentPrice = secondTeamSelection.objectForKey("currentPrice") as NSDictionary
+            var secondTeamDenPrice = secondTeamCurrentPrice.objectForKey("denPrice") as CGFloat
+            var secondTeamNumPrice = secondTeamCurrentPrice.objectForKey("numPrice") as CGFloat
+            
+            var secondTeamOdd = String(Int(secondTeamNumPrice))+"/"+String(Int(secondTeamDenPrice))
+            
+            var secondTeamOddLabel     = UILabel(frame:CGRectMake(240, 110, 50, 40))
+            secondTeamOddLabel.text    = secondTeamOdd
+            secondTeamOddLabel.textAlignment = .Center
+            secondTeamOddLabel.font    = UIFont(name:FONT2, size:18)
+            secondTeamOddLabel.textColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(secondTeamOddLabel)
+            
+            var secondTeamwOddButton = UIButton(frame: CGRectMake(295, 116, 60, 28))
+            secondTeamwOddButton.titleLabel!.font = UIFont(name:FONT3, size:14)
+            secondTeamwOddButton.backgroundColor = UIColor.whiteColor()
+            secondTeamwOddButton.setTitleColor(SPECIALBLUE, forState: .Normal)
+            secondTeamwOddButton.setTitle("Bet Now", forState: .Normal)
+            secondTeamwOddButton.addTarget(self, action:"secondTeamOddButtonTap:", forControlEvents:.TouchUpInside)
+            crowdPredictionView.addSubview(secondTeamwOddButton)
+            
+        }
+        
+        return crowdPredictionView
+    }
+
+    func oddButtonTap(sender: UIButton!){
+        
+        var cell    = (sender as UIView).superview!
+        var row     = cell.superview!.tag
+        
+        var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
+        var bestSelection:NSDictionary  = matche.bestCorrectScoreSelection
+        self.goToLadBrokes(bestSelection)
+    }
+    
+    func firstTeamOddButtonTap(sender: UIButton!){
+        
+        var cell    = (sender as UIView).superview!
+        var row     = cell.superview!.tag
+        
+        var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
+        var selection:NSDictionary      = matche.matchBettingSelections[0] as NSDictionary
+        self.goToLadBrokes(selection)
+    }
+    
+    func secondTeamOddButtonTap(sender: UIButton!){
+        
+        var cell    = (sender as UIView).superview!
+        var row     = cell.superview!.tag
+        
+        var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
+        var selection:NSDictionary      = matche.matchBettingSelections[1] as NSDictionary
+        self.goToLadBrokes(selection)
+    }
+    
+    func drawOddButtonTap(sender: UIButton!){
+        
+        var cell    = (sender as UIView).superview!
+        var row     = cell.superview!.tag
+        
+        var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
+        var selection:NSDictionary      = matche.matchBettingSelections[2] as NSDictionary
+        self.goToLadBrokes(selection)
+    }
+
+    
+    
+    
+    
     func bettButtonTap(sender: UIButton!){
     
         var cell    = (sender as UIView).superview!
-        var row     = cell.tag
+        var row     = cell.superview!.tag
         
-        var matche:PFObject     = validMatches[row] as PFObject
+        var matche:GSMatcheSelection     = validMatches[row] as GSMatcheSelection
         
         var leftScore:NSString  = (cell.viewWithTag(888) as UILabel).text!
         var rightScore:NSString = (cell.viewWithTag(999) as UILabel).text!
         
         var bettLabel = (cell.viewWithTag(777) as UILabel)
         
-        var currentSelectionName:NSString = "Draw "+leftScore+" - "+rightScore
-        if(leftScore != rightScore){
-            var longTitle = matche.valueForKey("title") as NSString
-            var names:NSArray = longTitle.componentsSeparatedByString(" V ")
-            
-            if(leftScore.intValue > rightScore.intValue ){
-                currentSelectionName = (names.firstObject as NSString)+" "+leftScore+" - "+rightScore
-            }else{
-                currentSelectionName = (names.lastObject as NSString)+" "+rightScore+" - "+leftScore
-            }
-        }
         
+        var currentSelectionName = getSelectionNameFromScore(leftScore, rightScore: rightScore, titleMatche: matche.pfMatche.valueForKey("title") as NSString)
         
         if(bettLabel.text == BETTLABEL_TEXT1){
             var score = leftScore+" - "+rightScore
-            saveUserMatchDetails(matche, details:score, cell:cell)
+            saveUserMatchDetails(matche.pfMatche, details:score, cell:cell)
         }
         else{
-           getSelection(matche, selectionName: currentSelectionName)
+            
+            var selection:NSDictionary = matche.getScoreCorrectSelectionByName(currentSelectionName)
+            if(selection.objectForKey("selectionKey") != nil){
+                self.goToLadBrokes(selection as NSDictionary)
+            }
         }
         
     }
@@ -354,87 +608,51 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
             alertView.show()
         }
     }
-
     
-    func getSelection(matche:PFObject, selectionName:NSString){
+    
+    
+    
+    func getSelectionNameFromScore(leftScore:NSString, rightScore:NSString, titleMatche:NSString) -> NSString{
         
-        var selections: AnyObject! = matche.objectForKey("selection")
+        var selectionName:NSString = "Draw "+leftScore+" - "+rightScore
+        if(leftScore != rightScore){
+            
+            var names:NSArray = titleMatche.componentsSeparatedByString(" V ")
+            
+            if(leftScore.intValue > rightScore.intValue ){
+                selectionName = (names.firstObject as NSString)+" "+leftScore+" - "+rightScore
+            }else{
+                selectionName = (names.lastObject as NSString)+" "+rightScore+" - "+leftScore
+            }
+        }
+        return selectionName
+    }
+    
+    func getScoresFromSelectionName(selectionName:NSString, titleMatche:NSString) -> NSArray{
         
-        if(selections == nil){
-            loadMatcheSelection(matche, selectionName: selectionName)
+        var arrayDraw = selectionName.componentsSeparatedByString("Draw ") as NSArray
+        if(arrayDraw.count > 1){
+            var scoreDraw = (arrayDraw.lastObject as NSString).componentsSeparatedByString(" - ") as NSArray
+            return [scoreDraw.firstObject as NSString, scoreDraw.firstObject as NSString]
         }
         else{
             
-            var selection:NSDictionary
-            for selection in (selections as NSArray) {
+            var names:NSArray = titleMatche.componentsSeparatedByString(" V ")
+            
+            var arraySpaces = selectionName.componentsSeparatedByString(" ") as NSArray
+            var count = arraySpaces.count
+            
+            var maxScore = (arraySpaces[count-3] as NSString)
+            var smallScore = (arraySpaces[count-1] as NSString)
+            
+            if(selectionName.substringToIndex(selectionName.length-6) == names[0] as NSString){
                 
-                if(selection.objectForKey("selectionName") as NSString == selectionName){
-                    
-                    SVProgressHUD.dismiss()
-                    
-                    
-                    self.goToLadBrokes(selection as NSDictionary)
-                }
+                return [maxScore, smallScore]
+            }
+            else{
+                return [smallScore, maxScore]
             }
         }
-    }
-    
-    
-    
-    /*
-dispatch_after(1, dispatch_get_main_queue(), {
-// your function here
-getSelection(matche, selectionName:selectionName)
-})*/
-    
-    
-    
-    
-    func loadMatcheSelection(matche:PFObject, selectionName:NSString){
-        
-        var leagueName      = customLeague.valueForKey("leagueTitle") as NSString
-        var league:PFObject = (GSLeague.getLeagueFromCache(leagueName) as GSLeague).pfLeague
-        
-        var classKey:NSString   = String(Int(league["classKey"] as NSNumber))
-        var typeKey:NSString    = String(Int(league["typeKey"] as NSNumber))
-        var subTypeKey:NSString = String(Int(league["subTypeKey"] as NSNumber))
-        var matchKey:NSString   = String(Int(matche["eventKey"] as NSNumber))
-        var urlMatcheSelection:NSString = URL_ROOT+"v2/sportsbook-api/classes/"+classKey+"/types/"+typeKey+"/subtypes/"+subTypeKey+"/events/"+matchKey
-        urlMatcheSelection = urlMatcheSelection+"?locale=en-GB&"+"api-key="+LADBROKES_API_KEY+"&expand=selection"
-        
-        
-        var dataArray:NSArray!
-        
-        SVProgressHUD.show()
-        var request = NSMutableURLRequest(URL: NSURL(string: urlMatcheSelection)!)
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {  (data, response, error) in
-            
-            
-            var err: NSError?
-            var jsonData:NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as NSDictionary
-            var marketsEventArray:NSArray = ((jsonData["event"] as NSDictionary)["markets"] as NSDictionary)["market"] as NSArray
-            
-            
-            var marketJson:NSDictionary
-            for marketJson in marketsEventArray {
-                
-                if((marketJson["marketName"] as NSString == "Correct score")){
-                    
-                    matche["selection"] = (marketJson["selections"] as NSDictionary)["selection"] as NSArray
-                    matche.saveInBackgroundWithBlock({ (success, error) -> Void in
-                        SVProgressHUD.dismiss()
-                    })
-                    self.getSelection(matche, selectionName:selectionName)
-                }
-            }
-            
-            
-        }
-        
-        task.resume()
-        
-        
     }
     
 }

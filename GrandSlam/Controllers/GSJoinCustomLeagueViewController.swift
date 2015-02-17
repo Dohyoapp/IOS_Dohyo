@@ -12,12 +12,19 @@ import Foundation
 class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomLeagueCaller {
     
     var tableView = UITableView(frame:CGRectZero)
-    var tableViewData:NSArray!
-    
+    var tableViewDataNew:NSArray!
+    var tableViewDataOld:NSArray!
     
     var countArray:NSArray!
     
     let yStart = NAVIGATIONBAR_HEIGHT+20
+    
+    
+    var publicButton: UIButton!
+    var privateButton: UIButton!
+    
+    var publicData:NSArray!
+    var privateData:NSArray!
     
     
     override func viewDidLoad() {
@@ -25,12 +32,13 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         
         self.view.backgroundColor = UIColor.whiteColor()
         
-        var publicButton = UIButton(frame: CGRectMake(10, yStart+5, 145, 33))
+        publicButton = UIButton(frame: CGRectMake(10, yStart+5, 145, 33))
         publicButton.setTitle("Public", forState: .Normal)
         publicButton.titleLabel!.font = UIFont(name:FONT3, size:15)
         publicButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         publicButton.backgroundColor = SPECIALBLUE
         publicButton.addTarget(self, action:"publicButtonTap:", forControlEvents:.TouchUpInside)
+        publicButton.alpha = 0.6
         self.view.addSubview(publicButton)
         
         var publicNumber = UILabel(frame: CGRectMake(138, -5, 15, 15))
@@ -52,7 +60,7 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         }
         
         
-        var privateButton = UIButton(frame: CGRectMake(165, yStart+5, 145, 33))
+        privateButton = UIButton(frame: CGRectMake(165, yStart+5, 145, 33))
         privateButton.setTitle("Private", forState: .Normal)
         privateButton.titleLabel!.font = UIFont(name:FONT3, size:15)
         privateButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -85,11 +93,9 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         tableView.separatorStyle  = .None
         self.view.addSubview(tableView)
         
-        tableViewData = []
+        tableViewDataNew = []
+        tableViewDataOld = []
         GSCustomLeague.getAllPublicCustomLeagues(self)
-        
-        let defaults = NSUserDefaults.standardUserDefaults()
-        //defaults.setObject(NSDate(), forKey: "JoinViewDate")
     }
     
     func closeView(){
@@ -99,8 +105,21 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
     
     func endGetAllPublicCustomLeagues(data : NSArray){
         
-        tableViewData = data
+        publicData = data
+        
+        tableViewDataNew = publicData.firstObject as NSArray
+        tableViewDataOld = publicData.lastObject as NSArray
+        
         tableView.reloadData()
+        
+        GSCustomLeague.getAllPrivateCustomLeagues(self)
+        
+        GSUser.saveLastJoinViewDate()
+    }
+    
+    func endGetAllPrivateCustomLeagues(data : NSArray){
+        
+        privateData = data
     }
 
 
@@ -108,18 +127,53 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         return 2
     }
     
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if(section == 0){
+            return 0
+        }
+        else{
+            return 40.0
+        }
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        var headerView = UIView(frame: CGRectMake(0, 0, 320, 40))
+        
+        if(section == 1){
+            
+            var blueLineTop = UIView(frame: CGRectMake(0, 0, 320, 1))
+            blueLineTop.backgroundColor = SPECIALBLUE
+            headerView.addSubview(blueLineTop)
+            
+            var oldInvitationLabel = UILabel(frame: CGRectMake(0, 1, 320, 38))
+            oldInvitationLabel.textAlignment = .Center
+            oldInvitationLabel.font  = UIFont(name:FONT2, size:14)
+            oldInvitationLabel.textColor = SPECIALBLUE
+            oldInvitationLabel.backgroundColor = UIColor.whiteColor()
+            headerView.addSubview(oldInvitationLabel)
+            oldInvitationLabel.text = "Old Invitations"
+            
+            var blueLineBottom = UIView(frame: CGRectMake(0, 39, 320, 1))
+            blueLineBottom.backgroundColor = SPECIALBLUE
+            headerView.addSubview(blueLineBottom)
+        }
+        
+        return headerView
+    }
+    
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if(section == 0){
-            return tableViewData.count
+            return tableViewDataNew.count
         }else{
-            return 0
+            return tableViewDataOld.count
         }
     }
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        if(indexPath.section == 0){
             
             var cell = tableView.dequeueReusableCellWithIdentifier("JoinCustomCell") as UITableViewCell!
             if(cell == nil){
@@ -136,35 +190,76 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
             
             cell.tag  = indexPath.row
             cell.selectionStyle = .None
+        
+            if(indexPath.section == 0){
             
-            if(tableViewData.count > indexPath.row){
-                var data: AnyObject? = tableViewData[indexPath.row] as AnyObject
-                if(data != nil){
-                    var customLeague = tableViewData[indexPath.row] as PFObject
-                    cell.textLabel.text = customLeague["name"] as NSString
+                if(tableViewDataNew.count > indexPath.row){
+                    var data: AnyObject? = tableViewDataNew[indexPath.row] as AnyObject
+                    if(data != nil){
+                        var customLeague = tableViewDataNew[indexPath.row] as PFObject
+                        cell.textLabel.text = customLeague["name"] as NSString
+                    }
                 }
             }
-            
-            return cell
-        }
+            else{
+                
+                if(tableViewDataOld.count > indexPath.row){
+                    var data: AnyObject? = tableViewDataOld[indexPath.row] as AnyObject
+                    if(data != nil){
+                        var customLeague = tableViewDataOld[indexPath.row] as PFObject
+                        cell.textLabel.text = customLeague["name"] as NSString
+                    }
+                }
+            }
         
-        var cell = UITableViewCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"OldCustomCell")
-        return cell
+            return cell
     }
     
     func publicButtonTap(sender: UIButton!){
         
+        publicButton.alpha = 0.6
+        privateButton.alpha  = 1
+        
+        if(publicData != nil){
+            tableViewDataNew = publicData.firstObject as NSArray
+            tableViewDataOld = publicData.lastObject as NSArray
+        }
+        
+        tableView.reloadData()
     }
     
     func privateButtonTap(sender: UIButton!){
         
+        privateButton.alpha = 0.6
+        publicButton.alpha  = 1
+        
+        if(privateData != nil){
+            tableViewDataNew = privateData.firstObject as NSArray
+            tableViewDataOld = privateData.lastObject as NSArray
+        }
+        else{
+            tableViewDataNew = []
+            tableViewDataOld = []
+        }
+        
+        tableView.reloadData()
     }
     
     func joinButtonTap(sender: UIButton!){
         
         var cell = (sender as UIView).superview!
+        
+        var indexPath: NSIndexPath = tableView.indexPathForCell(cell as UITableViewCell) as NSIndexPath!
+        
         var num = cell.tag
-        var customLeague = tableViewData[num] as PFObject
+        var customLeague:PFObject!
+        
+        if(indexPath.section == 0){
+            customLeague = tableViewDataNew[num] as PFObject
+        }
+        else{
+            customLeague = tableViewDataOld[num] as PFObject
+        }
         
         GSCustomLeague.joinCurrentUserToCustomLeague(customLeague)
     }

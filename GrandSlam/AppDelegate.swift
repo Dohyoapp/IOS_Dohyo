@@ -9,6 +9,7 @@
 import UIKit
 import Fabric
 import Crashlytics
+import TwitterKit
 
 
 @UIApplicationMain
@@ -24,19 +25,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LeagueCaller {
         //GSUser.autho(objectManager)
        // GSUser.getClasses(objectManager)
         ParseConfig.initialization()
-        Fabric.with([Crashlytics()])
+        Fabric.with([Crashlytics(), Twitter()])
+        
+        SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.Clear)
         
         return true
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String, annotation: AnyObject?) -> Bool {
         
+        if ((url.scheme == "Dohyo" || url.scheme == "dohyo") && url.path?.componentsSeparatedByString("costumLeagueId").count > 1) {
+            GSUser.parseUrl(url.path!)
+        }
+        
         return FBAppCall.handleOpenURL(url, sourceApplication:sourceApplication, withSession:PFFacebookUtils.session(), fallbackHandler: { (call:FBAppCall!) -> Void in
             
+            /*
             var parsedUrl = BFURL(inboundURL: url, sourceApplication:sourceApplication)
+            
             if (parsedUrl.appLinkData != nil && url.scheme == "Dohyo") {
-               GSUser.parseUrl(url.path!)
-            }
+                GSUser.parseUrl(url.path!)
+            }*/
         })
     }
 
@@ -52,12 +61,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LeagueCaller {
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        GSLeague.getLeagues(self)
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         GSMainViewController.getMainViewControllerInstance().getCustomLeagues()
-        GSLeague.getLeagues(self)
         GSCustomLeague.getNewJoinLeagueNumber()
         
         FBAppCall.handleDidBecomeActiveWithSession(PFFacebookUtils.session())

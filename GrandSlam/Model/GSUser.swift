@@ -86,33 +86,93 @@ class GSUser:NSObject{
     
                 if(dataArray.count > 3){
                     
-                    var friendId:NSString = dataArray[1] as NSString
+                    var friendId:NSString   = dataArray[1] as NSString
+                    var customLeagueId      = dataArray[3] as NSString
                     
-                    var friends: AnyObject! = PFUser.currentUser()["friends"]
-                    if(friends == nil){
-                        friends = NSMutableArray()
-                    }
-                    if( !(friends as NSArray).containsObject(friendId) ){
-                        friends.addObject(friendId)
-                    }
-                    PFUser.currentUser()["friends"] = friends
-                    PFUser.currentUser().saveInBackground()
+                    var user = PFUser.currentUser()
                     
-                    var query = PFQuery(className:"CustomLeague")
-                    query.getObjectInBackgroundWithId(dataArray[3] as NSString) {
-                        (customLeague: PFObject!, error: NSError!) -> Void in
-                        if error == nil {
-                            GSCustomLeague.joinCurrentUserToCustomLeague(customLeague)
-                        } else {
-                            NSLog("%@", error)
+                    if(user["email"] != nil){
+                        
+                        if(user.objectId as NSString != friendId){
+                            self.addInvitation(friendId, customLeagueId:customLeagueId)
                         }
+                    }
+                    else{
+                        
+                        let defaults = NSUserDefaults.standardUserDefaults()
+                        defaults.setObject([friendId, customLeagueId], forKey: "pendingInvitation")
                     }
                     
                 }
  
     }
     
+    class func addInvitation(friendId: NSString, customLeagueId: NSString){
+        
+        var friends: AnyObject! = PFUser.currentUser()["friends"]
+        if(friends == nil){
+            friends = NSMutableArray()
+        }
+        if( !(friends as NSArray).containsObject(friendId) ){
+            friends.addObject(friendId)
+        }
+        PFUser.currentUser()["friends"] = friends
+        PFUser.currentUser().saveInBackground()
+        
+        var query = PFQuery(className:"CustomLeague")
+        query.getObjectInBackgroundWithId(customLeagueId) {
+            (customLeague: PFObject!, error: NSError!) -> Void in
+            if error == nil {
+                GSCustomLeague.joinCurrentUserToCustomLeague(customLeague)
+            } else {
+                NSLog("%@", error)
+            }
+        }
+    }
     
+    
+    class func pendingInvitations() {
+    
+        var user = PFUser.currentUser()
+        
+        if(user["email"] != nil){
+            
+            let defaults = NSUserDefaults.standardUserDefaults()
+            var data: AnyObject? = defaults.objectForKey("pendingInvitation")
+        
+            if(data != nil && (data as NSArray).count > 0){
+                var friendId: NSString = (data as NSArray).firstObject as NSString
+                var customLeagueId: NSString = (data as NSArray).lastObject as NSString
+                
+                if(user.objectId as NSString != friendId){
+                    self.addInvitation(friendId, customLeagueId:customLeagueId)
+                    defaults.removeObjectForKey("pendingInvitation")
+                }
+            }
+        }
+    }
+    
+    
+    
+    
+    class func saveLastJoinViewDate(){
+        
+        var user = PFUser.currentUser()
+        
+        var lastDate: AnyObject! = user["LastJoinViewDate"]
+
+        if(lastDate != nil){
+            if( NSDate().timeIntervalSinceDate(lastDate as NSDate) > 3600*24 ){
+                user["LastJoinViewDate"] = NSDate()
+                user.save()
+            }
+        }
+        else{
+            
+            user["LastJoinViewDate"] = NSDate()
+            user.save()
+        }
+    }
     
 }
 

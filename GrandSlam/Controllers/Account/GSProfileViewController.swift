@@ -57,13 +57,14 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         
         SVProgressHUD.dismiss()
         
+        var user = PFUser.currentUser()
         // userNameEmailChanges
-        var username: AnyObject! = PFUser.currentUser().objectForKey("username")
-        var email: AnyObject! = PFUser.currentUser().objectForKey("email")
+        var username: AnyObject! = user.objectForKey("username")
+        var email: AnyObject! = user.objectForKey("email")
         if(username != nil && email != nil && (userNameLabel.text != username as NSString || emailLabel.text != email as NSString) ){
-            PFUser.currentUser().setValue(userNameLabel.text, forKey: "username")
-            PFUser.currentUser().setValue(emailLabel.text, forKey: "email")
-            PFUser.currentUser().save()
+            user.setValue(userNameLabel.text, forKey: "username")
+            user.setValue(emailLabel.text, forKey: "email")
+            user.save()
         }
         
         self.view.removeFromSuperview()
@@ -100,7 +101,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         
         userNameLabel = UITextField(frame: CGRectMake(50, 145, 220, 33))
         userNameLabel.delegate = self
-        userNameLabel.text = PFUser.currentUser()["username"] as NSString
+        userNameLabel.text = user["username"] as NSString
         userNameLabel.textAlignment = .Center
         userNameLabel.font = UIFont(name:FONT1, size:15)
         userNameLabel.textColor = SPECIALBLUE
@@ -109,7 +110,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         
         emailLabel = UITextField(frame: CGRectMake(50, 170, 220, 33))
         emailLabel.delegate = self
-        emailLabel.text = PFUser.currentUser()["email"] as NSString
+        emailLabel.text = user["email"] as NSString
         emailLabel.textAlignment = .Center
         emailLabel.font = UIFont(name:FONT1, size:15)
         emailLabel.textColor = SPECIALBLUE
@@ -336,9 +337,11 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
             hideKeyBoard()
         }
         
-        PFUser.currentUser().setValue(userNameLabel.text, forKey: "username")
-        PFUser.currentUser().setValue(emailLabel.text, forKey: "email")
-        PFUser.currentUser().save()
+        var user = PFUser.currentUser()
+        
+        user.setValue(userNameLabel.text, forKey: "username")
+        user.setValue(emailLabel.text, forKey: "email")
+        user.save()
         
         return true
     }

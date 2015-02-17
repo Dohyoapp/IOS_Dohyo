@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		83DD0C0AA9BF81DFDD390D0E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0075AB03032BAD4A88F45A3 /* libPods.a */; };
 		899C07BBDE04517AC785E9F6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0075AB03032BAD4A88F45A3 /* libPods.a */; };
+		D115A2561A8E506800EE4664 /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D115A2541A8E506800EE4664 /* TwitterKit.framework */; };
+		D115A2571A8E506800EE4664 /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D115A2541A8E506800EE4664 /* TwitterKit.framework */; };
+		D115A2581A8E506800EE4664 /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D115A2551A8E506800EE4664 /* TwitterKitResources.bundle */; };
+		D115A2591A8E506800EE4664 /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D115A2551A8E506800EE4664 /* TwitterKitResources.bundle */; };
 		D12905841A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12905831A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift */; };
 		D12905851A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12905831A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift */; };
 		D12905871A827B3E00DA1F0C /* TeamsShortCut.plist in Resources */ = {isa = PBXBuildFile; fileRef = D12905861A827B3E00DA1F0C /* TeamsShortCut.plist */; };
@@ -125,6 +129,8 @@
 		D1D1C2351A7FD876007C6FC8 /* GSCustomLeague.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2331A7FD876007C6FC8 /* GSCustomLeague.swift */; };
 		D1D1C2371A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift */; };
 		D1D1C2381A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift */; };
+		D1D2E7621A92375600D491A1 /* GSMatcheSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2E7611A92375600D491A1 /* GSMatcheSelection.swift */; };
+		D1D2E7631A92375600D491A1 /* GSMatcheSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2E7611A92375600D491A1 /* GSMatcheSelection.swift */; };
 		D1F2C0981A7BCF83009DF72D /* GSProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F2C0971A7BCF83009DF72D /* GSProfileCell.swift */; };
 		D1F2C0991A7BCF83009DF72D /* GSProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F2C0971A7BCF83009DF72D /* GSProfileCell.swift */; };
 		D1F2C09F1A7BD4BF009DF72D /* chat.png in Resources */ = {isa = PBXBuildFile; fileRef = D1F2C09A1A7BD4BF009DF72D /* chat.png */; };
@@ -155,6 +161,8 @@
 		A9D86365CDF5FDF8DB1A055A /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		B0075AB03032BAD4A88F45A3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE6B5BA41C0358D67B43E080 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		D115A2541A8E506800EE4664 /* TwitterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TwitterKit.framework; path = GrandSlam/TwitterKit.framework; sourceTree = "<group>"; };
+		D115A2551A8E506800EE4664 /* TwitterKitResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TwitterKitResources.bundle; path = GrandSlam/TwitterKitResources.bundle; sourceTree = "<group>"; };
 		D12905831A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSCustomLeagueViewControlelr.swift; sourceTree = "<group>"; };
 		D12905861A827B3E00DA1F0C /* TeamsShortCut.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TeamsShortCut.plist; sourceTree = "<group>"; };
 		D130EE4B1A88D2D4002FCD6F /* GSJoinCustomLeagueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSJoinCustomLeagueViewController.swift; sourceTree = "<group>"; };
@@ -232,13 +240,14 @@
 		D1D1C2301A7FD0B1007C6FC8 /* SmsModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmsModule.swift; sourceTree = "<group>"; };
 		D1D1C2331A7FD876007C6FC8 /* GSCustomLeague.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSCustomLeague.swift; sourceTree = "<group>"; };
 		D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSCreateCustomLeagueViewController.swift; sourceTree = "<group>"; };
+		D1D2E7611A92375600D491A1 /* GSMatcheSelection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSMatcheSelection.swift; sourceTree = "<group>"; };
 		D1F2C0971A7BCF83009DF72D /* GSProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSProfileCell.swift; sourceTree = "<group>"; };
 		D1F2C09A1A7BD4BF009DF72D /* chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat.png; sourceTree = "<group>"; };
 		D1F2C09B1A7BD4BF009DF72D /* email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = email.png; sourceTree = "<group>"; };
 		D1F2C09C1A7BD4BF009DF72D /* facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook.png; sourceTree = "<group>"; };
 		D1F2C09D1A7BD4BF009DF72D /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter.png; sourceTree = "<group>"; };
 		D1F2C09E1A7BD4BF009DF72D /* whatsapp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whatsapp.png; sourceTree = "<group>"; };
-		D1F2C0A91A7BD50E009DF72D /* GSSocialShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSSocialShareViewController.swift; sourceTree = "<group>"; };
+		D1F2C0A91A7BD50E009DF72D /* GSSocialShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GSSocialShareViewController.swift; path = Account/GSSocialShareViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -251,6 +260,7 @@
 				D19668B01A769E5F003D4F8D /* Social.framework in Frameworks */,
 				D19668AF1A769E51003D4F8D /* libsqlite3.dylib in Frameworks */,
 				D19668AE1A769E48003D4F8D /* libz.dylib in Frameworks */,
+				D115A2561A8E506800EE4664 /* TwitterKit.framework in Frameworks */,
 				D16A92EC1A84D21400B11604 /* Fabric.framework in Frameworks */,
 				D19668AC1A769E22003D4F8D /* CoreLocation.framework in Frameworks */,
 				D19668AB1A769E1D003D4F8D /* AudioToolbox.framework in Frameworks */,
@@ -289,6 +299,7 @@
 				D19668901A7673D7003D4F8D /* FacebookSDK.framework in Frameworks */,
 				D19668921A7673D7003D4F8D /* FBAudienceNetwork.framework in Frameworks */,
 				D196687D1A767354003D4F8D /* CoreLocation.framework in Frameworks */,
+				D115A2571A8E506800EE4664 /* TwitterKit.framework in Frameworks */,
 				D16A92EB1A84D21400B11604 /* Crashlytics.framework in Frameworks */,
 				D196687B1A76734D003D4F8D /* CoreGraphics.framework in Frameworks */,
 				D19668771A767340003D4F8D /* AudioToolbox.framework in Frameworks */,
@@ -315,6 +326,8 @@
 		8442204DD4C7204A47C12B9D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D115A2541A8E506800EE4664 /* TwitterKit.framework */,
+				D115A2551A8E506800EE4664 /* TwitterKitResources.bundle */,
 				D16A92E81A84D21400B11604 /* Crashlytics.framework */,
 				D16A92E91A84D21400B11604 /* Fabric.framework */,
 				D196689B1A767512003D4F8D /* Accounts.framework */,
@@ -336,6 +349,14 @@
 				B0075AB03032BAD4A88F45A3 /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D115A2531A8E3EC300EE4664 /* OthersViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D1F2C0A91A7BD50E009DF72D /* GSSocialShareViewController.swift */,
+			);
+			name = OthersViewController;
 			sourceTree = "<group>";
 		};
 		D130EE511A891CA7002FCD6F /* CustomLeague */ = {
@@ -417,6 +438,7 @@
 		D16CEF571A728B1200964056 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D115A2531A8E3EC300EE4664 /* OthersViewController */,
 				D130EE511A891CA7002FCD6F /* CustomLeague */,
 				D19668DF1A796046003D4F8D /* Account */,
 				D16CEF581A728B3300964056 /* GSMainViewController.swift */,
@@ -475,7 +497,6 @@
 				D19668E31A7A5B06003D4F8D /* GSSignInViewController.swift */,
 				D19669101A7AA667003D4F8D /* GSProfileViewController.swift */,
 				D19669131A7B8575003D4F8D /* GSForgotPasswordViewController.swift */,
-				D1F2C0A91A7BD50E009DF72D /* GSSocialShareViewController.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -510,6 +531,7 @@
 				D1A2883C1A716EBB00D978B6 /* GSUser.swift */,
 				D1D1C2331A7FD876007C6FC8 /* GSCustomLeague.swift */,
 				D16A92EE1A84EB1400B11604 /* GSLeague.swift */,
+				D1D2E7611A92375600D491A1 /* GSMatcheSelection.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -674,6 +696,7 @@
 				D19668B41A793FA0003D4F8D /* launch-screen-iphone4@2x.png in Resources */,
 				D196690A1A7AA46A003D4F8D /* SVProgressHUD.bundle in Resources */,
 				D13D8B881A7013B600303DF3 /* Main.storyboard in Resources */,
+				D115A2581A8E506800EE4664 /* TwitterKitResources.bundle in Resources */,
 				D131DC4E1A7F9D490094F8CE /* Profile_Plus.png in Resources */,
 				D1F2C09F1A7BD4BF009DF72D /* chat.png in Resources */,
 				D1F2C0A31A7BD4BF009DF72D /* facebook.png in Resources */,
@@ -704,6 +727,7 @@
 				D19668B51A793FA0003D4F8D /* launch-screen-iphone4@2x.png in Resources */,
 				D196690B1A7AA46A003D4F8D /* SVProgressHUD.bundle in Resources */,
 				D13D8BB81A70163E00303DF3 /* Main.storyboard in Resources */,
+				D115A2591A8E506800EE4664 /* TwitterKitResources.bundle in Resources */,
 				D131DC4F1A7F9D490094F8CE /* Profile_Plus.png in Resources */,
 				D1F2C0A01A7BD4BF009DF72D /* chat.png in Resources */,
 				D1F2C0A41A7BD4BF009DF72D /* facebook.png in Resources */,
@@ -832,6 +856,7 @@
 				D19668E41A7A5B06003D4F8D /* GSSignInViewController.swift in Sources */,
 				D13D8B811A7013B600303DF3 /* AppDelegate.swift in Sources */,
 				D19669111A7AA667003D4F8D /* GSProfileViewController.swift in Sources */,
+				D1D2E7621A92375600D491A1 /* GSMatcheSelection.swift in Sources */,
 				D1D1C2371A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -878,6 +903,7 @@
 				D19668E51A7A5B06003D4F8D /* GSSignInViewController.swift in Sources */,
 				D13D8BB51A70163E00303DF3 /* AppDelegate.swift in Sources */,
 				D19669121A7AA667003D4F8D /* GSProfileViewController.swift in Sources */,
+				D1D2E7631A92375600D491A1 /* GSMatcheSelection.swift in Sources */,
 				D1D1C2381A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

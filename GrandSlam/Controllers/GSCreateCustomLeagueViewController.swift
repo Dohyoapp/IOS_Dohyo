@@ -8,10 +8,12 @@
 
 import Foundation
 
-class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate {
+class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate, LeagueCaller {
     
     var scrollView:UIScrollView!
     
+    var premierLeagueLabel:UILabel!
+        
     var customLeagueNameTextField:UITextField!
     var numberTextField:UITextField!
     
@@ -37,6 +39,11 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate 
     
     let yStart = NAVIGATIONBAR_HEIGHT+20
     
+    
+    var leagues:NSArray!
+    var selectedLeague:PFObject!
+    
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -48,8 +55,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate 
         scrollView.addGestureRecognizer( UITapGestureRecognizer(target: self, action:Selector("hideKeyBoard")) )
         self.view.addSubview(scrollView)
         
-        var premierLeagueLabel = UILabel(frame:CGRectMake(0, 5, 320, 38))
-        premierLeagueLabel.text = "Premier League Football"
+        premierLeagueLabel = UILabel(frame:CGRectMake(0, 3, 320, 38))
         premierLeagueLabel.textAlignment = .Center
         premierLeagueLabel.font  = UIFont(name:FONT2, size:18)
         premierLeagueLabel.textColor = SPECIALBLUE
@@ -260,8 +266,25 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate 
         datePicker2.datePickerMode = UIDatePickerMode.Date
         finishDateLabel.inputView = datePicker2
         datePicker2.addTarget(self, action: Selector("handleDatePicker2"), forControlEvents: UIControlEvents.ValueChanged)
-
+        
+        if(GSLeague.getCacheLeagues() == nil){
+            GSLeague.getLeagues(self)
+        }
+        else   {
+            leagues = GSLeague.getCacheLeagues()
+            selectedLeague = (leagues.firstObject as GSLeague).pfLeague
+            premierLeagueLabel.text = String(format:"%@ Football", selectedLeague["title"] as NSString)
+        }
     }
+    
+    func endGetLeagues(data : NSArray){
+        
+        leagues = data
+        selectedLeague = leagues.firstObject as PFObject
+        premierLeagueLabel.text = String(format:"%@ Football", selectedLeague["title"] as NSString)
+    }
+    
+    
     
     func closeView(){
         
@@ -341,11 +364,19 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate 
     
     func startTap(sender: UIButton!){
         
-        var email: AnyObject? = PFUser.currentUser().valueForKey("email")
-        if(email == nil){
+        if(PFUser.currentUser().valueForKey("email") == nil){
             GSMainViewController.getMainViewControllerInstance().profileTap(nil)
             return
         }
+        
+        if(selectedLeague == nil){
+            
+            var alertView = UIAlertView(title: "", message: "Please select a league", delegate: nil, cancelButtonTitle: "Ok")
+            alertView.show()
+            return
+        }
+        
+        var leagueTitle = selectedLeague["title"] as NSString
         
         
         var startDate:NSDate   = dateFormatter.dateFromString(startDateLabel.text)!
@@ -395,7 +426,10 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate 
             endOfSeason = true
         }
         
+        self.startButton.enabled = false
         hideKeyBoard()
+        
+        var user = PFUser.currentUser()
         
         SVProgressHUD.show()
         var customLeague = PFObject(className:"CustomLeague")
@@ -406,16 +440,15 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate 
         customLeague["endDate"]         = endDate
         customLeague["endOfSeason"]     = endOfSeason
         customLeague["prize"]           = prize
-        customLeague["leagueTitle"]     = "Premier League"
-        customLeague["mainUser"]        = PFUser.currentUser().objectId
+        customLeague["leagueTitle"]     = leagueTitle
+        customLeague["mainUser"]        = user.objectId
         customLeague.save()
-        var relation = PFUser.currentUser().relationForKey("myCustomLeagues")
+        var relation = user.relationForKey("myCustomLeagues")
         relation.addObject(customLeague)
-        PFUser.currentUser().saveInBackgroundWithBlock { (success, error) -> Void in
+        user.saveInBackgroundWithBlock { (success, error) -> Void in
             
             SVProgressHUD.dismiss()
             self.startButton.alpha = 0.4
-            self.startButton.enabled = false
             
             var alertView = UIAlertView(title: "Your league was successfully created", message: "Please invite your friends to join your league", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()

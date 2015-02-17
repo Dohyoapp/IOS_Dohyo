@@ -59,8 +59,7 @@ class GSLeague {
     
     class func getLeagues(delegate: LeagueCaller){
         
-        var email: AnyObject? = PFUser.currentUser().valueForKey("email")
-        if(email != nil){
+        if(PFUser.currentUser().valueForKey("email") != nil){
             SVProgressHUD.show()
         }
         var query = PFQuery(className:"League")
@@ -68,6 +67,7 @@ class GSLeague {
             
             SVProgressHUD.dismiss()
             if (error != nil) {
+                SVProgressHUD.dismiss()
                 delegate.endGetLeagues!([])
             }
             else{
@@ -83,6 +83,12 @@ class GSLeague {
             }
         }
     }
+    
+    
+    class func getCacheLeagues() -> NSMutableArray!{
+        return cacheLeagues
+    }
+    
 
     class func getLeagueFromCache(nameLeague: NSString) -> GSLeague{
         

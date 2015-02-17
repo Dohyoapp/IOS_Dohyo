@@ -138,8 +138,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         
         if(GSMainViewController.getMainViewControllerInstance().createAccountView){
             
-            var email: AnyObject? = PFUser.currentUser().valueForKey("email")
-            if(email == nil){
+            if(PFUser.currentUser().valueForKey("email") == nil){
                 GSMainViewController.getMainViewControllerInstance().createAccountViewController.closeView()
             }
             else{
@@ -201,13 +200,18 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
     var countArray:NSArray!
     func addNotificationNumber(result: NSArray){
         
-        var total:Int = (result.firstObject as Int) + (result.lastObject as Int)
-        if(total > 0){
-            joinNumber.hidden = false
-            joinNumber.text = String(total)
-        }else{
-            joinNumber.hidden = true
+        if(result.count > 0){
+            
+            var total:Int = (result.firstObject as Int) + (result.lastObject as Int)
+            if(total > 0){
+                joinNumber.hidden = false
+                joinNumber.text = String(total)
+            }else{
+                joinNumber.hidden = true
+            }
+            countArray = result
         }
-        countArray = result
     }
+
+
 }
