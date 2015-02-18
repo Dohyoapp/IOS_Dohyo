@@ -52,6 +52,9 @@ class GSCustomLeague: NSObject {
             self.cacheCustomLeagues([])
             delegate.endGetCustomLeagues!([])
         }
+        else{
+            GSUser.getUserBetSlips(user)
+        }
         
         var relation = user.relationForKey("myCustomLeagues")
         relation.query().findObjectsInBackgroundWithBlock {    (objects: [AnyObject]!, error: NSError!) -> Void in
@@ -85,7 +88,7 @@ class GSCustomLeague: NSObject {
         cacheCustomLeaguesArray = NSMutableArray()
         for object in objects{
             var customLeague = GSCustomLeague(customLeague:object as PFObject)
-            customLeague.getCluMatches()
+           // customLeague.getCluMatches()
             cacheCustomLeaguesArray.addObject(customLeague)
         }
     }
@@ -93,7 +96,7 @@ class GSCustomLeague: NSObject {
     class func getCacheCustomLeagues() -> NSArray{
         return cacheCustomLeaguesArray
     }
-    
+    /*
     func getCluMatches(){
 
         var user = PFUser.currentUser()
@@ -116,8 +119,6 @@ class GSCustomLeague: NSObject {
         }
     }
     
-    
-    
     func getMatcheScore(matcheId: NSString) -> NSString{
         
         for matche in cluMatches{
@@ -128,7 +129,7 @@ class GSCustomLeague: NSObject {
         }
         return ""
     }
-    
+    */
     
 
     
@@ -184,12 +185,39 @@ class GSCustomLeague: NSObject {
         return matches
     }
     
-    /*
-    func refreshJoinUsers(){
+    
+    
+    func getbetMatches(matches:NSArray, bets:NSArray) -> NSArray{
+        
+        var returnArray = NSMutableArray()
+        for match in matches{
+            
+            for bet in bets{
 
-        pfCustomLeague
+                var betMatchId:NSString = (bet as NSDictionary).objectForKey("matchId") as NSString
+                if(betMatchId == match.objectId){
+                    returnArray.addObject(match)
+                }
+            }
+        }
+        
+        return returnArray
     }
-    */
+    
+    
+    func hasBetSlip () -> AnyObject!{
+        
+        var currentBetSlip: AnyObject!
+        var userBetSlips = GSUser.getUserBetSlips(PFUser.currentUser())
+        for betSlip in userBetSlips{
+            
+            if((betSlip as PFObject)["customLeagueId"] as NSString == self.pfCustomLeague.objectId){
+                currentBetSlip = betSlip
+            }
+        }
+        
+        return currentBetSlip
+    }
     
     
     

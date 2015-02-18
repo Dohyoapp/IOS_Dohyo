@@ -9,12 +9,12 @@
 import Foundation
 
 
-let CELLHEIGHT:CGFloat = 181
-
-let BETTLABEL_TEXT1 = "Submit prediction"
+let CELLHEIGHT:CGFloat = 151
 
 
-class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, LeagueCaller {
+
+
+class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
     
     var scrollView:UIScrollView!
     
@@ -32,6 +32,7 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
         
         self.view.backgroundColor = UIColor.whiteColor()
         
@@ -59,11 +60,19 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         scrollView = UIScrollView(frame:CGRectMake(0, blueLine.frame.origin.y+2, 320, self.view.frame.size.height - yStart - 68))
         self.view.addSubview(scrollView)
         
-        loadMatches()
+        if(customLeague.hasBetSlip() != nil){
+            
+            var betCstomLeagueViewController = GSBetCstomLeagueViewController()
+            betCstomLeagueViewController.customLeague = self.customLeague
+            self.view.addSubview(betCstomLeagueViewController.view)
+            
+        }else{
+            loadViewWithMatchs()
+        }
     }
     
     
-    func loadMatches(){
+    func loadViewWithMatchs(){
         
         var leagueName = customLeague.pfCustomLeague.valueForKey("leagueTitle") as NSString
         var league = GSLeague.getLeagueFromCache(leagueName)
@@ -85,14 +94,25 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         for validMatche in validMatches{
             
             self.createMatcheCell(validMatche as GSMatcheSelection, num:count)
-            count = count+1
+            count += 1
         }
-        self.scrollView.contentSize = CGSizeMake(320, CELLHEIGHT*count)
+        
+            
+        var bettButton = UIButton(frame: CGRectMake(90, (count*CELLHEIGHT)+8, 140, 43))
+        bettButton.titleLabel!.font = UIFont(name:FONT3, size:14)
+        bettButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        bettButton.setTitle("SUBMIT PICKS", forState: .Normal)
+        bettButton.backgroundColor = SPECIALBLUE
+        bettButton.addTarget(self, action:"bettButtonTap:", forControlEvents:.TouchUpInside)
+        self.scrollView.addSubview(bettButton)
+            
+        self.scrollView.contentSize = CGSizeMake(320, (CELLHEIGHT*count)+60)
     }
+    
     
     func endGetLeagues(data : NSArray){
         
-        loadMatches()
+        loadViewWithMatchs()
     }
     
     
@@ -124,13 +144,13 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         
         cell.addSubview(createMatchView(matche))
         
-        cell.addSubview(createCrowdPredictionView(matche))
+        cell.addSubview(GSCustomLeagueViewControlelr.createCrowdPredictionView(matche))
 
         cell.contentSize = CGSizeMake(640, CELLHEIGHT)
     }
     
     
-    func createTopView(topView:UIView, title:NSString, isCrowd:Bool){
+    class func createTopView(topView:UIView, title:NSString, isCrowd:Bool){
         
         var startX:CGFloat = 78
         if(isCrowd){
@@ -175,12 +195,13 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         topView.addSubview(rightImageTeamView)
     }
     
+    
     func createMatchView(matche:GSMatcheSelection) -> UIView{
         
         var matchView = UIView(frame:CGRectMake(0, 0, 320, CELLHEIGHT))
         matchView.backgroundColor = UIColor.whiteColor()
         
-        createTopView(matchView, title:matche.pfMatche.valueForKey("title") as NSString, isCrowd:false)
+        GSCustomLeagueViewControlelr.createTopView(matchView, title:matche.pfMatche.valueForKey("title") as NSString, isCrowd:false)
         
         
         var leftUpButton = UIButton(frame: CGRectMake(65, 40, 30, 30))
@@ -231,47 +252,10 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         rightScoreLabel.textColor = SPECIALBLUE
         matchView.addSubview(rightScoreLabel)
         
-        var bettButton = UIButton(frame: CGRectMake(90, 115, 140, 43))
-        bettButton.backgroundColor = SPECIALBLUE
-        bettButton.addTarget(self, action:"bettButtonTap:", forControlEvents:.TouchUpInside)
-        matchView.addSubview(bettButton)
-        
-        var bettLabel     = UILabel(frame:CGRectMake(0, 0, bettButton.frame.size.width, bettButton.frame.size.height))
-        bettLabel.tag = 777
-        bettLabel.numberOfLines = 0
-        bettLabel.text    = BETTLABEL_TEXT1
-        bettLabel.textAlignment = .Center
-        bettLabel.font    = UIFont(name:FONT3, size:13)
-        bettLabel.textColor = UIColor.whiteColor()
-        bettButton.addSubview(bettLabel)
-        
-        var score = customLeague.getMatcheScore(matche.pfMatche.objectId)
-        var scores:NSArray = score.componentsSeparatedByString(" - ")
-        if(scores.count > 1){
-            desableBtnsCell(matchView)
-            leftScoreLabel.text = scores.firstObject as NSString
-            rightScoreLabel.text = scores.lastObject as NSString
-        }
-        
         return matchView
     }
     
     
-    
-    func desableBtnsCell(cell: UIView){
-        
-        var leftUpButton = (cell.viewWithTag(666) as UIButton)
-        leftUpButton.enabled = false
-        var leftDownButton = (cell.viewWithTag(667) as UIButton)
-        leftDownButton.enabled = false
-        var rightUpButton = (cell.viewWithTag(668) as UIButton)
-        rightUpButton.enabled = false
-        var righttDownButton = (cell.viewWithTag(669) as UIButton)
-        righttDownButton.enabled = false
-        
-        var bettLabel = (cell.viewWithTag(777) as UILabel)
-        bettLabel.text = "Now make it real with \nLadbrokes"
-    }
     
     
     func leftUpTap(sender: UIButton!){
@@ -315,9 +299,9 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
     }
     
     
-    func createCrowdPredictionView(matche:GSMatcheSelection) -> UIView{
+    class func createCrowdPredictionView(matche:GSMatcheSelection) -> UIView{
         
-        var crowdPredictionView = UIView(frame:CGRectMake(280, 0, 360, CELLHEIGHT-40))
+        var crowdPredictionView = UIView(frame:CGRectMake(280, 0, 360, CELLHEIGHT-10))
         crowdPredictionView.backgroundColor = SPECIALBLUE
         
         createTopView(crowdPredictionView, title:matche.pfMatche.valueForKey("title") as NSString, isCrowd:true)
@@ -540,51 +524,60 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
     
     func bettButtonTap(sender: UIButton!){
     
-        var cell    = (sender as UIView).superview!
-        var row     = cell.superview!.tag
+        var betSelections = NSMutableArray()
         
-        var matche:GSMatcheSelection     = validMatches[row] as GSMatcheSelection
-        
-        var leftScore:NSString  = (cell.viewWithTag(888) as UILabel).text!
-        var rightScore:NSString = (cell.viewWithTag(999) as UILabel).text!
-        
-        var bettLabel = (cell.viewWithTag(777) as UILabel)
-        
-        
-        var currentSelectionName = getSelectionNameFromScore(leftScore, rightScore: rightScore, titleMatche: matche.pfMatche.valueForKey("title") as NSString)
-        
-        if(bettLabel.text == BETTLABEL_TEXT1){
-            var score = leftScore+" - "+rightScore
-            saveUserMatchDetails(matche.pfMatche, details:score, cell:cell)
-        }
-        else{
+        var count:Int = 0
+        for matche in validMatches{
             
-            var selection:NSDictionary = matche.getScoreCorrectSelectionByName(currentSelectionName)
-            if(selection.objectForKey("selectionKey") != nil){
-                self.goToLadBrokes(selection as NSDictionary)
+            var cellScrollView = scrollView.viewWithTag(count) as UIScrollView
+            var cell    =   cellScrollView.subviews[0] as UIView
+            
+            var leftScore:NSString  = (cell.viewWithTag(888) as UILabel).text!
+            var rightScore:NSString = (cell.viewWithTag(999) as UILabel).text!
+            
+            if(leftScore != "0" || rightScore != "0"){
+                
+                var currentSelectionName = getSelectionNameFromScore(leftScore, rightScore: rightScore, titleMatche: (matche as GSMatcheSelection).pfMatche.valueForKey("title") as NSString)
+                
+                
+                var selection:NSDictionary = (matche as GSMatcheSelection).getScoreCorrectSelectionByName(currentSelectionName)
+                if(selection.objectForKey("selectionKey") != nil){
+                    var bet = NSMutableDictionary()
+                    bet.setObject(selection, forKey: "selection")
+                    bet.setObject((matche as GSMatcheSelection).pfMatche.objectId , forKey: "matchId")
+                    betSelections.addObject(bet)
+                }
             }
+            count += 1
         }
         
+        if(betSelections.count > 0){
+            
+            SVProgressHUD.show()
+            
+            var betSlip = PFObject(className:"BetSlip")
+            betSlip["customLeagueId"] = customLeague.pfCustomLeague.objectId
+            betSlip["bets"] = betSelections
+            betSlip.save()
+            
+            var user = PFUser.currentUser()
+            var relation = user.relationForKey("betSlips")
+            relation.addObject(betSlip)
+            user.saveInBackgroundWithBlock({ (success, error) -> Void in
+                
+                SVProgressHUD.dismiss()
+                
+                GSUser.loadUserBetSlips(user, delegate: self)
+                
+            })
+        }
     }
     
-    func saveUserMatchDetails(matche:PFObject, details:NSString, cell:UIView){
+    func endGetUserBetSlips(){
         
-        SVProgressHUD.show()
-        
-        var cluMatche = PFObject(className:"CLUMatche")
-        cluMatche["matcheId"] = matche.objectId
-        cluMatche["userId"]   = PFUser.currentUser().objectId
-        cluMatche["savePScore"] = details
-        cluMatche.save()
-        
-        var relation = customLeague.pfCustomLeague.relationForKey("lcuMatches")
-        relation.addObject(cluMatche)
-        customLeague.pfCustomLeague.saveInBackgroundWithBlock({ (success, error) -> Void in
-            
-            SVProgressHUD.dismiss()
-            self.customLeague.getCluMatches()
-            self.desableBtnsCell(cell)
-        })
+        var betCstomLeagueViewController = GSBetCstomLeagueViewController()
+        betCstomLeagueViewController.customLeague = self.customLeague
+        self.view.addSubview(betCstomLeagueViewController.view)
     }
     
     
@@ -628,7 +621,7 @@ class GSCustomLeagueViewControlelr: UIViewController, UITextFieldDelegate, Leagu
         return selectionName
     }
     
-    func getScoresFromSelectionName(selectionName:NSString, titleMatche:NSString) -> NSArray{
+    class func getScoresFromSelectionName(selectionName:NSString, titleMatche:NSString) -> NSArray{
         
         var arrayDraw = selectionName.componentsSeparatedByString("Draw ") as NSArray
         if(arrayDraw.count > 1){

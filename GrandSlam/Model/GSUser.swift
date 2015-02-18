@@ -8,9 +8,20 @@
 
 import Foundation
 
+
+@objc protocol UserCaller {
+    optional func endGetUserBetSlips()
+}
+
+
+
 var userMapping:RKObjectMapping!
 
-class GSUser:NSObject{
+var cacheBetSlipsUser:NSMutableDictionary!
+
+
+
+class GSUser:NSObject, UserCaller{
     
     var name    :NSString!
     var email   :NSString!
@@ -173,6 +184,47 @@ class GSUser:NSObject{
             user.save()
         }
     }
+    
+    
+    
+    
+    class func loadUserBetSlips(user : PFObject, delegate : UserCaller){
+        
+        var relation = user.relationForKey("betSlips")
+        relation.query().findObjectsInBackgroundWithBlock {    (objects: [AnyObject]!, error: NSError!) -> Void in
+            
+            if(objects != nil){
+                
+                cacheBetSlipsUser = NSMutableDictionary ()
+                
+                cacheBetSlipsUser.setObject(objects, forKey: "bets")
+                cacheBetSlipsUser.setObject(user.objectId , forKey: "userId")
+            }
+            delegate.endGetUserBetSlips!()
+        }
+    }
+    
+    
+    
+    
+    class func getUserBetSlips(user : PFObject) -> NSArray{
+        
+        if(cacheBetSlipsUser == nil){
+            loadUserBetSlips(user, delegate: GSUser())
+            return []
+        }
+        else{
+            
+            var userId = cacheBetSlipsUser.objectForKey("userId") as NSString
+            if(userId != user.objectId){
+                loadUserBetSlips(user, delegate: GSUser())
+                return []
+            }
+        }
+        
+        return cacheBetSlipsUser.objectForKey("bets") as NSArray
+    }
+    
     
 }
 

@@ -131,6 +131,8 @@
 		D1D1C2381A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift */; };
 		D1D2E7621A92375600D491A1 /* GSMatcheSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2E7611A92375600D491A1 /* GSMatcheSelection.swift */; };
 		D1D2E7631A92375600D491A1 /* GSMatcheSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2E7611A92375600D491A1 /* GSMatcheSelection.swift */; };
+		D1D2E7651A93AE7100D491A1 /* GSBetCstomLeagueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2E7641A93AE7100D491A1 /* GSBetCstomLeagueViewController.swift */; };
+		D1D2E7661A93AE7100D491A1 /* GSBetCstomLeagueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2E7641A93AE7100D491A1 /* GSBetCstomLeagueViewController.swift */; };
 		D1F2C0981A7BCF83009DF72D /* GSProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F2C0971A7BCF83009DF72D /* GSProfileCell.swift */; };
 		D1F2C0991A7BCF83009DF72D /* GSProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F2C0971A7BCF83009DF72D /* GSProfileCell.swift */; };
 		D1F2C09F1A7BD4BF009DF72D /* chat.png in Resources */ = {isa = PBXBuildFile; fileRef = D1F2C09A1A7BD4BF009DF72D /* chat.png */; };
@@ -241,6 +243,7 @@
 		D1D1C2331A7FD876007C6FC8 /* GSCustomLeague.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSCustomLeague.swift; sourceTree = "<group>"; };
 		D1D1C2361A7FDA2C007C6FC8 /* GSCreateCustomLeagueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSCreateCustomLeagueViewController.swift; sourceTree = "<group>"; };
 		D1D2E7611A92375600D491A1 /* GSMatcheSelection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSMatcheSelection.swift; sourceTree = "<group>"; };
+		D1D2E7641A93AE7100D491A1 /* GSBetCstomLeagueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSBetCstomLeagueViewController.swift; sourceTree = "<group>"; };
 		D1F2C0971A7BCF83009DF72D /* GSProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSProfileCell.swift; sourceTree = "<group>"; };
 		D1F2C09A1A7BD4BF009DF72D /* chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat.png; sourceTree = "<group>"; };
 		D1F2C09B1A7BD4BF009DF72D /* email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = email.png; sourceTree = "<group>"; };
@@ -367,6 +370,7 @@
 				D130EE4B1A88D2D4002FCD6F /* GSJoinCustomLeagueViewController.swift */,
 				D130EE4E1A89166C002FCD6F /* GSLeaderBoardViewController.swift */,
 				D130EE521A891CCD002FCD6F /* GSLeaderBoardCell.swift */,
+				D1D2E7641A93AE7100D491A1 /* GSBetCstomLeagueViewController.swift */,
 			);
 			name = CustomLeague;
 			sourceTree = "<group>";
@@ -848,6 +852,7 @@
 				D1A2883D1A716EBB00D978B6 /* GSUser.swift in Sources */,
 				D19668E71A7A5E61003D4F8D /* GSCreateAccountCell.swift in Sources */,
 				D16A92EF1A84EB1400B11604 /* GSLeague.swift in Sources */,
+				D1D2E7651A93AE7100D491A1 /* GSBetCstomLeagueViewController.swift in Sources */,
 				D1F2C0981A7BCF83009DF72D /* GSProfileCell.swift in Sources */,
 				D1D1C22E1A7FC7BF007C6FC8 /* TwitterFaceBookModule.swift in Sources */,
 				D19669141A7B8575003D4F8D /* GSForgotPasswordViewController.swift in Sources */,
@@ -895,6 +900,7 @@
 				D1A2883E1A716EBB00D978B6 /* GSUser.swift in Sources */,
 				D19668E81A7A5E61003D4F8D /* GSCreateAccountCell.swift in Sources */,
 				D16A92F01A84EB1400B11604 /* GSLeague.swift in Sources */,
+				D1D2E7661A93AE7100D491A1 /* GSBetCstomLeagueViewController.swift in Sources */,
 				D1F2C0991A7BCF83009DF72D /* GSProfileCell.swift in Sources */,
 				D1D1C22F1A7FC7BF007C6FC8 /* TwitterFaceBookModule.swift in Sources */,
 				D19669151A7B8575003D4F8D /* GSForgotPasswordViewController.swift in Sources */,
