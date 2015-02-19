@@ -9,12 +9,22 @@
 import Foundation
 
 
+
+@objc protocol CrowdPredictionProtocol {
+    
+    func oddButtonTap(sender: UIButton!)
+    func firstTeamOddButtonTap(sender: UIButton!)
+    func secondTeamOddButtonTap(sender: UIButton!)
+    func drawOddButtonTap(sender: UIButton!)
+}
+
+
 let CELLHEIGHT:CGFloat = 151
 
 
 
 
-class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
+class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, CrowdPredictionProtocol {
     
     var scrollView:UIScrollView!
     
@@ -25,14 +35,13 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
     let yStart = NAVIGATIONBAR_HEIGHT+20
     
     
-    var webViewController:GSWebViewController!
     var gsLeaderBoardViewController:GSLeaderBoardViewController!
+    var betCstomLeagueViewController:GSBetCstomLeagueViewController!
     
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
         
         self.view.backgroundColor = UIColor.whiteColor()
         
@@ -60,11 +69,9 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
         scrollView = UIScrollView(frame:CGRectMake(0, blueLine.frame.origin.y+2, 320, self.view.frame.size.height - yStart - 68))
         self.view.addSubview(scrollView)
         
-        if(customLeague.hasBetSlip() != nil){
+        if(customLeague.hasBetSlip().count > 0){
             
-            var betCstomLeagueViewController = GSBetCstomLeagueViewController()
-            betCstomLeagueViewController.customLeague = self.customLeague
-            self.view.addSubview(betCstomLeagueViewController.view)
+            self.endGetUserBetSlips()
             
         }else{
             loadViewWithMatchs()
@@ -144,7 +151,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
         
         cell.addSubview(createMatchView(matche))
         
-        cell.addSubview(GSCustomLeagueViewControlelr.createCrowdPredictionView(matche))
+        cell.addSubview(GSCustomLeagueViewControlelr.createCrowdPredictionView(matche, delegate: self))
 
         cell.contentSize = CGSizeMake(640, CELLHEIGHT)
     }
@@ -299,7 +306,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
     }
     
     
-    class func createCrowdPredictionView(matche:GSMatcheSelection) -> UIView{
+    class func createCrowdPredictionView(matche:GSMatcheSelection, delegate: CrowdPredictionProtocol) -> UIView{
         
         var crowdPredictionView = UIView(frame:CGRectMake(280, 0, 360, CELLHEIGHT-10))
         crowdPredictionView.backgroundColor = SPECIALBLUE
@@ -375,7 +382,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
             oddButton.backgroundColor = UIColor.whiteColor()
             oddButton.setTitleColor(SPECIALBLUE, forState: .Normal)
             oddButton.setTitle("Bet Now", forState: .Normal)
-            oddButton.addTarget(self, action:"oddButtonTap:", forControlEvents:.TouchUpInside)
+            oddButton.addTarget(delegate, action:"oddButtonTap:", forControlEvents:.TouchUpInside)
             crowdPredictionView.addSubview(oddButton)
             
             
@@ -410,7 +417,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
             firstTeamOddButton.backgroundColor = UIColor.whiteColor()
             firstTeamOddButton.setTitleColor(SPECIALBLUE, forState: .Normal)
             firstTeamOddButton.setTitle("Bet Now", forState: .Normal)
-            firstTeamOddButton.addTarget(self, action:"firstTeamOddButtonTap:", forControlEvents:.TouchUpInside)
+            firstTeamOddButton.addTarget(delegate, action:"firstTeamOddButtonTap:", forControlEvents:.TouchUpInside)
             crowdPredictionView.addSubview(firstTeamOddButton)
             
             
@@ -441,7 +448,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
             drawOddButton.backgroundColor = UIColor.whiteColor()
             drawOddButton.setTitleColor(SPECIALBLUE, forState: .Normal)
             drawOddButton.setTitle("Bet Now", forState: .Normal)
-            drawOddButton.addTarget(self, action:"drawOddButtonTap:", forControlEvents:.TouchUpInside)
+            drawOddButton.addTarget(delegate, action:"drawOddButtonTap:", forControlEvents:.TouchUpInside)
             crowdPredictionView.addSubview(drawOddButton)
             
             
@@ -470,7 +477,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
             secondTeamwOddButton.backgroundColor = UIColor.whiteColor()
             secondTeamwOddButton.setTitleColor(SPECIALBLUE, forState: .Normal)
             secondTeamwOddButton.setTitle("Bet Now", forState: .Normal)
-            secondTeamwOddButton.addTarget(self, action:"secondTeamOddButtonTap:", forControlEvents:.TouchUpInside)
+            secondTeamwOddButton.addTarget(delegate, action:"secondTeamOddButtonTap:", forControlEvents:.TouchUpInside)
             crowdPredictionView.addSubview(secondTeamwOddButton)
             
         }
@@ -485,7 +492,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
         
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
         var bestSelection:NSDictionary  = matche.bestCorrectScoreSelection
-        self.goToLadBrokes(bestSelection)
+        GSBetSlip.goToLadBrokes(bestSelection)
     }
     
     func firstTeamOddButtonTap(sender: UIButton!){
@@ -495,7 +502,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
         
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
         var selection:NSDictionary      = matche.matchBettingSelections[0] as NSDictionary
-        self.goToLadBrokes(selection)
+        GSBetSlip.goToLadBrokes(selection)
     }
     
     func secondTeamOddButtonTap(sender: UIButton!){
@@ -505,7 +512,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
         
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
         var selection:NSDictionary      = matche.matchBettingSelections[1] as NSDictionary
-        self.goToLadBrokes(selection)
+        GSBetSlip.goToLadBrokes(selection)
     }
     
     func drawOddButtonTap(sender: UIButton!){
@@ -515,7 +522,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
         
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
         var selection:NSDictionary      = matche.matchBettingSelections[2] as NSDictionary
-        self.goToLadBrokes(selection)
+        GSBetSlip.goToLadBrokes(selection)
     }
 
     
@@ -552,7 +559,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
         }
         
         if(betSelections.count > 0){
-            
+            /*
             SVProgressHUD.show()
             
             var betSlip = PFObject(className:"BetSlip")
@@ -569,13 +576,15 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
                 
                 GSUser.loadUserBetSlips(user, delegate: self)
                 
-            })
+            })*/
+            
+            GSBetSlip.buildSlip(betSelections)
         }
     }
     
     func endGetUserBetSlips(){
         
-        var betCstomLeagueViewController = GSBetCstomLeagueViewController()
+        betCstomLeagueViewController = GSBetCstomLeagueViewController()
         betCstomLeagueViewController.customLeague = self.customLeague
         self.view.addSubview(betCstomLeagueViewController.view)
     }
@@ -583,24 +592,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller {
     
     
 
-    func goToLadBrokes(selection: NSDictionary){
-        
-        var currentPrice:NSDictionary!  = selection.objectForKey("currentPrice") as NSDictionary //denPrice = 1; numPrice = 100;
-        var selectionKey:AnyObject!     = selection.objectForKey("selectionKey")
-        
-        if(selectionKey != nil){
-            var intSelectionKey = Int(selectionKey as NSNumber)
-            var urlString = NSString(format:"https://betslip.ladbrokes.com/RemoteBetslip/bets/betslip.html?selections=%d&locale=en-GB&aff-tag=123&aff-id=123",  intSelectionKey)
-            
-            webViewController = GSWebViewController()
-            webViewController.loadViewWithUrl(NSURL(string:urlString)!)
-            GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
-        }
-        else{
-            var alertView = UIAlertView(title: "", message: "Sorry, this selection is not possible", delegate: nil, cancelButtonTitle: "Ok")
-            alertView.show()
-        }
-    }
+    
     
     
     

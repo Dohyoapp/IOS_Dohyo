@@ -96,40 +96,6 @@ class GSCustomLeague: NSObject {
     class func getCacheCustomLeagues() -> NSArray{
         return cacheCustomLeaguesArray
     }
-    /*
-    func getCluMatches(){
-
-        var user = PFUser.currentUser()
-        
-        var relation = pfCustomLeague.relationForKey("lcuMatches")
-        relation.query().findObjectsInBackgroundWithBlock {    (objects: [AnyObject]!, error: NSError!) -> Void in
-            if error != nil {
-                self.cluMatches = []
-            } else {
-                
-                var data = NSMutableArray()
-                for clusMatche in objects as NSArray{
-                    
-                    if(clusMatche["userId"] as NSString == user.objectId){
-                        data.addObject(clusMatche)
-                    }
-                }
-                self.cluMatches = data
-            }
-        }
-    }
-    
-    func getMatcheScore(matcheId: NSString) -> NSString{
-        
-        for matche in cluMatches{
-            
-            if(matche["matcheId"] as NSString == matcheId){
-               return matche["savePScore"] as NSString
-            }
-        }
-        return ""
-    }
-    */
     
 
     
@@ -187,25 +153,10 @@ class GSCustomLeague: NSObject {
     
     
     
-    func getbetMatches(matches:NSArray, bets:NSArray) -> NSArray{
-        
-        var returnArray = NSMutableArray()
-        for match in matches{
-            
-            for bet in bets{
-
-                var betMatchId:NSString = (bet as NSDictionary).objectForKey("matchId") as NSString
-                if(betMatchId == match.objectId){
-                    returnArray.addObject(match)
-                }
-            }
-        }
-        
-        return returnArray
-    }
     
     
-    func hasBetSlip () -> AnyObject!{
+    
+    func hasBetSlip () -> NSArray!{
         
         var currentBetSlip: AnyObject!
         var userBetSlips = GSUser.getUserBetSlips(PFUser.currentUser())
@@ -216,7 +167,18 @@ class GSCustomLeague: NSObject {
             }
         }
         
-        return currentBetSlip
+        var result = NSMutableArray()
+        if(currentBetSlip != nil){
+            
+            var bets: NSArray = (currentBetSlip as PFObject)["bets"] as NSArray
+            for bet in bets{
+                
+                var betSlip = GSBetSlip(aMatchId: (bet as NSDictionary).objectForKey("matchId") as NSString, aSelection: (bet as NSDictionary).objectForKey("selection") as NSDictionary)
+                result.addObject(betSlip)
+            }
+        }
+        
+        return result
     }
     
     

@@ -319,6 +319,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
             startButton.alpha   = 1
             startButton.enabled = true
             
+            numberTextField.text = "3"
             //scrollView.scrollRectToVisible(CGRectMake(0, 240, 320, 400), animated: true)
         }
         

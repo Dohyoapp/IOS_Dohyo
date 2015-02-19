@@ -113,6 +113,7 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
             if(cell == nil){
                 cell = GSLeaderBoardCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"LeaderBoardCell")
             }
+            cell.selectionStyle = .None
             
             cell.numberLabel.text = String(indexPath.row+1)
             var user = tableViewData[indexPath.row] as PFObject
@@ -122,4 +123,20 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
         
             return cell
     }
+    
+    var userProfileViewController:GSUserProfileViewController!
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        var user = tableViewData[indexPath.row] as PFObject
+        
+        if(user.objectId != PFUser.currentUser().objectId){
+            
+            userProfileViewController = GSUserProfileViewController()
+            userProfileViewController.user = user
+            self.view.addSubview(userProfileViewController.view)
+        }
+    }
+
+
+
 }

@@ -51,15 +51,13 @@ class GSMatcheSelection {
         var typeKey:NSString    = String(Int(league["typeKey"] as NSNumber))
         var subTypeKey:NSString = String(Int(league["subTypeKey"] as NSNumber))
         var matchKey:NSString   = String(Int(matche["eventKey"] as NSNumber))
-        var urlMatcheSelection:NSString = URL_ROOT+"v2/sportsbook-api/classes/"+classKey+"/types/"+typeKey+"/subtypes/"+subTypeKey+"/events/"+matchKey
-        urlMatcheSelection = urlMatcheSelection+"?locale=en-GB&"+"api-key="+LADBROKES_API_KEY+"&expand=selection"
-        
-        
-        var dataArray:NSArray!
+        var urlString:NSString = URL_ROOT+"v2/sportsbook-api/classes/"+classKey+"/types/"+typeKey+"/subtypes/"+subTypeKey+"/events/"+matchKey
+        urlString = urlString+"?locale=en-GB&"+"api-key="+LADBROKES_API_KEY+"&expand=selection"
         
         SVProgressHUD.show()
-        var request = NSMutableURLRequest(URL: NSURL(string: urlMatcheSelection)!)
+        var request = NSMutableURLRequest(URL: NSURL(string: urlString)!)
         request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {  (data, response, error) in
             
             var err: NSError?
@@ -150,6 +148,7 @@ class GSMatcheSelection {
         }
         return retSelection
     }
+    
     
 }
 
