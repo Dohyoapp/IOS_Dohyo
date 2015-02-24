@@ -8,10 +8,9 @@
 
 import Foundation
 
-var navigationBar:GSNavigationBar = GSNavigationBar(frame: CGRectMake(0, 0, 320, NAVIGATIONBAR_HEIGHT), objects: [])
+var navigationBar:GSNavigationBar = GSNavigationBar(frame: CGRectMake(0, 20, 260, NAVIGATIONBAR_HEIGHT), objects: [])
 
-var profileButton:UIButton = UIButton(frame: CGRectMake(279, 20, 41, 40))
-
+var profileView = UIView(frame:CGRectMake(260, 20, 60, NAVIGATIONBAR_HEIGHT))
 
 
 
@@ -34,6 +33,14 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
     
     override func viewDidLoad() {
         
+        var user = PFUser.currentUser()
+        if(user.valueForKey("email") == nil){
+            PFUser.becomeInBackground(user.sessionToken, { (user:PFUser!, error: NSError!) -> Void in
+           
+            })
+        }
+        
+        
         super.viewDidLoad()
         
         var bgStatusBar = UIView(frame: CGRectMake(0, 0, 320, 20))
@@ -54,10 +61,14 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
         self.view.addSubview(launchImageView)
         
         
-        
+        profileView.backgroundColor = UIColor.whiteColor()
+        var profileButton = UIButton(frame: CGRectMake(10, 7, 41, 40))
         profileButton.backgroundColor = UIColor.whiteColor()
         profileButton.setImage(UIImage(named: "Profile_Icon"), forState: .Normal)
         profileButton.addTarget(self, action:"profileTap:", forControlEvents:.TouchUpInside)
+        profileView.addSubview(profileButton)
+        
+        
         
         endGetCustomLeagues([])
     }
@@ -65,7 +76,7 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationBar.hidden = false
-        profileButton.hidden = false
+        profileView.hidden = false
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -77,7 +88,7 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         navigationBar.hidden = true
-        profileButton.hidden = true
+        profileView.hidden = true
     }
     
     
@@ -91,11 +102,11 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
         
         leagues = data
         
-        navigationBar = GSNavigationBar(frame: CGRectMake(0, 20, 320, NAVIGATIONBAR_HEIGHT), objects: data)
+        navigationBar = GSNavigationBar(frame: CGRectMake(0, 20, 260, NAVIGATIONBAR_HEIGHT), objects: data)
         self.navigationController?.navigationBar.hidden = false
         //self.navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
         self.navigationController?.view.addSubview(navigationBar)
-        self.navigationController?.view.addSubview(profileButton)
+        self.navigationController?.view.addSubview(profileView)
         launchImageView.hidden = true
         
         GSCustomLeague.getNewJoinLeagueNumber()

@@ -46,7 +46,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         sizeTextLabel.text = "Create"
         sizeTextLabel.sizeToFit()
         var createWidth = sizeTextLabel.frame.size.width+30
-        var createButton = UILabel(frame: CGRectMake(0, 0, createWidth, NAVIGATIONBAR_HEIGHT))
+        var createButton = UILabel(frame: CGRectMake(0, 2, createWidth, NAVIGATIONBAR_HEIGHT))
         createButton.userInteractionEnabled = true
         createButton.text = "Create"
         createButton.textAlignment = .Center
@@ -61,7 +61,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         sizeTextLabel.text = "Join"
         sizeTextLabel.sizeToFit()
         var joinWidth = sizeTextLabel.frame.size.width+30
-        var joinButton = UILabel(frame: CGRectMake(createWidth, 0, joinWidth, NAVIGATIONBAR_HEIGHT))
+        var joinButton = UILabel(frame: CGRectMake(createWidth, 2, joinWidth, NAVIGATIONBAR_HEIGHT))
         joinButton.userInteractionEnabled = true
         joinButton.text = "Join"
         joinButton.textAlignment = .Center
@@ -72,7 +72,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         self.buttonsArray.addObject(joinButton)
         
         
-        joinNumber = UILabel(frame: CGRectMake(45, 7, 15, 15))
+        joinNumber = UILabel(frame: CGRectMake(45, 12, 15, 15))
         joinNumber.layer.cornerRadius = 7
         joinNumber.clipsToBounds = true
         joinNumber.text = ""
@@ -94,7 +94,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
             sizeTextLabel.text = leagueName
             sizeTextLabel.sizeToFit()
             var buttonWidth = sizeTextLabel.frame.size.width+30
-            var button = UILabel(frame: CGRectMake(xViews, 0, buttonWidth, NAVIGATIONBAR_HEIGHT))
+            var button = UILabel(frame: CGRectMake(xViews, 2, buttonWidth, NAVIGATIONBAR_HEIGHT))
             button.userInteractionEnabled = true
             button.text = leagueName
             button.textAlignment = .Center
@@ -188,6 +188,9 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         if(joinCustomLeagueViewController != nil){
             joinCustomLeagueViewController.closeView()
         }
+        
+        var number = Int(label.frame.origin.x/self.frame.size.width)
+        self.scrollRectToVisible(CGRectMake(label.frame.origin.x, 0, label.frame.size.width, NAVIGATIONBAR_HEIGHT), animated: true)
     }
     
     

@@ -36,6 +36,10 @@ class GSCustomLeague: NSObject {
     
     class func getNewJoinLeagueNumber(){
         
+        if(PFUser.currentUser().valueForKey("email") != nil){
+            PFUser.currentUser().fetch()
+        }
+        
         // params: ["JoinViewDate" : date as NSDate]
         PFCloud.callFunctionInBackground("NewJoinLeagueNumber", withParameters:[:]) { (result: AnyObject!, error: NSError!) -> Void in
             if error == nil {
@@ -261,6 +265,7 @@ class GSCustomLeague: NSObject {
 
         SVProgressHUD.show()
         var query = PFQuery(className:"CustomLeague")
+        query.limit = 1000
         query.whereKey("public", equalTo:true)
         query.whereKey("mainUser", notEqualTo:user.objectId)
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
@@ -306,6 +311,7 @@ class GSCustomLeague: NSObject {
         
         SVProgressHUD.show()
         var query = PFQuery(className:"CustomLeague")
+        query.limit = 1000
         query.whereKey("public", equalTo:false)
         query.whereKey("mainUser", notEqualTo:user.objectId)
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
@@ -372,7 +378,9 @@ class GSCustomLeague: NSObject {
                 var createdAt: AnyObject! = (customLeague as PFObject).createdAt
                 if(createdAt != nil){
                     
-                    if( (createdAt as NSDate).timeIntervalSinceDate(lastDate as NSDate) > 0 ){
+                    var ceatedAtDate = createdAt as NSDate
+                    var lastUserDate = lastDate as NSDate
+                    if( ceatedAtDate.timeIntervalSinceDate(lastUserDate) > 0 ){
                         
                         arrayNew.addObject(customLeague)
                     }

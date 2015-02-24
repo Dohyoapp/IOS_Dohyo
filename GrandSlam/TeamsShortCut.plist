@@ -4,6 +4,8 @@
 <dict>
 	<key>ManchesterUtd</key>
 	<string>MUN</string>
+	<key>ManUnited</key>
+	<string>MUN</string>
 	<key>Chelsea</key>
 	<string>CHE</string>
 	<key>Arsenal</key>
@@ -23,6 +25,8 @@
 	<key>Stoke</key>
 	<string>STK</string>
 	<key>ManchesterCity</key>
+	<string>MCI</string>
+	<key>ManCity</key>
 	<string>MCI</string>
 	<key>Newcastle</key>
 	<string>NEW</string>

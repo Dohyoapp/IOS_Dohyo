@@ -37,8 +37,6 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
     var dateFormatter = NSDateFormatter()
     
     
-    let yStart = NAVIGATIONBAR_HEIGHT+20
-    
     
     var leagues:NSArray!
     var selectedLeague:PFObject!
@@ -51,7 +49,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         self.view.backgroundColor = UIColor.whiteColor()
         
 
-        scrollView = UIScrollView(frame:CGRectMake(0, yStart, 320, self.view.frame.size.height - yStart))
+        scrollView = UIScrollView(frame:CGRectMake(0, YSTART, 320, self.view.frame.size.height - YSTART))
         scrollView.addGestureRecognizer( UITapGestureRecognizer(target: self, action:Selector("hideKeyBoard")) )
         self.view.addSubview(scrollView)
         
@@ -280,8 +278,10 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
     func endGetLeagues(data : NSArray){
         
         leagues = data
-        selectedLeague = leagues.firstObject as PFObject
-        premierLeagueLabel.text = String(format:"%@ Football", selectedLeague["title"] as NSString)
+        if(leagues.count > 0){
+            selectedLeague = leagues.firstObject as PFObject
+            premierLeagueLabel.text = String(format:"%@ Football", selectedLeague["title"] as NSString)
+        }
     }
     
     
@@ -308,7 +308,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
             autoCorrectorMargin = 0
         }
         var scrollViewFrame = scrollView.frame
-        scrollViewFrame.size.height = self.view.frame.size.height-yStart-KEYBOARD_HEIGHT-autoCorrectorMargin
+        scrollViewFrame.size.height = self.view.frame.size.height-YSTART-KEYBOARD_HEIGHT-autoCorrectorMargin
         scrollView.frame = scrollViewFrame
         
         if(textField == numberTextField){
@@ -347,7 +347,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         self.view.endEditing(true)
         
         var scrollViewFrame = scrollView.frame
-        scrollViewFrame.size.height = self.view.frame.size.height-yStart
+        scrollViewFrame.size.height = self.view.frame.size.height-YSTART
         scrollView.frame = scrollViewFrame
     }
     

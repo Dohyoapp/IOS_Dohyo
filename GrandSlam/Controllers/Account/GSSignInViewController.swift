@@ -15,7 +15,6 @@ class GSSignInViewController: UIViewController, UITextFieldDelegate {
     
     var signInButton:UIButton!
     
-    let yStart = NAVIGATIONBAR_HEIGHT+20
     
     
     override func viewDidLoad() {
@@ -24,7 +23,7 @@ class GSSignInViewController: UIViewController, UITextFieldDelegate {
         
         self.view.backgroundColor = UIColor.whiteColor()
         
-        userNameField = UITextField(frame: CGRectMake(70, yStart+30, 180, 33))
+        userNameField = UITextField(frame: CGRectMake(70, YSTART+30, 180, 33))
         userNameField.font = UIFont(name:FONT1, size:15)
         userNameField.textColor = SPECIALBLUE
         userNameField.layer.borderColor = SPECIALBLUE.CGColor
@@ -36,7 +35,7 @@ class GSSignInViewController: UIViewController, UITextFieldDelegate {
         userNameField.autocapitalizationType = .None
         self.view.addSubview(userNameField)
         
-        passwordField = UITextField(frame: CGRectMake(70, yStart+70, 180, 33))
+        passwordField = UITextField(frame: CGRectMake(70, YSTART+70, 180, 33))
         passwordField.font = UIFont(name:FONT1, size:15)
         passwordField.textColor = SPECIALBLUE
         passwordField.layer.borderColor = SPECIALBLUE.CGColor
@@ -49,7 +48,7 @@ class GSSignInViewController: UIViewController, UITextFieldDelegate {
         passwordField.autocapitalizationType = .None
         self.view.addSubview(passwordField)
         
-        signInButton = UIButton(frame: CGRectMake(70, yStart+110, 180, 33))
+        signInButton = UIButton(frame: CGRectMake(70, YSTART+110, 180, 33))
         signInButton.setTitle("Sign in", forState: .Normal)
         signInButton.titleLabel!.font = UIFont(name:FONT3, size:15)
         signInButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)

@@ -21,8 +21,6 @@ class GSUserProfileViewController: UIViewController, UITableViewDataSource, UITa
     var user:PFObject!
     
     
-    let yStart = NAVIGATIONBAR_HEIGHT+20
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +37,7 @@ class GSUserProfileViewController: UIViewController, UITableViewDataSource, UITa
         self.view.backgroundColor = UIColor.whiteColor()
         
         
-        tableView.frame         = CGRectMake(0, yStart, self.view.frame.size.width, self.view.frame.size.height-yStart)
+        tableView.frame         = CGRectMake(0, YSTART, self.view.frame.size.width, self.view.frame.size.height-YSTART)
         tableView.dataSource    = self
         tableView.delegate      = self
         tableView.backgroundColor = UIColor.whiteColor()

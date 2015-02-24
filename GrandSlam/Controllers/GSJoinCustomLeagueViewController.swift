@@ -17,7 +17,6 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
     
     var countArray:NSArray!
     
-    let yStart = NAVIGATIONBAR_HEIGHT+20
     
     
     var publicButton: UIButton!
@@ -32,7 +31,7 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         
         self.view.backgroundColor = UIColor.whiteColor()
         
-        publicButton = UIButton(frame: CGRectMake(10, yStart+5, 145, 33))
+        publicButton = UIButton(frame: CGRectMake(10, YSTART+5, 145, 33))
         publicButton.setTitle("Public", forState: .Normal)
         publicButton.titleLabel!.font = UIFont(name:FONT3, size:15)
         publicButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -60,7 +59,7 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         }
         
         
-        privateButton = UIButton(frame: CGRectMake(165, yStart+5, 145, 33))
+        privateButton = UIButton(frame: CGRectMake(165, YSTART+5, 145, 33))
         privateButton.setTitle("Private", forState: .Normal)
         privateButton.titleLabel!.font = UIFont(name:FONT3, size:15)
         privateButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -86,7 +85,7 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
             }
         }
         
-        tableView.frame         = CGRectMake(0, yStart+50, self.view.frame.size.width, self.view.frame.size.height-yStart-50)
+        tableView.frame         = CGRectMake(0, YSTART+50, self.view.frame.size.width, self.view.frame.size.height-YSTART-50)
         tableView.dataSource    = self
         tableView.delegate      = self
         tableView.backgroundColor = UIColor.whiteColor()

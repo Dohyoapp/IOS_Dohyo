@@ -15,19 +15,20 @@ class GSWebViewController: UIViewController, UIWebViewDelegate {
     
     var timer:NSTimer!
     
-    let yStart = NAVIGATIONBAR_HEIGHT+20
-    
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-        var closeButton = UIButton(frame: CGRectMake(20, 20, 140, 43))
-        closeButton.backgroundColor = SPECIALBLUE
+        var closeButton = UIButton(frame: CGRectMake(0, 20, 100, 43))
+        closeButton.titleLabel!.font  = UIFont(name:FONT2, size:15)
+        //closeButton.backgroundColor   = SPECIALBLUE
+        closeButton.setTitleColor(SPECIALBLUE, forState: .Normal)
+        closeButton.setTitle("Close", forState: .Normal)
         closeButton.addTarget(self, action:"closeTap:", forControlEvents:.TouchUpInside)
         self.view.addSubview(closeButton)
 
-        webView = UIWebView(frame:CGRectMake(0, yStart, 320, self.view.frame.size.height-yStart))
+        webView = UIWebView(frame:CGRectMake(0, YSTART, 320, self.view.frame.size.height-YSTART))
         webView.delegate = self
         self.view.addSubview(webView)
         

@@ -13,7 +13,6 @@ class GSForgotPasswordViewController: UIViewController, UITextFieldDelegate, Ema
     var emailField:UITextField!
     var validateButton:UIButton!
     
-    let yStart = NAVIGATIONBAR_HEIGHT+20
     
     
     override func viewDidLoad() {
@@ -22,7 +21,7 @@ class GSForgotPasswordViewController: UIViewController, UITextFieldDelegate, Ema
         
         self.view.backgroundColor = UIColor.whiteColor()
         
-        emailField = UITextField(frame: CGRectMake(70, yStart+30, 180, 33))
+        emailField = UITextField(frame: CGRectMake(70, YSTART+30, 180, 33))
         emailField.font = UIFont(name:FONT1, size:15)
         emailField.textColor = SPECIALBLUE
         emailField.layer.borderColor = SPECIALBLUE.CGColor
@@ -35,7 +34,7 @@ class GSForgotPasswordViewController: UIViewController, UITextFieldDelegate, Ema
         self.view.addSubview(emailField)
         
         
-        validateButton = UIButton(frame: CGRectMake(70, yStart+70, 180, 33))
+        validateButton = UIButton(frame: CGRectMake(70, YSTART+70, 180, 33))
         validateButton.setTitle("Send", forState: .Normal)
         validateButton.titleLabel!.font = UIFont(name:FONT3, size:15)
         validateButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)

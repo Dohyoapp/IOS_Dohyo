@@ -23,8 +23,6 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
     var signInViewController = GSSignInViewController()
     var forgotPasswordViewController = GSForgotPasswordViewController()
     
-    let yStart = NAVIGATIONBAR_HEIGHT+20
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +31,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         
         self.view.backgroundColor = UIColor.whiteColor()
         
-        tableView.frame         = CGRectMake(0, yStart, self.view.frame.size.width, self.view.frame.size.height-yStart)
+        tableView.frame         = CGRectMake(0, YSTART, self.view.frame.size.width, self.view.frame.size.height-YSTART)
         tableView.dataSource    = self
         tableView.delegate      = self
         tableView.backgroundColor = UIColor.whiteColor()
@@ -318,7 +316,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
     func hideKeyBoard (){
         self.view.endEditing(true)
         var tableViewFrame = tableView.frame
-        tableViewFrame.size.height = self.view.frame.size.height-yStart
+        tableViewFrame.size.height = self.view.frame.size.height-YSTART
         tableView.frame = tableViewFrame
     }
 

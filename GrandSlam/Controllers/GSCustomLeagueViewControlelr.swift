@@ -19,7 +19,7 @@ import Foundation
 }
 
 
-let CELLHEIGHT:CGFloat = 151
+let CELLHEIGHT:CGFloat = 164
 
 
 
@@ -32,12 +32,12 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     
     var validMatches:NSMutableArray!
     
-    let yStart = NAVIGATIONBAR_HEIGHT+20
-    
     
     var gsLeaderBoardViewController:GSLeaderBoardViewController!
     var betCstomLeagueViewController:GSBetCstomLeagueViewController!
     
+    
+    var matchResults:NSMutableArray!
     
     override func viewDidLoad() {
         
@@ -45,8 +45,10 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         
         self.view.backgroundColor = UIColor.whiteColor()
         
+       // NSException(name:NSGenericException, reason:"Everything is ok. This is just a test crash.", userInfo:nil).raise()
         
-        var leaderBoardButton = UIButton(frame: CGRectMake(10, yStart, 300, 33))
+        
+        var leaderBoardButton = UIButton(frame: CGRectMake(0, YSTART, 320, 35))
         leaderBoardButton.setTitle("See Leaderboard", forState: .Normal)
         leaderBoardButton.titleLabel!.font = UIFont(name:FONT3, size:15)
         leaderBoardButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -54,20 +56,23 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         leaderBoardButton.addTarget(self, action:"leaderBoardTap:", forControlEvents:.TouchUpInside)
         self.view.addSubview(leaderBoardButton)
         
-        var accOddsLabel    = UILabel(frame:CGRectMake(0, yStart+33, 320, 38))
+        var accOddsLabel    = UILabel(frame:CGRectMake(0, YSTART+33, 320, 38))
         accOddsLabel.text   = NSString(format:"Accumulated odds: %d : %d", 3, 1)
         accOddsLabel.textAlignment = .Center
         accOddsLabel.font   = UIFont(name:FONT2, size:18)
         accOddsLabel.textColor = SPECIALBLUE
         self.view.addSubview(accOddsLabel)
         
-        var blueLine = UIView(frame:CGRectMake(0, yStart+71, 320, 2))
+        var blueLine = UIView(frame:CGRectMake(0, YSTART+70, 320, 1))
         blueLine.backgroundColor = SPECIALBLUE
         self.view.addSubview(blueLine)
         
         
-        scrollView = UIScrollView(frame:CGRectMake(0, blueLine.frame.origin.y+2, 320, self.view.frame.size.height - yStart - 68))
+        scrollView = UIScrollView(frame:CGRectMake(0, blueLine.frame.origin.y+1, 320, self.view.frame.size.height - YSTART - 68))
         self.view.addSubview(scrollView)
+        
+        matchResults = GSLeague.getCacheMatchResultsFromDate(customLeague.pfCustomLeague["startDate"] as NSDate)
+        
         
         if(customLeague.hasBetSlip().count > 0){
             
@@ -76,6 +81,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         }else{
             loadViewWithMatchs()
         }
+        
     }
     
     
@@ -105,15 +111,42 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         }
         
             
-        var bettButton = UIButton(frame: CGRectMake(90, (count*CELLHEIGHT)+8, 140, 43))
+        var bettButton = UIButton(frame: CGRectMake(85, (count*CELLHEIGHT)+8, 150, 43))
         bettButton.titleLabel!.font = UIFont(name:FONT3, size:14)
         bettButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         bettButton.setTitle("SUBMIT PICKS", forState: .Normal)
         bettButton.backgroundColor = SPECIALBLUE
         bettButton.addTarget(self, action:"bettButtonTap:", forControlEvents:.TouchUpInside)
         self.scrollView.addSubview(bettButton)
+        
+        
+        var yPastLabelStart = bettButton.frame.origin.y+bettButton.frame.size.height+20
+        
+        var blueLine1 = UIView(frame:CGRectMake(0, yPastLabelStart, 320, 1))
+        blueLine1.backgroundColor = SPECIALBLUE
+        self.scrollView.addSubview(blueLine1)
+        
+        var pastMatchLabel    = UILabel(frame:CGRectMake(0, yPastLabelStart+3, 320, 38))
+        pastMatchLabel.text   = "Past Matches"
+        pastMatchLabel.textAlignment = .Center
+        pastMatchLabel.font   = UIFont(name:FONT2, size:18)
+        pastMatchLabel.textColor = SPECIALBLUE
+        self.scrollView.addSubview(pastMatchLabel)
+        
+        var blueLine2 = UIView(frame:CGRectMake(0, yPastLabelStart+40, 320, 1))
+        blueLine2.backgroundColor = SPECIALBLUE
+        self.scrollView.addSubview(blueLine2)
+        
+        
+        var countMatchResult:CGFloat = 0
+        for matchResult in matchResults{
             
-        self.scrollView.contentSize = CGSizeMake(320, (CELLHEIGHT*count)+60)
+            createMatcheResultCell(matchResult as PFObject, num:countMatchResult, startY:(CELLHEIGHT*count)+60+60)
+            countMatchResult += 1
+        }
+        
+            
+        self.scrollView.contentSize = CGSizeMake(320, (CELLHEIGHT*count)+60+(CELLHEIGHT*countMatchResult)+60)
     }
     
     
@@ -137,6 +170,41 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         gsLeaderBoardViewController.customLeague = customLeague
         gsLeaderBoardViewController.customLeague.pfCustomLeague.fetch()
         self.view.addSubview(gsLeaderBoardViewController.view)
+    }
+    
+    
+    func createMatcheResultCell(matcheResult:PFObject, num:CGFloat, startY:CGFloat){
+        
+        var matchResultView = UIView(frame:CGRectMake(0, startY+(num*CELLHEIGHT), 320, CELLHEIGHT))
+        matchResultView.backgroundColor = UIColor.whiteColor()
+        
+        var title = String(format: "%@ V %@", matcheResult["homeTeam"] as NSString, matcheResult["awayTeam"] as NSString) 
+        GSCustomLeagueViewControlelr.createTopView(matchResultView, title: title, isCrowd:false)
+        
+        var leftScoreLabel  = UILabel(frame:CGRectMake(95, 50, 60, 100))
+        leftScoreLabel.tag  = 888
+        leftScoreLabel.text = matcheResult["homeTeamScore"] as NSString
+        leftScoreLabel.textAlignment = .Center
+        leftScoreLabel.font = UIFont(name:FONT2, size:44)
+        leftScoreLabel.textColor = SPECIALBLUE
+        matchResultView.addSubview(leftScoreLabel)
+        
+        var centerScoreLabel    = UILabel(frame:CGRectMake(127, 70, 60, 60))
+        centerScoreLabel.text   = "-"
+        centerScoreLabel.textAlignment = .Center
+        centerScoreLabel.font   = UIFont(name:FONT2, size:44)
+        centerScoreLabel.textColor = SPECIALBLUE
+        matchResultView.addSubview(centerScoreLabel)
+        
+        var rightScoreLabel     = UILabel(frame:CGRectMake(160, 50, 60, 100))
+        rightScoreLabel.tag     = 999
+        rightScoreLabel.text    = matcheResult["awayTeamScore"] as NSString
+        rightScoreLabel.textAlignment = .Center
+        rightScoreLabel.font    = UIFont(name:FONT2, size:44)
+        rightScoreLabel.textColor = SPECIALBLUE
+        matchResultView.addSubview(rightScoreLabel)
+        
+        scrollView.addSubview(matchResultView)
     }
 
 
@@ -174,7 +242,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         var imageRight  = TEAMS_IMAGES_URL_ROOT+rightName+".png"
         
         var urlLeftRequest      = NSURLRequest(URL:NSURL(string: imageLeft)!)
-        var leftImageTeamView   = UIImageView(frame: CGRectMake(startX-13, 5, 30, 30))
+        var leftImageTeamView   = UIImageView(frame: CGRectMake(startX-33, 12, 45, 45))
         leftImageTeamView.setImageWithURLRequest( urlLeftRequest, placeholderImage: nil, success: { (url, response, image) -> Void in
             leftImageTeamView.image = image
             }, failure: { (url, response, error) -> Void in
@@ -182,7 +250,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         topView.addSubview(leftImageTeamView)
         
         
-        var matcheLabel     = UILabel(frame:CGRectMake(startX, 8, 160, 30))
+        var matcheLabel     = UILabel(frame:CGRectMake(startX, 12, 160, 50))
         matcheLabel.text    = title
         matcheLabel.textAlignment = .Center
         matcheLabel.font    = UIFont(name:FONT3, size:18)
@@ -194,7 +262,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         
         
         var urlRighttRequest    = NSURLRequest(URL:NSURL(string: imageRight)!)
-        var rightImageTeamView  = UIImageView(frame: CGRectMake(138+startX, 5, 30, 30))
+        var rightImageTeamView  = UIImageView(frame: CGRectMake(155+startX, 12, 45, 45))
         rightImageTeamView.setImageWithURLRequest( urlRighttRequest, placeholderImage: nil, success: { (url, response, image) -> Void in
             rightImageTeamView.image = image
             }, failure: { (url, response, error) -> Void in
@@ -211,32 +279,32 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         GSCustomLeagueViewControlelr.createTopView(matchView, title:matche.pfMatche.valueForKey("title") as NSString, isCrowd:false)
         
         
-        var leftUpButton = UIButton(frame: CGRectMake(65, 40, 30, 30))
+        var leftUpButton = UIButton(frame: CGRectMake(50, 60, 35, 35))
         leftUpButton.tag = 666
         leftUpButton.setImage(UIImage(named:"Button_Up"), forState: .Normal)
         leftUpButton.addTarget(self, action:"leftUpTap:", forControlEvents:.TouchUpInside)
         matchView.addSubview(leftUpButton)
         
-        var leftDownButton = UIButton(frame: CGRectMake(65, 71, 30, 30))
+        var leftDownButton = UIButton(frame: CGRectMake(50, 97, 35, 35))
         leftDownButton.tag = 667
         leftDownButton.setImage(UIImage(named:"Button_Down"), forState: .Normal)
         leftDownButton.addTarget(self, action:"leftDownTap:", forControlEvents:.TouchUpInside)
         matchView.addSubview(leftDownButton)
         
-        var rightUpButton = UIButton(frame: CGRectMake(220, 40, 30, 30))
+        var rightUpButton = UIButton(frame: CGRectMake(237, 60, 35, 35))
         rightUpButton.tag = 668
         rightUpButton.setImage(UIImage(named:"Button_Up"), forState: .Normal)
         rightUpButton.addTarget(self, action:"rightUpTap:", forControlEvents:.TouchUpInside)
         matchView.addSubview(rightUpButton)
         
-        var righttDownButton = UIButton(frame: CGRectMake(220, 71, 30, 30))
+        var righttDownButton = UIButton(frame: CGRectMake(237, 97, 35, 35))
         righttDownButton.tag = 669
         righttDownButton.setImage(UIImage(named:"Button_Down"), forState: .Normal)
         righttDownButton.addTarget(self, action:"rightDownTap:", forControlEvents:.TouchUpInside)
         matchView.addSubview(righttDownButton)
         
         
-        var leftScoreLabel  = UILabel(frame:CGRectMake(95, 26, 60, 100))
+        var leftScoreLabel  = UILabel(frame:CGRectMake(95, 46, 60, 110))
         leftScoreLabel.tag  = 888
         leftScoreLabel.text = "0"
         leftScoreLabel.textAlignment = .Center
@@ -244,14 +312,14 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         leftScoreLabel.textColor = SPECIALBLUE
         matchView.addSubview(leftScoreLabel)
         
-        var centerScoreLabel    = UILabel(frame:CGRectMake(127, 40, 60, 60))
+        var centerScoreLabel    = UILabel(frame:CGRectMake(134, 70, 60, 60))
         centerScoreLabel.text   = "-"
         centerScoreLabel.textAlignment = .Center
         centerScoreLabel.font   = UIFont(name:FONT2, size:44)
         centerScoreLabel.textColor = SPECIALBLUE
         matchView.addSubview(centerScoreLabel)
         
-        var rightScoreLabel     = UILabel(frame:CGRectMake(160, 26, 60, 100))
+        var rightScoreLabel     = UILabel(frame:CGRectMake(170, 46, 60, 110))
         rightScoreLabel.tag     = 999
         rightScoreLabel.text = "0"
         rightScoreLabel.textAlignment = .Center
@@ -308,31 +376,31 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     
     class func createCrowdPredictionView(matche:GSMatcheSelection, delegate: CrowdPredictionProtocol) -> UIView{
         
-        var crowdPredictionView = UIView(frame:CGRectMake(280, 0, 360, CELLHEIGHT-10))
+        var crowdPredictionView = UIView(frame:CGRectMake(297, 0, 347, CELLHEIGHT-10))
         crowdPredictionView.backgroundColor = SPECIALBLUE
         
-        createTopView(crowdPredictionView, title:matche.pfMatche.valueForKey("title") as NSString, isCrowd:true)
+        //createTopView(crowdPredictionView, title:matche.pfMatche.valueForKey("title") as NSString, isCrowd:true)
         
-        var crowdLabel  = UILabel(frame:CGRectMake(-50, 50, 140, 40))
+        var crowdLabel  = UILabel(frame:CGRectMake(-60, 70, 140, 23))
         crowdLabel.textAlignment = .Center
-        crowdLabel.font = UIFont(name:FONT1, size:14)
+        crowdLabel.font = UIFont(name:FONT4, size:10)
         crowdLabel.textColor = UIColor.whiteColor()
         crowdLabel.text = "Crowd prediction"
         let transform = CGAffineTransformRotate(CGAffineTransformIdentity, -3.14/2);
         crowdLabel.transform = transform;
         crowdPredictionView.addSubview(crowdLabel)
-        
-        var backLabel  = UILabel(frame:CGRectMake(-15, 50, 150, 40))
+
+        var backLabel  = UILabel(frame:CGRectMake(-48, 60, 166, 23))
         backLabel.backgroundColor = UIColor.whiteColor()
         backLabel.textAlignment = .Center
-        backLabel.font = UIFont(name:FONT1, size:14)
+        backLabel.font = UIFont(name:FONT4, size:13)
         backLabel.textColor = SPECIALBLUE
         backLabel.text = "Back"
         backLabel.transform = transform;
         crowdPredictionView.addSubview(backLabel)
         
         if(matche.correctScoreSelections != nil){
-            
+            /*
             var bestSelection:NSDictionary = matche.bestCorrectScoreSelection
             
             
@@ -384,7 +452,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             oddButton.setTitle("Bet Now", forState: .Normal)
             oddButton.addTarget(delegate, action:"oddButtonTap:", forControlEvents:.TouchUpInside)
             crowdPredictionView.addSubview(oddButton)
-            
+            */
             
             
             
@@ -392,9 +460,11 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             
             var teamsNames:NSArray = GSCustomLeague.getShortTitle(matche.pfMatche.valueForKey("title") as NSString)
             
-            var firstTeamLabel     = UILabel(frame:CGRectMake(125, 74, 100, 30))
-            firstTeamLabel.text    = teamsNames.firstObject as NSString
-            firstTeamLabel.font    = UIFont(name:FONT2, size:18)
+            var firstTeamLabel     = UILabel(frame:CGRectMake(45, 0, 60, 60))
+            firstTeamLabel.numberOfLines = 2
+            firstTeamLabel.textAlignment = .Center
+            firstTeamLabel.text    = "THS\nwin"//teamsNames.firstObject as NSString
+            firstTeamLabel.font    = UIFont(name:FONT4, size:15)
             firstTeamLabel.textColor = UIColor.whiteColor()
             crowdPredictionView.addSubview(firstTeamLabel)
             
@@ -405,17 +475,17 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             
             var firstTeamOdd = String(Int(firstTeamNumPrice))+"/"+String(Int(firstTeamDenPrice))
             
-            var firstTeamOddLabel     = UILabel(frame:CGRectMake(240, 70, 50, 40))
+            var firstTeamOddLabel     = UILabel(frame:CGRectMake(200, 9, 50, 40))
             firstTeamOddLabel.text    = firstTeamOdd
             firstTeamOddLabel.textAlignment = .Center
-            firstTeamOddLabel.font    = UIFont(name:FONT2, size:18)
+            firstTeamOddLabel.font    = UIFont(name:FONT2, size:12)
             firstTeamOddLabel.textColor = UIColor.whiteColor()
             crowdPredictionView.addSubview(firstTeamOddLabel)
             
-            var firstTeamOddButton = UIButton(frame: CGRectMake(295, 76, 60, 28))
-            firstTeamOddButton.titleLabel!.font = UIFont(name:FONT3, size:14)
-            firstTeamOddButton.backgroundColor = UIColor.whiteColor()
-            firstTeamOddButton.setTitleColor(SPECIALBLUE, forState: .Normal)
+            var firstTeamOddButton = UIButton(frame: CGRectMake(270, 9, 70, 40))
+            firstTeamOddButton.titleLabel!.font = UIFont(name:FONT2, size:15)
+            firstTeamOddButton.backgroundColor  = SPECIALBLUE
+            firstTeamOddButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
             firstTeamOddButton.setTitle("Bet Now", forState: .Normal)
             firstTeamOddButton.addTarget(delegate, action:"firstTeamOddButtonTap:", forControlEvents:.TouchUpInside)
             crowdPredictionView.addSubview(firstTeamOddButton)
@@ -423,9 +493,10 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             
             
             
-            var drawLabel     = UILabel(frame:CGRectMake(125, 94, 100, 30))
+            var drawLabel     = UILabel(frame:CGRectMake(45, 47, 60, 60))
             drawLabel.text    = "Draw"
-            drawLabel.font    = UIFont(name:FONT2, size:18)
+            drawLabel.textAlignment = .Center
+            drawLabel.font    = UIFont(name:FONT4, size:15)
             drawLabel.textColor = UIColor.whiteColor()
             crowdPredictionView.addSubview(drawLabel)
             
@@ -436,25 +507,27 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             
             var drawOdd = String(Int(drawNumPrice))+"/"+String(Int(drawDenPrice))
             
-            var drawOddLabel     = UILabel(frame:CGRectMake(240, 90, 50, 40))
+            var drawOddLabel     = UILabel(frame:CGRectMake(200, 56, 50, 40))
             drawOddLabel.text    = drawOdd
             drawOddLabel.textAlignment = .Center
-            drawOddLabel.font    = UIFont(name:FONT2, size:18)
+            drawOddLabel.font    = UIFont(name:FONT2, size:12)
             drawOddLabel.textColor = UIColor.whiteColor()
             crowdPredictionView.addSubview(drawOddLabel)
             
-            var drawOddButton = UIButton(frame: CGRectMake(295, 96, 60, 28))
-            drawOddButton.titleLabel!.font = UIFont(name:FONT3, size:14)
-            drawOddButton.backgroundColor = UIColor.whiteColor()
-            drawOddButton.setTitleColor(SPECIALBLUE, forState: .Normal)
+            var drawOddButton = UIButton(frame: CGRectMake(270, 56, 70, 40))
+            drawOddButton.titleLabel!.font  = UIFont(name:FONT2, size:15)
+            drawOddButton.backgroundColor   = SPECIALBLUE
+            drawOddButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
             drawOddButton.setTitle("Bet Now", forState: .Normal)
             drawOddButton.addTarget(delegate, action:"drawOddButtonTap:", forControlEvents:.TouchUpInside)
             crowdPredictionView.addSubview(drawOddButton)
             
             
-            var secondTeamLabel     = UILabel(frame:CGRectMake(125, 114, 100, 30))
-            secondTeamLabel.text    = teamsNames.lastObject as NSString
-            secondTeamLabel.font    = UIFont(name:FONT2, size:18)
+            var secondTeamLabel     = UILabel(frame:CGRectMake(45, 94, 60, 60))
+            secondTeamLabel.numberOfLines = 2
+            secondTeamLabel.textAlignment = .Center
+            secondTeamLabel.text    = "CHE\nwin"//teamsNames.lastObject as NSString
+            secondTeamLabel.font    = UIFont(name:FONT4, size:15)
             secondTeamLabel.textColor = UIColor.whiteColor()
             crowdPredictionView.addSubview(secondTeamLabel)
             
@@ -465,17 +538,17 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             
             var secondTeamOdd = String(Int(secondTeamNumPrice))+"/"+String(Int(secondTeamDenPrice))
             
-            var secondTeamOddLabel     = UILabel(frame:CGRectMake(240, 110, 50, 40))
+            var secondTeamOddLabel     = UILabel(frame:CGRectMake(200, 103, 50, 40))
             secondTeamOddLabel.text    = secondTeamOdd
             secondTeamOddLabel.textAlignment = .Center
-            secondTeamOddLabel.font    = UIFont(name:FONT2, size:18)
+            secondTeamOddLabel.font    = UIFont(name:FONT2, size:12)
             secondTeamOddLabel.textColor = UIColor.whiteColor()
             crowdPredictionView.addSubview(secondTeamOddLabel)
             
-            var secondTeamwOddButton = UIButton(frame: CGRectMake(295, 116, 60, 28))
-            secondTeamwOddButton.titleLabel!.font = UIFont(name:FONT3, size:14)
-            secondTeamwOddButton.backgroundColor = UIColor.whiteColor()
-            secondTeamwOddButton.setTitleColor(SPECIALBLUE, forState: .Normal)
+            var secondTeamwOddButton = UIButton(frame: CGRectMake(270, 103, 70, 40))
+            secondTeamwOddButton.titleLabel!.font   = UIFont(name:FONT2, size:15)
+            secondTeamwOddButton.backgroundColor    = SPECIALBLUE
+            secondTeamwOddButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
             secondTeamwOddButton.setTitle("Bet Now", forState: .Normal)
             secondTeamwOddButton.addTarget(delegate, action:"secondTeamOddButtonTap:", forControlEvents:.TouchUpInside)
             crowdPredictionView.addSubview(secondTeamwOddButton)
@@ -559,7 +632,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         }
         
         if(betSelections.count > 0){
-            /*
+            
             SVProgressHUD.show()
             
             var betSlip = PFObject(className:"BetSlip")
@@ -576,9 +649,9 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
                 
                 GSUser.loadUserBetSlips(user, delegate: self)
                 
-            })*/
+            })
             
-            GSBetSlip.buildSlip(betSelections)
+           // GSBetSlip.buildSlip(betSelections)
         }
     }
     

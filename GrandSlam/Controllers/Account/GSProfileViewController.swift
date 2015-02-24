@@ -22,7 +22,6 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
     
     var socialShareViewController:GSSocialShareViewController!
     
-    let yStart = NAVIGATIONBAR_HEIGHT+20
     
     
     override func viewDidLoad() {
@@ -44,7 +43,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         self.view.backgroundColor = UIColor.whiteColor()
         
         
-        tableView.frame         = CGRectMake(0, yStart, self.view.frame.size.width, self.view.frame.size.height-yStart)
+        tableView.frame         = CGRectMake(0, YSTART, self.view.frame.size.width, self.view.frame.size.height-YSTART)
         tableView.dataSource    = self
         tableView.delegate      = self
         tableView.backgroundColor = UIColor.whiteColor()
@@ -349,7 +348,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
     func hideKeyBoard (){
         self.view.endEditing(true)
         var tableViewFrame = tableView.frame
-        tableViewFrame.size.height = self.view.frame.size.height-yStart
+        tableViewFrame.size.height = self.view.frame.size.height-YSTART
         tableView.frame = tableViewFrame
     }
 }

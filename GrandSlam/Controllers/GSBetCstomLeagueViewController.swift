@@ -20,7 +20,6 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
     var validMatches:NSMutableArray!
     var currentBets:NSArray!
     
-    let yStart = NAVIGATIONBAR_HEIGHT+20
     
     
     var gsLeaderBoardViewController:GSLeaderBoardViewController!
@@ -33,7 +32,7 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         self.view.backgroundColor = UIColor.whiteColor()
         
         
-        var leaderBoardButton = UIButton(frame: CGRectMake(10, yStart, 300, 33))
+        var leaderBoardButton = UIButton(frame: CGRectMake(0, YSTART, 320, 35))
         leaderBoardButton.setTitle("See Leaderboard", forState: .Normal)
         leaderBoardButton.titleLabel!.font = UIFont(name:FONT3, size:15)
         leaderBoardButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -43,18 +42,64 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         
 
         
-        var betSummaryView = UIView(frame:CGRectMake(0, yStart+35, 320, CELLHEIGHT))
+        var betSummaryView = UIView(frame:CGRectMake(0, YSTART+35, 320, CELLHEIGHT))
         betSummaryView.backgroundColor = UIColor.whiteColor()
         self.view.addSubview(betSummaryView)
         
-        var goodLuckLabel    = UILabel(frame:CGRectMake(0, 0, 320, 38))
+        var goodLuckLabel    = UILabel(frame:CGRectMake(0, 0, 320, 30))
         goodLuckLabel.text   = "GOOD LUCK!"
         goodLuckLabel.textAlignment = .Center
-        goodLuckLabel.font   = UIFont(name:FONT2, size:18)
+        goodLuckLabel.font   = UIFont(name:FONT2, size:15)
         goodLuckLabel.textColor = SPECIALBLUE
         betSummaryView.addSubview(goodLuckLabel)
         
-        scrollView = UIScrollView(frame:CGRectMake(0, yStart+36+CELLHEIGHT, 320, self.view.frame.size.height - 36 - yStart - CELLHEIGHT))
+        var picksLabel    = UILabel(frame:CGRectMake(0, 30, 320, 38))
+        picksLabel.text   = "Your picks have been submitted."
+        picksLabel.textAlignment = .Center
+        picksLabel.font   = UIFont(name:FONT3, size:15)
+        picksLabel.textColor = SPECIALBLUE
+        betSummaryView.addSubview(picksLabel)
+        
+        var accumulatorLabel    = UILabel(frame:CGRectMake(0, 55, 320, 38))
+        accumulatorLabel.text   = "Your accumulator"
+        accumulatorLabel.textAlignment = .Center
+        accumulatorLabel.font   = UIFont(name:FONT3, size:15)
+        accumulatorLabel.textColor = SPECIALBLUE
+        betSummaryView.addSubview(accumulatorLabel)
+        
+        var stakeLabel    = UILabel(frame:CGRectMake(10, 98, 80, 38))
+        stakeLabel.text   = String(format:"Stake : £%d", 5)
+        stakeLabel.font   = UIFont(name:FONT3, size:15)
+        stakeLabel.textColor = SPECIALBLUE
+        betSummaryView.addSubview(stakeLabel)
+
+        var returnLabel    = UILabel(frame:CGRectMake(10, 135, 160, 38))
+        returnLabel.text   = String(format:"Returns : £%0.2f", 20.00)
+        returnLabel.font   = UIFont(name:FONT3, size:15)
+        returnLabel.textColor = SPECIALBLUE
+        betSummaryView.addSubview(returnLabel)
+        
+        var blueLine = UIView(frame:CGRectMake(0, 180, 320, 1))
+        blueLine.backgroundColor = SPECIALBLUE
+        betSummaryView.addSubview(blueLine)
+        /*
+        var yourPicksLabel    = UILabel(frame:CGRectMake(0, 122, 320, 34))
+        yourPicksLabel.text   = "Your picks"
+        yourPicksLabel.textAlignment = .Center
+        yourPicksLabel.font   = UIFont(name:FONT3, size:15)
+        yourPicksLabel.textColor = SPECIALBLUE
+        betSummaryView.addSubview(yourPicksLabel)
+        */
+        
+        var stakeButton = UIButton(frame: CGRectMake(175, 135, 90, 38))
+        stakeButton.titleLabel!.font = UIFont(name:FONT2, size:18)
+        stakeButton.backgroundColor = UIColor.whiteColor()
+        stakeButton.setTitleColor(SPECIALBLUE, forState: .Normal)
+        stakeButton.setTitle("Bet Now", forState: .Normal)
+        stakeButton.addTarget(self, action:"stakeButtonTap:", forControlEvents:.TouchUpInside)
+        betSummaryView.addSubview(stakeButton)
+        
+        scrollView = UIScrollView(frame:CGRectMake(0, YSTART+65+CELLHEIGHT, 320, self.view.frame.size.height - 65 - YSTART - CELLHEIGHT))
         self.view.addSubview(scrollView)
         
         currentBets = customLeague.hasBetSlip()
@@ -117,7 +162,7 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         var matchTitle = matche.pfMatche.valueForKey("title") as NSString
         GSCustomLeagueViewControlelr.createTopView(matchView, title: matchTitle, isCrowd:false)
         
-        var leftScoreLabel  = UILabel(frame:CGRectMake(95, 26, 60, 100))
+        var leftScoreLabel  = UILabel(frame:CGRectMake(95, 44, 60, 100))
         leftScoreLabel.tag  = 888
         leftScoreLabel.text = "0"
         leftScoreLabel.textAlignment = .Center
@@ -125,14 +170,14 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         leftScoreLabel.textColor = SPECIALBLUE
         matchView.addSubview(leftScoreLabel)
         
-        var centerScoreLabel    = UILabel(frame:CGRectMake(127, 40, 60, 60))
+        var centerScoreLabel    = UILabel(frame:CGRectMake(127, 64, 60, 60))
         centerScoreLabel.text   = "-"
         centerScoreLabel.textAlignment = .Center
         centerScoreLabel.font   = UIFont(name:FONT2, size:44)
         centerScoreLabel.textColor = SPECIALBLUE
         matchView.addSubview(centerScoreLabel)
         
-        var rightScoreLabel     = UILabel(frame:CGRectMake(160, 26, 60, 100))
+        var rightScoreLabel     = UILabel(frame:CGRectMake(160, 44, 60, 100))
         rightScoreLabel.tag     = 999
         rightScoreLabel.text = "0"
         rightScoreLabel.textAlignment = .Center
@@ -156,17 +201,17 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         
         var currentOdd = String(Int(numPrice))+"/"+String(Int(denPrice))
         
-        var currentOddLabel     = UILabel(frame:CGRectMake(110, 100, 50, 40))
+        var currentOddLabel     = UILabel(frame:CGRectMake(100, 123, 50, 40))
         currentOddLabel.text    = currentOdd
         currentOddLabel.textAlignment = .Center
         currentOddLabel.font    = UIFont(name:FONT2, size:18)
         currentOddLabel.textColor = SPECIALBLUE
         matchView.addSubview(currentOddLabel)
         
-        var currentOddButton = UIButton(frame: CGRectMake(175, 106, 70, 28))
-        currentOddButton.titleLabel!.font = UIFont(name:FONT3, size:14)
-        currentOddButton.backgroundColor = SPECIALBLUE
-        currentOddButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        var currentOddButton = UIButton(frame: CGRectMake(165, 123, 70, 40))
+        currentOddButton.titleLabel!.font = UIFont(name:FONT2, size:16)
+        currentOddButton.backgroundColor = UIColor.whiteColor()
+        currentOddButton.setTitleColor(SPECIALBLUE, forState: .Normal)
         currentOddButton.setTitle("Bet Now", forState: .Normal)
         currentOddButton.addTarget(self, action:"currentOddButtonTap:", forControlEvents:.TouchUpInside)
         matchView.addSubview(currentOddButton)
@@ -257,4 +302,10 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         var selection:NSDictionary      = matche.matchBettingSelections[2] as NSDictionary
         GSBetSlip.goToLadBrokes(selection)
     }
+
+
+    func stakeButtonTap(sender: UIButton!){
+
+    }
+
 }

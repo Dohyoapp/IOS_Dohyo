@@ -19,7 +19,9 @@ let TEAMS_IMAGES_URL_ROOT = "https://s3.amazonaws.com/grandslam-explovia/"
 
 let KEYBOARD_HEIGHT = 216 as CGFloat
 
-let NAVIGATIONBAR_HEIGHT = 44 as CGFloat
+let NAVIGATIONBAR_HEIGHT = 55 as CGFloat
+let YSTART = NAVIGATIONBAR_HEIGHT+20
+
 
 let SPECIALBLUE = UIColor(red:54/255.0, green:137/255.0, blue:193/255.0, alpha:1)
 

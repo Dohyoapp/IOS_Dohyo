@@ -11,10 +11,12 @@ import Foundation
 
 @objc protocol LeagueCaller {
     optional func endGetLeagues(data : NSArray)
+    optional func endGetMatchResults(data : NSArray)
 }
 
 
 var cacheLeagues:NSMutableArray!
+var cacheMatchResults:NSArray!
 
 class GSLeague {
 
@@ -29,6 +31,7 @@ class GSLeague {
     func getMatchesLeague(){
         
         var relation:PFRelation = pfLeague.relationForKey("events")
+        relation.query().limit = 1000
         relation.query().findObjectsInBackgroundWithBlock{ (objects: [AnyObject]!, error: NSError!) -> Void in
             if error != nil {
                 
@@ -63,10 +66,13 @@ class GSLeague {
             SVProgressHUD.show()
         }
         var query = PFQuery(className:"League")
+        PFObject.pinAllInBackground(query.findObjects())
+        query.fromLocalDatastore()
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             
             SVProgressHUD.dismiss()
             if (error != nil) {
+                
                 SVProgressHUD.dismiss()
                 delegate.endGetLeagues!([])
             }
@@ -106,5 +112,43 @@ class GSLeague {
             
         }
         return league
+    }
+    
+    
+    
+    
+    class func getMatchResults(delegate: LeagueCaller){
+        
+        var query = PFQuery(className:"MatchResult")
+        query.limit = 1000
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            
+            if (error != nil) {
+                
+            }
+            else{
+                cacheMatchResults = objects
+            }
+        }
+    }
+    
+    class func getCacheMatchResultsFromDate(startCustomLeagueDate : NSDate) -> NSMutableArray{
+        
+        var dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yy"
+        
+        
+        var myResults:NSMutableArray = NSMutableArray()
+        for matcheResult in cacheMatchResults{
+            
+            var matcheDateString:NSString = (matcheResult as PFObject) ["date"] as NSString
+            var matcheDate:NSDate = dateFormatter.dateFromString(matcheDateString)!
+            
+            if(matcheDate.timeIntervalSinceDate(startCustomLeagueDate) > -24*3600){
+                
+                myResults.addObject(matcheResult)
+            }
+        }
+        return myResults
     }
 }

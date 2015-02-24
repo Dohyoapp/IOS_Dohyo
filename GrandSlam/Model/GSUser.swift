@@ -191,6 +191,7 @@ class GSUser:NSObject, UserCaller{
     class func loadUserBetSlips(user : PFObject, delegate : UserCaller){
         
         var relation = user.relationForKey("betSlips")
+        relation.query().limit = 1000
         relation.query().findObjectsInBackgroundWithBlock {    (objects: [AnyObject]!, error: NSError!) -> Void in
             
             if(objects != nil){

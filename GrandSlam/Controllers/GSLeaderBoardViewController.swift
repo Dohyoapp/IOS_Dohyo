@@ -18,7 +18,6 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
     
     var socialShareViewController : GSSocialShareViewController!
     
-    let yStart = NAVIGATIONBAR_HEIGHT+20
     
     
     override func viewDidLoad() {
@@ -26,7 +25,7 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
         
         self.view.backgroundColor = UIColor.whiteColor()
         
-        var titleLabel = UIButton(frame: CGRectMake(0, yStart, 320, 33))
+        var titleLabel = UIButton(frame: CGRectMake(0, YSTART, 320, 35))
         titleLabel.setTitle("Leaderboard", forState: .Normal)
         titleLabel.titleLabel!.font = UIFont(name:FONT3, size:15)
         titleLabel.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -34,15 +33,15 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
         self.view.addSubview(titleLabel)
         
         
-        var yPrize = yStart+50
+        var yPrize = YSTART+50
         if(customLeague.pfCustomLeague["mainUser"] as NSString == PFUser.currentUser().objectId){
             
             socialShareViewController = GSSocialShareViewController()
             socialShareViewController.customLeagueId = customLeague.pfCustomLeague.objectId
-            socialShareViewController.view.frame = CGRectMake(0, yStart+40, 320, 40)
+            socialShareViewController.view.frame = CGRectMake(0, YSTART+40, 320, 40)
             self.view.addSubview(socialShareViewController.view)
             
-            yPrize = yStart+100
+            yPrize = YSTART+100
         }
         
         

@@ -30,12 +30,11 @@ class ParseConfig: NSObject {
         Parse.setApplicationId("XCYnUIgcJKdPcW8u5FsiqMFeL0sFZDiWoeqWrUn2",
         clientKey:"XIV8NiEBmQDm54CskEMMC8BeEdD2QeTlUAz1m1Mf")
         
-        PFFacebookUtils.initializeFacebook()
-        // [Optional] Track statistics around application opens.
-        var dico:NSDictionary = [:]
-        PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(dico, block: nil)
+        
+        PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground([:], block: nil)
         
         PFUser.enableAutomaticUser()
+        
         
         PFInstallation.currentInstallation().saveInBackgroundWithBlock { (success, error) -> Void in
             PFUser.currentUser().setObject(PFInstallation.currentInstallation(), forKey:"installation")
@@ -43,11 +42,17 @@ class ParseConfig: NSObject {
         }
         
         var query = PFQuery(className:"AppConfigData")
+        PFObject.pinAllInBackground(query.findObjects())
+        query.fromLocalDatastore()
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            if(objects.count > 0){
-                appConfigData = (objects as NSArray).firstObject as PFObject
+            if(error == nil){
+                if(objects.count > 0){
+                    appConfigData = (objects as NSArray).firstObject as PFObject
+                }
             }
         }
+        
+        PFFacebookUtils.initializeFacebook()
     }
     
     
@@ -115,6 +120,8 @@ class ParseConfig: NSObject {
                     var user = PFUser.currentUser()
                     
                     var query = PFUser.query()
+                   // PFObject.pinAllInBackground(query.findObjects())
+                   // query.fromLocalDatastore()
                     query.whereKey("email", equalTo:email)
                     query.findObjectsInBackgroundWithBlock { (objects: [AnyObject]!, error: NSError!) -> Void in
                         if error == nil {
