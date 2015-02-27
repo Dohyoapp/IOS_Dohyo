@@ -45,7 +45,7 @@ class GSWebViewController: UIViewController, UIWebViewDelegate {
     func closeTap(sender: UIButton!){
         
         SVProgressHUD.dismiss()
-        dismissViewControllerAnimated(true, nil)
+        dismissViewControllerAnimated(true, completion: nil)
         if(timer != nil){
             timer.invalidate()
         }

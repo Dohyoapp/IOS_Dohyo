@@ -19,7 +19,42 @@ class GSMatcheSelection {
     var bestCorrectScoreSelection:NSDictionary!
     
 
+
+    func getDrawSelection() -> NSDictionary{
+        
+        for selection in self.matchBettingSelections{
+            
+            if( ((selection as NSDictionary).objectForKey("outcomeMeaningMinorCode") as NSString) == "D"){
+                return (selection as NSDictionary)
+            }
+        }
+        return NSDictionary()
+    }
+    
+    func getHomeSelection() -> NSDictionary{
+        
+        for selection in self.matchBettingSelections{
+            
+            if( ((selection as NSDictionary).objectForKey("outcomeMeaningMinorCode") as NSString) == "H"){
+                return (selection as NSDictionary)
+            }
+        }
+        return NSDictionary()
+    }
+    
+    func getAwaySelection() -> NSDictionary{
+        
+        for selection in self.matchBettingSelections{
+            
+            if( ((selection as NSDictionary).objectForKey("outcomeMeaningMinorCode") as NSString) == "A"){
+                return (selection as NSDictionary)
+            }
+        }
+        return NSDictionary()
+    }
+
     init(matche: PFObject, customLeague:PFObject) {
+        
         pfMatche = matche
         pfCustomLeague = customLeague
         
@@ -32,7 +67,7 @@ class GSMatcheSelection {
             if(matche.objectForKey("MatchBetting") != nil){
                 matchBettingSelections = matche.objectForKey("MatchBetting") as NSArray
             }
-            loadMatcheSelection(matche, customLeague: customLeague)
+            loadMatcheSelection(customLeague)
         }
         else{
             correctScoreSelections = matche.objectForKey("CorrectScore") as NSArray
@@ -42,7 +77,7 @@ class GSMatcheSelection {
     }
     
     
-    func loadMatcheSelection(matche:PFObject, customLeague:PFObject){
+    func loadMatcheSelection(customLeague:PFObject){
         
         var leagueName      = customLeague.valueForKey("leagueTitle") as NSString
         var league:PFObject = (GSLeague.getLeagueFromCache(leagueName) as GSLeague).pfLeague
@@ -50,7 +85,7 @@ class GSMatcheSelection {
         var classKey:NSString   = String(Int(league["classKey"] as NSNumber))
         var typeKey:NSString    = String(Int(league["typeKey"] as NSNumber))
         var subTypeKey:NSString = String(Int(league["subTypeKey"] as NSNumber))
-        var matchKey:NSString   = String(Int(matche["eventKey"] as NSNumber))
+        var matchKey:NSString   = String(Int(pfMatche["eventKey"] as NSNumber))
         var urlString:NSString = URL_ROOT+"v2/sportsbook-api/classes/"+classKey+"/types/"+typeKey+"/subtypes/"+subTypeKey+"/events/"+matchKey
         urlString = urlString+"?locale=en-GB&"+"api-key="+LADBROKES_API_KEY+"&expand=selection"
         
@@ -73,18 +108,18 @@ class GSMatcheSelection {
                     if((marketJson["marketName"] as NSString == "Correct score")){
                         
                         self.correctScoreSelections = (marketJson["selections"] as NSDictionary)["selection"] as NSArray
-                        matche["CorrectScore"] = self.correctScoreSelections
+                        self.pfMatche["CorrectScore"] = self.correctScoreSelections
                         self.bestCorrectScoreSelection = self.getBestCorrectScoreSelection()
                     }
                     
                     if((marketJson["marketName"] as NSString == "Match betting")){
                         
                         self.matchBettingSelections = (marketJson["selections"] as NSDictionary)["selection"] as NSArray
-                        matche["MatchBetting"] = self.matchBettingSelections
+                        self.pfMatche["MatchBetting"] = self.matchBettingSelections
                     }
                 }
                 
-                matche.saveInBackgroundWithBlock({ (success, error) -> Void in
+                self.pfMatche.saveInBackgroundWithBlock({ (success, error) -> Void in
                     
                 })
             }
@@ -96,6 +131,7 @@ class GSMatcheSelection {
         
         task.resume()
     }
+    
     
     
     func getScoreCorrectSelectionByName(selectionName:NSString) -> NSDictionary{
@@ -149,6 +185,80 @@ class GSMatcheSelection {
         return retSelection
     }
     
+    
+    func setPredictionTeamWin(leftScore:NSString, rightScore:NSString){
+    
+        var homeTeamScore = leftScore.intValue
+        var awayTeamScore = rightScore.intValue
+        
+        if(homeTeamScore == awayTeamScore){
+            pfMatche.incrementKey("drawPrediction")
+        }
+        else{
+            if(homeTeamScore > awayTeamScore){
+                pfMatche.incrementKey("homeTeamWinPrediction")
+            }
+            else{
+                pfMatche.incrementKey("awayTeamWinPrediction")
+            }
+        }
+        pfMatche.saveInBackground()
+    }
+    
+    
+    func percentThinkHomeTeamWin() -> CGFloat{
+        
+        var drawP:NSNumber = 0
+        if(pfMatche["drawPrediction"] != nil){
+            drawP = pfMatche["drawPrediction"] as NSNumber
+        }
+        var homeTeamWin:NSNumber = 0
+        if(pfMatche["homeTeamWinPrediction"] != nil){
+            homeTeamWin = pfMatche["homeTeamWinPrediction"] as NSNumber
+        }
+        var awayTeamWin:NSNumber = 0
+        if(pfMatche["awayTeamWinPrediction"] != nil){
+            awayTeamWin = pfMatche["awayTeamWinPrediction"] as NSNumber
+        }
+        
+        return CGFloat(homeTeamWin)/(CGFloat(homeTeamWin)+CGFloat(drawP)+CGFloat(awayTeamWin))
+    }
+    
+    func percentThinkDraw() -> CGFloat{
+        
+        var drawP:NSNumber = 0
+        if(pfMatche["drawPrediction"] != nil){
+            drawP = pfMatche["drawPrediction"] as NSNumber
+        }
+        var homeTeamWin:NSNumber = 0
+        if(pfMatche["homeTeamWinPrediction"] != nil){
+            homeTeamWin = pfMatche["homeTeamWinPrediction"] as NSNumber
+        }
+        var awayTeamWin:NSNumber = 0
+        if(pfMatche["awayTeamWinPrediction"] != nil){
+            awayTeamWin = pfMatche["awayTeamWinPrediction"] as NSNumber
+        }
+        
+        return CGFloat(drawP)/(CGFloat(homeTeamWin)+CGFloat(drawP)+CGFloat(awayTeamWin))
+    }
+    
+    func percentThinkAwayTeamWin() -> CGFloat{
+        
+        var drawP:NSNumber = 0
+        if(pfMatche["drawPrediction"] != nil){
+            drawP = pfMatche["drawPrediction"] as NSNumber
+        }
+        var homeTeamWin:NSNumber = 0
+        if(pfMatche["homeTeamWinPrediction"] != nil){
+            homeTeamWin = pfMatche["homeTeamWinPrediction"] as NSNumber
+        }
+        var awayTeamWin:NSNumber = 0
+        if(pfMatche["awayTeamWinPrediction"] != nil){
+            awayTeamWin = pfMatche["awayTeamWinPrediction"] as NSNumber
+        }
+        
+        return CGFloat(awayTeamWin)/(CGFloat(homeTeamWin)+CGFloat(drawP)+CGFloat(awayTeamWin))
+    }
     
 }
 

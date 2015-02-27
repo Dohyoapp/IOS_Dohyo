@@ -26,21 +26,26 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
     var privateData:NSArray!
     
     
+    var publicNumber:UILabel!
+    var privateNumber:UILabel!
+    
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.whiteColor()
         
         publicButton = UIButton(frame: CGRectMake(10, YSTART+5, 145, 33))
         publicButton.setTitle("Public", forState: .Normal)
-        publicButton.titleLabel!.font = UIFont(name:FONT3, size:15)
-        publicButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        publicButton.backgroundColor = SPECIALBLUE
+        publicButton.titleLabel!.font = UIFont(name:FONT2, size:18)
+        publicButton.setTitleColor(SPECIALBLUE, forState: .Normal)
+        publicButton.backgroundColor = UIColor.whiteColor()
         publicButton.addTarget(self, action:"publicButtonTap:", forControlEvents:.TouchUpInside)
-        publicButton.alpha = 0.6
+        //publicButton.alpha = 0.6
         self.view.addSubview(publicButton)
         
-        var publicNumber = UILabel(frame: CGRectMake(138, -5, 15, 15))
+        publicNumber = UILabel(frame: CGRectMake(100, 0, 15, 15))
         publicNumber.layer.cornerRadius = 7
         publicNumber.clipsToBounds = true
         publicNumber.textAlignment = .Center
@@ -61,13 +66,13 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         
         privateButton = UIButton(frame: CGRectMake(165, YSTART+5, 145, 33))
         privateButton.setTitle("Private", forState: .Normal)
-        privateButton.titleLabel!.font = UIFont(name:FONT3, size:15)
-        privateButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        privateButton.backgroundColor = SPECIALBLUE
+        privateButton.titleLabel!.font = UIFont(name:FONT1, size:18)
+        privateButton.setTitleColor(SPECIALBLUE, forState: .Normal)
+        privateButton.backgroundColor = UIColor.whiteColor()
         privateButton.addTarget(self, action:"privateButtonTap:", forControlEvents:.TouchUpInside)
         self.view.addSubview(privateButton)
         
-        var privateNumber = UILabel(frame: CGRectMake(138, -5, 15, 15))
+        privateNumber = UILabel(frame: CGRectMake(100, 0, 15, 15))
         privateNumber.layer.cornerRadius = 7
         privateNumber.clipsToBounds = true
         privateNumber.textAlignment = .Center
@@ -127,36 +132,45 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if(section == 0){
+        /*if(section == 0){
             return 0
         }
-        else{
+        else{*/
             return 40.0
-        }
+        //}
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat{
+        
+        return 40
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         var headerView = UIView(frame: CGRectMake(0, 0, 320, 40))
         
-        if(section == 1){
-            
+        
             var blueLineTop = UIView(frame: CGRectMake(0, 0, 320, 1))
             blueLineTop.backgroundColor = SPECIALBLUE
             headerView.addSubview(blueLineTop)
             
             var oldInvitationLabel = UILabel(frame: CGRectMake(0, 1, 320, 38))
             oldInvitationLabel.textAlignment = .Center
-            oldInvitationLabel.font  = UIFont(name:FONT2, size:14)
+            oldInvitationLabel.font  = UIFont(name:FONT2, size:18)
             oldInvitationLabel.textColor = SPECIALBLUE
             oldInvitationLabel.backgroundColor = UIColor.whiteColor()
             headerView.addSubview(oldInvitationLabel)
-            oldInvitationLabel.text = "Old Invitations"
+        if(section == 1){
+            oldInvitationLabel.text = "Older Invitations"
+        }
+        else{
+            oldInvitationLabel.text = "New League Invitations"
+        }
             
             var blueLineBottom = UIView(frame: CGRectMake(0, 39, 320, 1))
             blueLineBottom.backgroundColor = SPECIALBLUE
             headerView.addSubview(blueLineBottom)
-        }
+        
         
         return headerView
     }
@@ -178,13 +192,16 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
             if(cell == nil){
                 cell = UITableViewCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"JoinCustomCell")
                 
-                var joinButton = UIButton(frame: CGRectMake(265, 7, 45, 30))
+                var joinButton = UIButton(frame: CGRectMake(265, 10, 45, 30))
                 joinButton.setTitle("Join", forState: .Normal)
-                joinButton.titleLabel!.font = UIFont(name:FONT3, size:15)
-                joinButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-                joinButton.backgroundColor = SPECIALBLUE
+                joinButton.titleLabel!.font = UIFont(name:FONT2, size:15)
+                joinButton.setTitleColor(SPECIALBLUE, forState: .Normal)
+                joinButton.backgroundColor = UIColor.whiteColor()
                 joinButton.addTarget(self, action:"joinButtonTap:", forControlEvents:.TouchUpInside)
                 cell.addSubview(joinButton)
+                
+                cell.textLabel.font = UIFont(name:FONT1, size:17)
+                cell.textLabel.textColor = SPECIALBLUE
             }
             
             cell.tag  = indexPath.row
@@ -216,8 +233,11 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
     
     func publicButtonTap(sender: UIButton!){
         
-        publicButton.alpha = 0.6
-        privateButton.alpha  = 1
+       // publicButton.alpha = 0.6
+       // privateButton.alpha  = 1
+        
+        publicButton.titleLabel!.font = UIFont(name:FONT2, size:18)
+        privateButton.titleLabel!.font = UIFont(name:FONT1, size:18)
         
         if(publicData != nil){
             tableViewDataNew = publicData.firstObject as NSArray
@@ -229,8 +249,11 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
     
     func privateButtonTap(sender: UIButton!){
         
-        privateButton.alpha = 0.6
-        publicButton.alpha  = 1
+       // privateButton.alpha = 0.6
+      //  publicButton.alpha  = 1
+        
+        publicButton.titleLabel!.font = UIFont(name:FONT1, size:18)
+        privateButton.titleLabel!.font = UIFont(name:FONT2, size:18)
         
         if(privateData != nil){
             tableViewDataNew = privateData.firstObject as NSArray
@@ -254,13 +277,44 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         var customLeague:PFObject!
         
         if(indexPath.section == 0){
-            customLeague = tableViewDataNew[num] as PFObject
+            customLeague    = tableViewDataNew[num] as PFObject
+            var firstValue  = NSNumber(integer:(countArray.firstObject as Int) - 1)
+            var secondValue = countArray.lastObject as NSNumber
+            countArray      = [firstValue, secondValue]
         }
         else{
-            customLeague = tableViewDataOld[num] as PFObject
+            customLeague    = tableViewDataOld[num] as PFObject
+            var firstValue  = countArray.firstObject as NSNumber
+            var secondValue = NSNumber(integer:(countArray.lastObject as Int) - 1)
+            countArray      = [firstValue, secondValue]
         }
         
         GSCustomLeague.joinCurrentUserToCustomLeague(customLeague)
+        GSCustomLeague.getAllPublicCustomLeagues(self)
+        
+        
+        
+        if(countArray != nil && countArray.count > 0){
+            var publicCount = countArray.firstObject as Int
+            if(publicCount > 0){
+                publicNumber.text = String(publicCount)
+                publicNumber.hidden = false
+            }
+            else{
+                publicNumber.hidden = true
+            }
+        }
+        
+        if(countArray != nil && countArray.count > 0){
+            var privateCount = countArray.lastObject as Int
+            if(privateCount > 0){
+                privateNumber.text = String(privateCount)
+                privateNumber.hidden = false
+            }
+            else{
+                privateNumber.hidden = true
+            }
+        }
     }
     
     

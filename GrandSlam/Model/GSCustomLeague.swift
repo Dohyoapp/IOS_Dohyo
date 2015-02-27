@@ -15,7 +15,7 @@ import Foundation
     optional func endGetAllPrivateCustomLeagues(data : NSArray)
 }
 
-var myDict:NSDictionary = NSDictionary(contentsOfFile: NSBundle.mainBundle().pathForResource("TeamsShortCut", ofType: "plist")!)!
+var teamsDict:NSDictionary = NSDictionary(contentsOfFile: NSBundle.mainBundle().pathForResource("TeamsShortCut", ofType: "plist")!)!
 
 var dateFormatter = NSDateFormatter()
 
@@ -236,19 +236,22 @@ class GSCustomLeague: NSObject {
     class func getShortTitle(longTitle:NSString) -> NSArray{
         
         var names:NSArray       = longTitle.componentsSeparatedByString(" V ")
-        var leftName:NSString   = names.firstObject as NSString
-        var rightName:NSString  = names.lastObject as NSString
-        leftName    = leftName.stringByReplacingOccurrencesOfString(" ", withString: "")
-        rightName   = rightName.stringByReplacingOccurrencesOfString(" ", withString: "")
-        
-        if( myDict.objectForKey(leftName) != nil ){
-            leftName = myDict.objectForKey(leftName) as NSString
-        }
-        if( myDict.objectForKey(rightName) != nil ){
-            rightName = myDict.objectForKey(rightName) as NSString
-        }
+        var leftName    = self.getShortNameTeam(names.firstObject as NSString)
+        var rightName   = self.getShortNameTeam(names.lastObject as NSString)
         
         return [leftName, rightName]
+    }
+    
+    
+    class func getShortNameTeam(teamName:NSString) -> NSString{
+        
+        var shortTeamtName    = teamName.stringByReplacingOccurrencesOfString(" ", withString: "")
+        
+        if( teamsDict.objectForKey(shortTeamtName) != nil ){
+            shortTeamtName = teamsDict.objectForKey(shortTeamtName) as NSString
+        }
+        
+        return shortTeamtName
     }
     
     

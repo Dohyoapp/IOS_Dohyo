@@ -52,6 +52,12 @@
 		D16CEF5A1A728B3300964056 /* GSMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16CEF581A728B3300964056 /* GSMainViewController.swift */; };
 		D16CEF5C1A728E7A00964056 /* GSNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16CEF5B1A728E7A00964056 /* GSNavigationBar.swift */; };
 		D16CEF5D1A728E7A00964056 /* GSNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16CEF5B1A728E7A00964056 /* GSNavigationBar.swift */; };
+		D17BEA151A9F891E00EB8961 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17BEA141A9F891E00EB8961 /* Utils.swift */; };
+		D17BEA161A9F891E00EB8961 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17BEA141A9F891E00EB8961 /* Utils.swift */; };
+		D17BEA181AA0BC6400EB8961 /* GSPastMatchsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17BEA171AA0BC6400EB8961 /* GSPastMatchsViewController.swift */; };
+		D17BEA191AA0BC6400EB8961 /* GSPastMatchsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17BEA171AA0BC6400EB8961 /* GSPastMatchsViewController.swift */; };
+		D17BEA1B1AA0BECA00EB8961 /* GSLeaderBoardScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17BEA1A1AA0BECA00EB8961 /* GSLeaderBoardScrollView.swift */; };
+		D17BEA1C1AA0BECA00EB8961 /* GSLeaderBoardScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17BEA1A1AA0BECA00EB8961 /* GSLeaderBoardScrollView.swift */; };
 		D19668551A764BB4003D4F8D /* RestKitConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19668541A764BB4003D4F8D /* RestKitConfig.swift */; };
 		D19668561A764BB4003D4F8D /* RestKitConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19668541A764BB4003D4F8D /* RestKitConfig.swift */; };
 		D19668641A767077003D4F8D /* ParseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19668631A767077003D4F8D /* ParseConfig.swift */; };
@@ -194,6 +200,9 @@
 		D16A92EE1A84EB1400B11604 /* GSLeague.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSLeague.swift; sourceTree = "<group>"; };
 		D16CEF581A728B3300964056 /* GSMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSMainViewController.swift; sourceTree = "<group>"; };
 		D16CEF5B1A728E7A00964056 /* GSNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSNavigationBar.swift; sourceTree = "<group>"; };
+		D17BEA141A9F891E00EB8961 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		D17BEA171AA0BC6400EB8961 /* GSPastMatchsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSPastMatchsViewController.swift; sourceTree = "<group>"; };
+		D17BEA1A1AA0BECA00EB8961 /* GSLeaderBoardScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSLeaderBoardScrollView.swift; sourceTree = "<group>"; };
 		D19668541A764BB4003D4F8D /* RestKitConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestKitConfig.swift; sourceTree = "<group>"; };
 		D19668631A767077003D4F8D /* ParseConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseConfig.swift; sourceTree = "<group>"; };
 		D19668671A767103003D4F8D /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -377,6 +386,8 @@
 				D130EE4E1A89166C002FCD6F /* GSLeaderBoardViewController.swift */,
 				D130EE521A891CCD002FCD6F /* GSLeaderBoardCell.swift */,
 				D1D2E7641A93AE7100D491A1 /* GSBetCstomLeagueViewController.swift */,
+				D17BEA171AA0BC6400EB8961 /* GSPastMatchsViewController.swift */,
+				D17BEA1A1AA0BECA00EB8961 /* GSLeaderBoardScrollView.swift */,
 			);
 			name = CustomLeague;
 			sourceTree = "<group>";
@@ -587,6 +598,7 @@
 			children = (
 				D1D1C2291A7FBF16007C6FC8 /* SocialSharing */,
 				D19668E91A7A8674003D4F8D /* FieldsValidator.swift */,
+				D17BEA141A9F891E00EB8961 /* Utils.swift */,
 			);
 			path = "Shared Files";
 			sourceTree = "<group>";
@@ -849,9 +861,11 @@
 				D19668551A764BB4003D4F8D /* RestKitConfig.swift in Sources */,
 				D19668641A767077003D4F8D /* ParseConfig.swift in Sources */,
 				D19668F11A7A9916003D4F8D /* GPGuardPost.m in Sources */,
+				D17BEA151A9F891E00EB8961 /* Utils.swift in Sources */,
 				D19669081A7AA46A003D4F8D /* SVIndefiniteAnimatedView.m in Sources */,
 				D19668E11A796061003D4F8D /* GSCreateAccountViewController.swift in Sources */,
 				D16CEF5C1A728E7A00964056 /* GSNavigationBar.swift in Sources */,
+				D17BEA1B1AA0BECA00EB8961 /* GSLeaderBoardScrollView.swift in Sources */,
 				D1D1C2341A7FD876007C6FC8 /* GSCustomLeague.swift in Sources */,
 				D10E0BCA1A95F714008FB20D /* GSUserProfileViewController.swift in Sources */,
 				D12905841A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift in Sources */,
@@ -869,6 +883,7 @@
 				D19668F31A7A9916003D4F8D /* GPMailgunClient.m in Sources */,
 				D19668E41A7A5B06003D4F8D /* GSSignInViewController.swift in Sources */,
 				D13D8B811A7013B600303DF3 /* AppDelegate.swift in Sources */,
+				D17BEA181AA0BC6400EB8961 /* GSPastMatchsViewController.swift in Sources */,
 				D19669111A7AA667003D4F8D /* GSProfileViewController.swift in Sources */,
 				D1D2E7621A92375600D491A1 /* GSMatcheSelection.swift in Sources */,
 				D1D2E76B1A94CB8300D491A1 /* GSBetSlip.swift in Sources */,
@@ -899,9 +914,11 @@
 				D19668561A764BB4003D4F8D /* RestKitConfig.swift in Sources */,
 				D19668651A767077003D4F8D /* ParseConfig.swift in Sources */,
 				D19668F21A7A9916003D4F8D /* GPGuardPost.m in Sources */,
+				D17BEA161A9F891E00EB8961 /* Utils.swift in Sources */,
 				D19669091A7AA46A003D4F8D /* SVIndefiniteAnimatedView.m in Sources */,
 				D19668E21A796061003D4F8D /* GSCreateAccountViewController.swift in Sources */,
 				D16CEF5D1A728E7A00964056 /* GSNavigationBar.swift in Sources */,
+				D17BEA1C1AA0BECA00EB8961 /* GSLeaderBoardScrollView.swift in Sources */,
 				D1D1C2351A7FD876007C6FC8 /* GSCustomLeague.swift in Sources */,
 				D10E0BCB1A95F714008FB20D /* GSUserProfileViewController.swift in Sources */,
 				D12905851A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift in Sources */,
@@ -919,6 +936,7 @@
 				D19668F41A7A9916003D4F8D /* GPMailgunClient.m in Sources */,
 				D19668E51A7A5B06003D4F8D /* GSSignInViewController.swift in Sources */,
 				D13D8BB51A70163E00303DF3 /* AppDelegate.swift in Sources */,
+				D17BEA191AA0BC6400EB8961 /* GSPastMatchsViewController.swift in Sources */,
 				D19669121A7AA667003D4F8D /* GSProfileViewController.swift in Sources */,
 				D1D2E7631A92375600D491A1 /* GSMatcheSelection.swift in Sources */,
 				D1D2E76C1A94CB8300D491A1 /* GSBetSlip.swift in Sources */,

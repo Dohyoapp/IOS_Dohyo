@@ -21,6 +21,7 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
     
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.whiteColor()
@@ -44,6 +45,22 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
             yPrize = YSTART+100
         }
         
+        var blueLine1 = UIView(frame:CGRectMake(0, yPrize, 320, 1))
+        blueLine1.backgroundColor = SPECIALBLUE
+        self.view.addSubview(blueLine1)
+        
+        var pastMatchLabel    = UILabel(frame:CGRectMake(0, yPrize+3, 320, 38))
+        pastMatchLabel.text   = "< Swipe to see the latest results"
+        pastMatchLabel.textAlignment = .Center
+        pastMatchLabel.font   = UIFont(name:FONT1, size:18)
+        pastMatchLabel.textColor = SPECIALBLUE
+        self.view.addSubview(pastMatchLabel)
+        
+        var blueLine2 = UIView(frame:CGRectMake(0, yPrize+40, 320, 1))
+        blueLine2.backgroundColor = SPECIALBLUE
+        self.view.addSubview(blueLine2)
+        
+        yPrize = yPrize + 41
         
         var prizeLabel    = UILabel(frame:CGRectMake(70, yPrize, 60, 38))
         prizeLabel.text   = "Prize:"
@@ -68,22 +85,17 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
         
         tableViewData = []
         
-        var usersArray = NSMutableArray()
-        if(customLeague.pfCustomLeague["mainUser"] != nil){
-            usersArray.addObject(customLeague.pfCustomLeague["mainUser"])
-        }
-        if(customLeague.pfCustomLeague["joinUsers"] != nil){
-            var users = customLeague.pfCustomLeague["joinUsers"] as NSArray
-            usersArray.addObjectsFromArray(users)
-        }
-        getUsers(usersArray)
+        
+        getUsersAndPoints()
     }
     
     
-    func getUsers(usersId: NSArray){
+    func getUsersAndPoints(){
         
         SVProgressHUD.show()
-        PFCloud.callFunctionInBackground("getUsersByuserId", withParameters:["usersId" : usersId]) { (result: AnyObject!, error: NSError!) -> Void in
+        var customLeaguePf = customLeague.pfCustomLeague as PFObject
+
+        PFCloud.callFunctionInBackground("getUsersByUsersId", withParameters:["customLeagueId" : customLeaguePf.objectId]) { (result: AnyObject!, error: NSError!) -> Void in
             
             if error == nil {
                 self.tableViewData = result as NSArray
@@ -105,6 +117,11 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
         return tableViewData.count
     }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat{
+        
+       return 30
+    }
+    
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
             
@@ -115,18 +132,21 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
             cell.selectionStyle = .None
             
             cell.numberLabel.text = String(indexPath.row+1)
-            var user = tableViewData[indexPath.row] as PFObject
+            var dico = tableViewData[indexPath.row] as NSDictionary
+            var user = dico.objectForKey("user") as PFObject
             cell.nameLabel.text = user["username"] as NSString
         
-            cell.pointsLabel.text = NSString(format:"%d points", 54)
-        
+        if(dico.objectForKey("userPoints") != nil){
+            cell.pointsLabel.text = NSString(format:"%@ points", dico.objectForKey("userPoints") as NSString)
+        }
             return cell
     }
     
     var userProfileViewController:GSUserProfileViewController!
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        var user = tableViewData[indexPath.row] as PFObject
+        var dico = tableViewData[indexPath.row] as NSDictionary
+        var user = dico.objectForKey("user") as PFObject
         
         if(user.objectId != PFUser.currentUser().objectId){
             

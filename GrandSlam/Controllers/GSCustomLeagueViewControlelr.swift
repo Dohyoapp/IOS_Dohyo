@@ -32,12 +32,10 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     
     var validMatches:NSMutableArray!
     
-    
-    var gsLeaderBoardViewController:GSLeaderBoardViewController!
     var betCstomLeagueViewController:GSBetCstomLeagueViewController!
     
+    var dateLeagueLabel:UILabel!
     
-    var matchResults:NSMutableArray!
     
     override func viewDidLoad() {
         
@@ -56,12 +54,13 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         leaderBoardButton.addTarget(self, action:"leaderBoardTap:", forControlEvents:.TouchUpInside)
         self.view.addSubview(leaderBoardButton)
         
-        var accOddsLabel    = UILabel(frame:CGRectMake(0, YSTART+33, 320, 38))
-        accOddsLabel.text   = NSString(format:"Accumulated odds: %d : %d", 3, 1)
-        accOddsLabel.textAlignment = .Center
-        accOddsLabel.font   = UIFont(name:FONT2, size:18)
-        accOddsLabel.textColor = SPECIALBLUE
-        self.view.addSubview(accOddsLabel)
+        
+        
+        dateLeagueLabel    = UILabel(frame:CGRectMake(0, YSTART+33, 320, 38))
+        dateLeagueLabel.textAlignment = .Center
+        dateLeagueLabel.font   = UIFont(name:FONT2, size:18)
+        dateLeagueLabel.textColor = SPECIALBLUE
+        self.view.addSubview(dateLeagueLabel)
         
         var blueLine = UIView(frame:CGRectMake(0, YSTART+70, 320, 1))
         blueLine.backgroundColor = SPECIALBLUE
@@ -71,13 +70,9 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         scrollView = UIScrollView(frame:CGRectMake(0, blueLine.frame.origin.y+1, 320, self.view.frame.size.height - YSTART - 68))
         self.view.addSubview(scrollView)
         
-        matchResults = GSLeague.getCacheMatchResultsFromDate(customLeague.pfCustomLeague["startDate"] as NSDate)
-        
         
         if(customLeague.hasBetSlip().count > 0){
-            
             self.endGetUserBetSlips()
-            
         }else{
             loadViewWithMatchs()
         }
@@ -103,6 +98,18 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             validMatches.addObject(GSMatcheSelection(matche: matche as PFObject, customLeague: customLeague.pfCustomLeague))
         }
         
+        
+        var dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "dd/MM"
+        var startDate   = customLeague.pfCustomLeague["startDate"] as NSDate
+        var lastMatche = tempMatches.lastObject as PFObject
+        var lastMatcheDate = lastMatche["eventDateTime"] as NSString
+        lastMatcheDate = lastMatcheDate.substringWithRange(NSMakeRange(5, 5))
+        var dateArray = lastMatcheDate.componentsSeparatedByString("-") as NSArray
+        
+        dateLeagueLabel.text   = NSString(format:"Matches: %@ - %@/%@", dateFormatter.stringFromDate(startDate), dateArray.lastObject as NSString, dateArray.firstObject as NSString)
+        
+        
         var count:CGFloat = 0
         for validMatche in validMatches{
             
@@ -119,34 +126,8 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         bettButton.addTarget(self, action:"bettButtonTap:", forControlEvents:.TouchUpInside)
         self.scrollView.addSubview(bettButton)
         
-        
-        var yPastLabelStart = bettButton.frame.origin.y+bettButton.frame.size.height+20
-        
-        var blueLine1 = UIView(frame:CGRectMake(0, yPastLabelStart, 320, 1))
-        blueLine1.backgroundColor = SPECIALBLUE
-        self.scrollView.addSubview(blueLine1)
-        
-        var pastMatchLabel    = UILabel(frame:CGRectMake(0, yPastLabelStart+3, 320, 38))
-        pastMatchLabel.text   = "Past Matches"
-        pastMatchLabel.textAlignment = .Center
-        pastMatchLabel.font   = UIFont(name:FONT2, size:18)
-        pastMatchLabel.textColor = SPECIALBLUE
-        self.scrollView.addSubview(pastMatchLabel)
-        
-        var blueLine2 = UIView(frame:CGRectMake(0, yPastLabelStart+40, 320, 1))
-        blueLine2.backgroundColor = SPECIALBLUE
-        self.scrollView.addSubview(blueLine2)
-        
-        
-        var countMatchResult:CGFloat = 0
-        for matchResult in matchResults{
             
-            createMatcheResultCell(matchResult as PFObject, num:countMatchResult, startY:(CELLHEIGHT*count)+60+60)
-            countMatchResult += 1
-        }
-        
-            
-        self.scrollView.contentSize = CGSizeMake(320, (CELLHEIGHT*count)+60+(CELLHEIGHT*countMatchResult)+60)
+        self.scrollView.contentSize = CGSizeMake(320, (CELLHEIGHT*count)+60)
     }
     
     
@@ -160,52 +141,18 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     func closeView(){
         
         self.view.removeFromSuperview()
-        //GSMainViewController.getMainViewControllerInstance().dismissViewControllerAnimated(true, nil)
+        //GSMainViewController.getMainViewControllerInstance().dismissViewControllerAnimated(true, completion: nil)
     }
     
 
     func leaderBoardTap(sender: UIButton!){
         
-        gsLeaderBoardViewController = GSLeaderBoardViewController()
-        gsLeaderBoardViewController.customLeague = customLeague
-        gsLeaderBoardViewController.customLeague.pfCustomLeague.fetch()
-        self.view.addSubview(gsLeaderBoardViewController.view)
+        var leaderBoardScrollView = GSLeaderBoardScrollView(frame:self.view.frame, customLeague:customLeague)
+        self.view.addSubview(leaderBoardScrollView)
     }
     
     
-    func createMatcheResultCell(matcheResult:PFObject, num:CGFloat, startY:CGFloat){
-        
-        var matchResultView = UIView(frame:CGRectMake(0, startY+(num*CELLHEIGHT), 320, CELLHEIGHT))
-        matchResultView.backgroundColor = UIColor.whiteColor()
-        
-        var title = String(format: "%@ V %@", matcheResult["homeTeam"] as NSString, matcheResult["awayTeam"] as NSString) 
-        GSCustomLeagueViewControlelr.createTopView(matchResultView, title: title, isCrowd:false)
-        
-        var leftScoreLabel  = UILabel(frame:CGRectMake(95, 50, 60, 100))
-        leftScoreLabel.tag  = 888
-        leftScoreLabel.text = matcheResult["homeTeamScore"] as NSString
-        leftScoreLabel.textAlignment = .Center
-        leftScoreLabel.font = UIFont(name:FONT2, size:44)
-        leftScoreLabel.textColor = SPECIALBLUE
-        matchResultView.addSubview(leftScoreLabel)
-        
-        var centerScoreLabel    = UILabel(frame:CGRectMake(127, 70, 60, 60))
-        centerScoreLabel.text   = "-"
-        centerScoreLabel.textAlignment = .Center
-        centerScoreLabel.font   = UIFont(name:FONT2, size:44)
-        centerScoreLabel.textColor = SPECIALBLUE
-        matchResultView.addSubview(centerScoreLabel)
-        
-        var rightScoreLabel     = UILabel(frame:CGRectMake(160, 50, 60, 100))
-        rightScoreLabel.tag     = 999
-        rightScoreLabel.text    = matcheResult["awayTeamScore"] as NSString
-        rightScoreLabel.textAlignment = .Center
-        rightScoreLabel.font    = UIFont(name:FONT2, size:44)
-        rightScoreLabel.textColor = SPECIALBLUE
-        matchResultView.addSubview(rightScoreLabel)
-        
-        scrollView.addSubview(matchResultView)
-    }
+    
 
 
     
@@ -456,19 +403,46 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             
             
             
-            var matchBettingSelections = matche.matchBettingSelections
             
             var teamsNames:NSArray = GSCustomLeague.getShortTitle(matche.pfMatche.valueForKey("title") as NSString)
             
             var firstTeamLabel     = UILabel(frame:CGRectMake(45, 0, 60, 60))
             firstTeamLabel.numberOfLines = 2
             firstTeamLabel.textAlignment = .Center
-            firstTeamLabel.text    = "THS\nwin"//teamsNames.firstObject as NSString
+            firstTeamLabel.text    = (teamsNames.firstObject as NSString)+"\nwin"
             firstTeamLabel.font    = UIFont(name:FONT4, size:15)
             firstTeamLabel.textColor = UIColor.whiteColor()
             crowdPredictionView.addSubview(firstTeamLabel)
             
-            var firstTeamSelection = matchBettingSelections[0] as NSDictionary
+
+            var firstTeamPView = UIView(frame:CGRectMake(110, 15, 80, 16))
+            firstTeamPView.backgroundColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(firstTeamPView)
+            
+            var firstTeamValue = matche.percentThinkHomeTeamWin()
+
+            var firstTeamProgressView = UIProgressView(frame:CGRectMake(1, 7, 78, 6))
+            var transformPV = CGAffineTransformMakeScale(1.0, 7.0)
+            firstTeamProgressView.transform = transformPV
+            firstTeamProgressView.trackTintColor    = SPECIALBLUE
+            firstTeamProgressView.progressTintColor = UIColor.whiteColor()
+            if(firstTeamValue > 0){
+                firstTeamProgressView.progress = Float(firstTeamValue)
+            }
+            firstTeamPView.addSubview(firstTeamProgressView)
+            
+            var firstTeamThinkLabel     = UILabel(frame:CGRectMake(120, 26, 80, 30))
+            var value = 0
+            if(firstTeamValue > 0){
+                value = Int(firstTeamValue*100)
+            }
+            firstTeamThinkLabel.text    = String(value).stringByAppendingString("% think")
+            firstTeamThinkLabel.font    = UIFont(name:FONT4, size:12)
+            firstTeamThinkLabel.textColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(firstTeamThinkLabel)
+            
+
+            var firstTeamSelection = matche.getHomeSelection()
             var firstTeamCurrentPrice = firstTeamSelection.objectForKey("currentPrice") as NSDictionary
             var firstTeamDenPrice = firstTeamCurrentPrice.objectForKey("denPrice") as CGFloat
             var firstTeamNumPrice = firstTeamCurrentPrice.objectForKey("numPrice") as CGFloat
@@ -493,6 +467,8 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             
             
             
+            
+            
             var drawLabel     = UILabel(frame:CGRectMake(45, 47, 60, 60))
             drawLabel.text    = "Draw"
             drawLabel.textAlignment = .Center
@@ -500,7 +476,34 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             drawLabel.textColor = UIColor.whiteColor()
             crowdPredictionView.addSubview(drawLabel)
             
-            var drawSelection = matchBettingSelections[2] as NSDictionary
+            
+            var drawPView = UIView(frame:CGRectMake(110, 63, 80, 16))
+            drawPView.backgroundColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(drawPView)
+            
+            var drawValue = matche.percentThinkDraw()
+            
+            var drawProgressView = UIProgressView(frame:CGRectMake(1, 7, 78, 6))
+            drawProgressView.transform = transformPV
+            drawProgressView.trackTintColor    = SPECIALBLUE
+            drawProgressView.progressTintColor = UIColor.whiteColor()
+            if(drawValue > 0){
+                drawProgressView.progress = Float(drawValue)
+            }
+            drawPView.addSubview(drawProgressView)
+            
+            var drawThinkLabel     = UILabel(frame:CGRectMake(120, 74, 80, 30))
+            value = 0
+            if(drawValue > 0){
+                value = Int(drawValue*100)
+            }
+            drawThinkLabel.text    = String(value).stringByAppendingString("% think")
+            drawThinkLabel.font    = UIFont(name:FONT4, size:12)
+            drawThinkLabel.textColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(drawThinkLabel)
+            
+            
+            var drawSelection = matche.getDrawSelection()
             var drawCurrentPrice = drawSelection.objectForKey("currentPrice") as NSDictionary
             var drawDenPrice = drawCurrentPrice.objectForKey("denPrice") as CGFloat
             var drawNumPrice = drawCurrentPrice.objectForKey("numPrice") as CGFloat
@@ -523,15 +526,45 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             crowdPredictionView.addSubview(drawOddButton)
             
             
+            
+            
+            
+            
             var secondTeamLabel     = UILabel(frame:CGRectMake(45, 94, 60, 60))
             secondTeamLabel.numberOfLines = 2
             secondTeamLabel.textAlignment = .Center
-            secondTeamLabel.text    = "CHE\nwin"//teamsNames.lastObject as NSString
+            secondTeamLabel.text    = (teamsNames.lastObject as NSString)+"\nwin"
             secondTeamLabel.font    = UIFont(name:FONT4, size:15)
             secondTeamLabel.textColor = UIColor.whiteColor()
             crowdPredictionView.addSubview(secondTeamLabel)
             
-            var secondTeamSelection = matchBettingSelections[1] as NSDictionary
+            var secondTeamPView = UIView(frame:CGRectMake(110, 110, 80, 16))
+            secondTeamPView.backgroundColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(secondTeamPView)
+            
+            var secondTeamValue = matche.percentThinkAwayTeamWin()
+            
+            var secondTeamProgressView = UIProgressView(frame:CGRectMake(1, 7, 78, 6))
+            secondTeamProgressView.transform = transformPV
+            secondTeamProgressView.trackTintColor    = SPECIALBLUE
+            secondTeamProgressView.progressTintColor = UIColor.whiteColor()
+            if(secondTeamValue > 0){
+                secondTeamProgressView.progress = Float(secondTeamValue)
+            }
+            secondTeamPView.addSubview(secondTeamProgressView)
+            
+            var secondTeamThinkLabel     = UILabel(frame:CGRectMake(120, 121, 80, 30))
+            value = 0
+            if(secondTeamValue > 0){
+                value = Int(secondTeamValue*100)
+            }
+            secondTeamThinkLabel.text    = String(value).stringByAppendingString("% think")
+            secondTeamThinkLabel.font    = UIFont(name:FONT4, size:12)
+            secondTeamThinkLabel.textColor = UIColor.whiteColor()
+            crowdPredictionView.addSubview(secondTeamThinkLabel)
+            
+            
+            var secondTeamSelection = matche.getAwaySelection()
             var secondTeamCurrentPrice = secondTeamSelection.objectForKey("currentPrice") as NSDictionary
             var secondTeamDenPrice = secondTeamCurrentPrice.objectForKey("denPrice") as CGFloat
             var secondTeamNumPrice = secondTeamCurrentPrice.objectForKey("numPrice") as CGFloat
@@ -565,7 +598,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
         var bestSelection:NSDictionary  = matche.bestCorrectScoreSelection
-        GSBetSlip.goToLadBrokes(bestSelection)
+        GSBetSlip.goToLadBrokes([bestSelection])
     }
     
     func firstTeamOddButtonTap(sender: UIButton!){
@@ -574,8 +607,8 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         var row     = cell.superview!.tag
         
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
-        var selection:NSDictionary      = matche.matchBettingSelections[0] as NSDictionary
-        GSBetSlip.goToLadBrokes(selection)
+        var selection:NSDictionary      = matche.getHomeSelection()
+        GSBetSlip.goToLadBrokes([selection])
     }
     
     func secondTeamOddButtonTap(sender: UIButton!){
@@ -584,8 +617,8 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         var row     = cell.superview!.tag
         
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
-        var selection:NSDictionary      = matche.matchBettingSelections[1] as NSDictionary
-        GSBetSlip.goToLadBrokes(selection)
+        var selection:NSDictionary      = matche.getAwaySelection()
+        GSBetSlip.goToLadBrokes([selection])
     }
     
     func drawOddButtonTap(sender: UIButton!){
@@ -594,8 +627,8 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         var row     = cell.superview!.tag
         
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
-        var selection:NSDictionary      = matche.matchBettingSelections[2] as NSDictionary
-        GSBetSlip.goToLadBrokes(selection)
+        var selection:NSDictionary      = matche.getDrawSelection()
+        GSBetSlip.goToLadBrokes([selection])
     }
 
     
@@ -627,6 +660,8 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
                     bet.setObject((matche as GSMatcheSelection).pfMatche.objectId , forKey: "matchId")
                     betSelections.addObject(bet)
                 }
+                
+                (matche as GSMatcheSelection).setPredictionTeamWin(leftScore, rightScore: rightScore)
             }
             count += 1
         }
@@ -648,7 +683,6 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
                 SVProgressHUD.dismiss()
                 
                 GSUser.loadUserBetSlips(user, delegate: self)
-                
             })
             
            // GSBetSlip.buildSlip(betSelections)
@@ -700,8 +734,8 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             var arraySpaces = selectionName.componentsSeparatedByString(" ") as NSArray
             var count = arraySpaces.count
             
-            var maxScore = (arraySpaces[count-3] as NSString)
-            var smallScore = (arraySpaces[count-1] as NSString)
+            var maxScore    = (arraySpaces[count-3] as NSString)
+            var smallScore  = (arraySpaces[count-1] as NSString)
             
             if(selectionName.substringToIndex(selectionName.length-6) == names[0] as NSString){
                 

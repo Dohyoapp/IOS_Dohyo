@@ -17,7 +17,7 @@ let KGUARDPOST_MAIL_KEY = "pubkey-9c9c25d3da2c16f8b73a6518d1a10470"
 
 
 
-class FieldsValidator: NSObject {
+class FieldsValidator {
     
     class func validateName(name: NSString) -> Bool{
         

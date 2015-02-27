@@ -48,14 +48,14 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         tableView.delegate      = self
         tableView.backgroundColor = UIColor.whiteColor()
         tableView.separatorStyle  = .None
-        tableView.addGestureRecognizer( UITapGestureRecognizer(target: self, action:Selector("hideKeyBoard")) )
+        
         self.view.addSubview(tableView)
     }
     
     func closeView(){
         
         SVProgressHUD.dismiss()
-        
+        hideKeyBoard()
         var user = PFUser.currentUser()
         // userNameEmailChanges
         var username: AnyObject! = user.objectForKey("username")
@@ -153,6 +153,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
             var cell = UITableViewCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"MainCustomCell")
             createMainCell(cell)
             cell.selectionStyle = .None
+            cell.addGestureRecognizer( UITapGestureRecognizer(target: self, action:Selector("hideKeyBoard")) )
             return cell
         }
         else{
@@ -197,6 +198,20 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
             }
         
             return cell
+        }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if(indexPath.section == 1){
+            
+            if(indexPath.row > 0 && indexPath.row < tableViewData.count-3){
+                
+                closeView()
+                var value = Int(indexPath.row)-1
+                navigationBar.goToLeague(value)
+            }
+            
         }
     }
     
@@ -289,7 +304,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
     }
 
     func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-        GSMainViewController.getMainViewControllerInstance().dismissViewControllerAnimated(true, nil)
+        GSMainViewController.getMainViewControllerInstance().dismissViewControllerAnimated(true, completion: nil)
         
         var userId:AnyObject! = PFUser.currentUser().objectId
         if(userId != nil){

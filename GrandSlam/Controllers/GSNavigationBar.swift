@@ -11,6 +11,8 @@ import Foundation
 
 var createCustomLeague:GSCreateCustomLeagueViewController!
 
+let SPACEBETWEENLABELS:CGFloat = 20
+
 
 class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
     
@@ -42,11 +44,19 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         var sizeTextLabel   = UILabel()
         sizeTextLabel.font  = UIFont(name:FONT1, size:18)
         
+        var dohyoButton = UILabel(frame: CGRectMake(5, 2, 135, NAVIGATIONBAR_HEIGHT))
+        dohyoButton.text = "Dohyo Leagues:"
+        dohyoButton.font = UIFont(name:FONT1, size:18)
+        dohyoButton.textColor = SPECIALBLUE
+        self.addSubview(dohyoButton)
+        
+        var startX:CGFloat = 140
+        
         sizeTextLabel.frame = CGRectMake(0, 0, 160, NAVIGATIONBAR_HEIGHT)
         sizeTextLabel.text = "Create"
         sizeTextLabel.sizeToFit()
-        var createWidth = sizeTextLabel.frame.size.width+30
-        var createButton = UILabel(frame: CGRectMake(0, 2, createWidth, NAVIGATIONBAR_HEIGHT))
+        var createWidth = sizeTextLabel.frame.size.width+SPACEBETWEENLABELS
+        var createButton = UILabel(frame: CGRectMake(startX, 2, createWidth, NAVIGATIONBAR_HEIGHT))
         createButton.userInteractionEnabled = true
         createButton.text = "Create"
         createButton.textAlignment = .Center
@@ -60,8 +70,8 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         sizeTextLabel.frame = CGRectMake(0, 0, 160, NAVIGATIONBAR_HEIGHT)
         sizeTextLabel.text = "Join"
         sizeTextLabel.sizeToFit()
-        var joinWidth = sizeTextLabel.frame.size.width+30
-        var joinButton = UILabel(frame: CGRectMake(createWidth, 2, joinWidth, NAVIGATIONBAR_HEIGHT))
+        var joinWidth = sizeTextLabel.frame.size.width+SPACEBETWEENLABELS
+        var joinButton = UILabel(frame: CGRectMake(startX+createWidth-5, 2, joinWidth, NAVIGATIONBAR_HEIGHT))
         joinButton.userInteractionEnabled = true
         joinButton.text = "Join"
         joinButton.textAlignment = .Center
@@ -72,7 +82,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         self.buttonsArray.addObject(joinButton)
         
         
-        joinNumber = UILabel(frame: CGRectMake(45, 12, 15, 15))
+        joinNumber = UILabel(frame: CGRectMake(40, 13, 14, 14))
         joinNumber.layer.cornerRadius = 7
         joinNumber.clipsToBounds = true
         joinNumber.text = ""
@@ -84,7 +94,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         joinNumber.hidden = true
         
         var i = 0
-        var xViews = createWidth+joinWidth
+        var xViews = startX+createWidth+joinWidth
         var league:PFObject
         for league in objects{
             
@@ -93,7 +103,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
             sizeTextLabel.frame = CGRectMake(0, 0, 260, NAVIGATIONBAR_HEIGHT)
             sizeTextLabel.text = leagueName
             sizeTextLabel.sizeToFit()
-            var buttonWidth = sizeTextLabel.frame.size.width+30
+            var buttonWidth = sizeTextLabel.frame.size.width+SPACEBETWEENLABELS
             var button = UILabel(frame: CGRectMake(xViews, 2, buttonWidth, NAVIGATIONBAR_HEIGHT))
             button.userInteractionEnabled = true
             button.text = leagueName
@@ -120,6 +130,8 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         }
         
         self.addSubview(fakeTextField)
+        
+        self.setContentOffset(CGPointMake(0, 0), animated:false)
     }
     
     
@@ -149,8 +161,10 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
     
     
     func createTap(recognizer: UITapGestureRecognizer!){
+        
         closeAccountViewIfNeeded()
-        setButtonFont(recognizer.view as UILabel);
+        var createLabel = recognizer.view as UILabel
+        setButtonFont(createLabel);
         
         createCustomLeague = GSCreateCustomLeagueViewController()
         GSMainViewController.getMainViewControllerInstance().view.addSubview(createCustomLeague.view)
@@ -161,11 +175,15 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         if(joinCustomLeagueViewController != nil){
             joinCustomLeagueViewController.closeView()
         }
+        
+        self.setContentOffset(CGPointMake(createLabel.center.x-150, 0), animated:true)
     }
     
     func joinTap(recognizer: UITapGestureRecognizer!){
+        
         closeAccountViewIfNeeded()
-        setButtonFont(recognizer.view as UILabel);
+        var joinLabel = recognizer.view as UILabel
+        setButtonFont(joinLabel);
         
         joinCustomLeagueViewController = GSJoinCustomLeagueViewController()
         joinCustomLeagueViewController.countArray = countArray
@@ -174,11 +192,19 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         if(customLeagueViewControlelr != nil){
             customLeagueViewControlelr.closeView()
         }
+        
+        self.setContentOffset(CGPointMake(joinLabel.center.x-150, 0), animated:true)
     }
     
     func otherButtonTap(recognizer: UITapGestureRecognizer!){
+        
         closeAccountViewIfNeeded()
         var label = recognizer.view as UILabel
+        labelSelected(label)
+    }
+    
+    func labelSelected(label: UILabel){
+        
         setButtonFont(label);
         
         customLeagueViewControlelr = GSCustomLeagueViewControlelr()
@@ -189,8 +215,14 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
             joinCustomLeagueViewController.closeView()
         }
         
-        var number = Int(label.frame.origin.x/self.frame.size.width)
-        self.scrollRectToVisible(CGRectMake(label.frame.origin.x, 0, label.frame.size.width, NAVIGATIONBAR_HEIGHT), animated: true)
+        self.setContentOffset(CGPointMake(label.center.x-157, 0), animated:true)
+    }
+    
+    
+    func goToLeague(num: Int){
+        
+        var label:UILabel = buttonsArray.objectAtIndex(num+2) as UILabel
+        labelSelected(label)
     }
     
     

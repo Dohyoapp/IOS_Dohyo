@@ -86,14 +86,27 @@ class GSBetSlip{
     
     
     
-    class func goToLadBrokes(selection: NSDictionary){
+    class func goToLadBrokes(selections: NSArray){
         
-        var currentPrice:NSDictionary!  = selection.objectForKey("currentPrice") as NSDictionary //denPrice = 1; numPrice = 100;
-        var selectionKey:AnyObject!     = selection.objectForKey("selectionKey")
+        var selectionsKey = ""
+        for selection in selections {
+            //var currentPrice:NSDictionary!  = selection.objectForKey("currentPrice") as NSDictionary //denPrice = 1; numPrice = 100;
+            var selectionKey:AnyObject!     = (selection as NSDictionary).objectForKey("selectionKey")
+            if(selectionKey != nil){
+                var intSelectionKey = Int(selectionKey as NSNumber)
+                if(countElements(selectionsKey) > 1){
+                    selectionsKey = NSString(format:"%@,%d", selectionsKey, intSelectionKey)
+                }
+                else{
+                    selectionsKey = NSString(format:"%d", intSelectionKey)
+                }
+            }
+        }
         
-        if(selectionKey != nil){
-            var intSelectionKey = Int(selectionKey as NSNumber)
-            var urlString = NSString(format:"https://betslip.ladbrokes.com/RemoteBetslip/bets/betslip.html?selections=%d&locale=en-GB&aff-tag=123&aff-id=123",  intSelectionKey)
+        
+        if(countElements(selectionsKey) > 1){
+            
+            var urlString = NSString(format:"https://betslip.ladbrokes.com/RemoteBetslip/bets/betslip.html?selections=%@&locale=en-GB&aff-tag=123&aff-id=123",  selectionsKey)
             
             webViewController.loadViewWithUrl(NSURL(string:urlString)!)
             GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
