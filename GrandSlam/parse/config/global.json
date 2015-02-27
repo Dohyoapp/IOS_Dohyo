@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "GrandSlam": {
+            "applicationId": "XCYnUIgcJKdPcW8u5FsiqMFeL0sFZDiWoeqWrUn2", 
+            "masterKey": "acPV7lLNoBhuz0IS8GKyiD7Fmhh1xIrpwHi4IkFd"
+        }, 
+        "_default": {
+            "link": "GrandSlam"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.3.4"
+    }
+}

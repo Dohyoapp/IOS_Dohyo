@@ -58,6 +58,12 @@
 		D17BEA191AA0BC6400EB8961 /* GSPastMatchsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17BEA171AA0BC6400EB8961 /* GSPastMatchsViewController.swift */; };
 		D17BEA1B1AA0BECA00EB8961 /* GSLeaderBoardScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17BEA1A1AA0BECA00EB8961 /* GSLeaderBoardScrollView.swift */; };
 		D17BEA1C1AA0BECA00EB8961 /* GSLeaderBoardScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17BEA1A1AA0BECA00EB8961 /* GSLeaderBoardScrollView.swift */; };
+		D17BEA501AA0DB6400EB8961 /* main.js in Resources */ = {isa = PBXBuildFile; fileRef = D17BEA4B1AA0DB6400EB8961 /* main.js */; };
+		D17BEA511AA0DB6400EB8961 /* main.js in Resources */ = {isa = PBXBuildFile; fileRef = D17BEA4B1AA0DB6400EB8961 /* main.js */; };
+		D17BEA521AA0DB6400EB8961 /* global.json in Resources */ = {isa = PBXBuildFile; fileRef = D17BEA4D1AA0DB6400EB8961 /* global.json */; };
+		D17BEA531AA0DB6400EB8961 /* global.json in Resources */ = {isa = PBXBuildFile; fileRef = D17BEA4D1AA0DB6400EB8961 /* global.json */; };
+		D17BEA541AA0DB6400EB8961 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = D17BEA4F1AA0DB6400EB8961 /* index.html */; };
+		D17BEA551AA0DB6400EB8961 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = D17BEA4F1AA0DB6400EB8961 /* index.html */; };
 		D19668551A764BB4003D4F8D /* RestKitConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19668541A764BB4003D4F8D /* RestKitConfig.swift */; };
 		D19668561A764BB4003D4F8D /* RestKitConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19668541A764BB4003D4F8D /* RestKitConfig.swift */; };
 		D19668641A767077003D4F8D /* ParseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19668631A767077003D4F8D /* ParseConfig.swift */; };
@@ -203,6 +209,9 @@
 		D17BEA141A9F891E00EB8961 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		D17BEA171AA0BC6400EB8961 /* GSPastMatchsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSPastMatchsViewController.swift; sourceTree = "<group>"; };
 		D17BEA1A1AA0BECA00EB8961 /* GSLeaderBoardScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSLeaderBoardScrollView.swift; sourceTree = "<group>"; };
+		D17BEA4B1AA0DB6400EB8961 /* main.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = main.js; sourceTree = "<group>"; };
+		D17BEA4D1AA0DB6400EB8961 /* global.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = global.json; sourceTree = "<group>"; };
+		D17BEA4F1AA0DB6400EB8961 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		D19668541A764BB4003D4F8D /* RestKitConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestKitConfig.swift; sourceTree = "<group>"; };
 		D19668631A767077003D4F8D /* ParseConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseConfig.swift; sourceTree = "<group>"; };
 		D19668671A767103003D4F8D /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -489,6 +498,40 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
+		D17BEA491AA0DB6400EB8961 /* parse */ = {
+			isa = PBXGroup;
+			children = (
+				D17BEA4A1AA0DB6400EB8961 /* cloud */,
+				D17BEA4C1AA0DB6400EB8961 /* config */,
+				D17BEA4E1AA0DB6400EB8961 /* public */,
+			);
+			path = parse;
+			sourceTree = "<group>";
+		};
+		D17BEA4A1AA0DB6400EB8961 /* cloud */ = {
+			isa = PBXGroup;
+			children = (
+				D17BEA4B1AA0DB6400EB8961 /* main.js */,
+			);
+			path = cloud;
+			sourceTree = "<group>";
+		};
+		D17BEA4C1AA0DB6400EB8961 /* config */ = {
+			isa = PBXGroup;
+			children = (
+				D17BEA4D1AA0DB6400EB8961 /* global.json */,
+			);
+			path = config;
+			sourceTree = "<group>";
+		};
+		D17BEA4E1AA0DB6400EB8961 /* public */ = {
+			isa = PBXGroup;
+			children = (
+				D17BEA4F1AA0DB6400EB8961 /* index.html */,
+			);
+			path = public;
+			sourceTree = "<group>";
+		};
 		D19668661A767102003D4F8D /* parse-library-1.6.1 */ = {
 			isa = PBXGroup;
 			children = (
@@ -584,6 +627,7 @@
 		D1F2C0941A7B8DA3009DF72D /* My Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D17BEA491AA0DB6400EB8961 /* parse */,
 				D1F2C0951A7B8DDB009DF72D /* Shared Files */,
 				D19668661A767102003D4F8D /* parse-library-1.6.1 */,
 				D196688C1A7673D7003D4F8D /* FacebookSDK */,
@@ -721,6 +765,7 @@
 				D196690A1A7AA46A003D4F8D /* SVProgressHUD.bundle in Resources */,
 				D13D8B881A7013B600303DF3 /* Main.storyboard in Resources */,
 				D115A2581A8E506800EE4664 /* TwitterKitResources.bundle in Resources */,
+				D17BEA541AA0DB6400EB8961 /* index.html in Resources */,
 				D131DC4E1A7F9D490094F8CE /* Profile_Plus.png in Resources */,
 				D1F2C09F1A7BD4BF009DF72D /* chat.png in Resources */,
 				D1F2C0A31A7BD4BF009DF72D /* facebook.png in Resources */,
@@ -731,8 +776,10 @@
 				D1F2C0A51A7BD4BF009DF72D /* twitter.png in Resources */,
 				D19668DD1A795D95003D4F8D /* Profile_Icon.png in Resources */,
 				D1F2C0A71A7BD4BF009DF72D /* whatsapp.png in Resources */,
+				D17BEA501AA0DB6400EB8961 /* main.js in Resources */,
 				D19668B61A793FA0003D4F8D /* launch-screen-iphone5@2x.png in Resources */,
 				D12905871A827B3E00DA1F0C /* TeamsShortCut.plist in Resources */,
+				D17BEA521AA0DB6400EB8961 /* global.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -752,6 +799,7 @@
 				D196690B1A7AA46A003D4F8D /* SVProgressHUD.bundle in Resources */,
 				D13D8BB81A70163E00303DF3 /* Main.storyboard in Resources */,
 				D115A2591A8E506800EE4664 /* TwitterKitResources.bundle in Resources */,
+				D17BEA551AA0DB6400EB8961 /* index.html in Resources */,
 				D131DC4F1A7F9D490094F8CE /* Profile_Plus.png in Resources */,
 				D1F2C0A01A7BD4BF009DF72D /* chat.png in Resources */,
 				D1F2C0A41A7BD4BF009DF72D /* facebook.png in Resources */,
@@ -762,8 +810,10 @@
 				D1F2C0A61A7BD4BF009DF72D /* twitter.png in Resources */,
 				D19668DE1A795D95003D4F8D /* Profile_Icon.png in Resources */,
 				D1F2C0A81A7BD4BF009DF72D /* whatsapp.png in Resources */,
+				D17BEA511AA0DB6400EB8961 /* main.js in Resources */,
 				D19668B71A793FA0003D4F8D /* launch-screen-iphone5@2x.png in Resources */,
 				D12905881A827B3E00DA1F0C /* TeamsShortCut.plist in Resources */,
+				D17BEA531AA0DB6400EB8961 /* global.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

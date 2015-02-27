@@ -1,0 +1,32 @@
+
+<html>
+  <head>
+    <script src="http://www.parsecdn.com/js/parse-1.3.4.min.js"></script>
+    <script>
+    Parse.initialize("XCYnUIgcJKdPcW8u5FsiqMFeL0sFZDiWoeqWrUn2", "gJNHYFSnuDrO6JthmCiodDUCxwAquLdGxX34IpbH");
+    Parse.Cloud.run('initLeagues', {}, {
+      success: function(result) {
+        // result is 'Hello world!'
+      },
+      error: function(error) {
+      }
+    });
+    </script>
+    <title>GrandSlam</title>
+    <style>
+    body { font-family: Helvetica, Arial, sans-serif; }
+    div { width: 800px; height: 400px; margin: 40px auto; padding: 20px; border: 2px solid #5298fc; }
+    h1 { font-size: 30px; margin: 0; }
+    p { margin: 40px 0; }
+    em { font-family: monospace; }
+    a { color: #5298fc; text-decoration: none; }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>Congratulations! You're already hosting with Parse.</h1>
+      <p>To get started, edit this file at <em>public/index.html</em> and start adding static content.</p>
+      <p>If you want something a bit more dynamic, delete this file and check out <a href="https://parse.com/docs/hosting_guide#webapp">our hosting docs</a>.</p>
+    </div>
+  </body>
+</html>
