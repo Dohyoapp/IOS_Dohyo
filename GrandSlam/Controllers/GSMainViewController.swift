@@ -35,9 +35,11 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
         
         var user = PFUser.currentUser()
         if(user.valueForKey("email") == nil){
-            PFUser.becomeInBackground(user.sessionToken, { (user:PFUser!, error: NSError!) -> Void in
+            if(user.sessionToken != nil){
+                PFUser.becomeInBackground(user.sessionToken, { (user:PFUser!, error: NSError!) -> Void in
            
-            })
+                })
+            }
         }
         
         
