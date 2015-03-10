@@ -3,7 +3,7 @@
 //
 
 #import <RestKit/RestKit.h>
-#import "AFOAuth2Client.h"
+#import <AFHTTPClient.h>
 #import <Parse/Parse.h>
 #import <ParseCrashReporting/ParseCrashReporting.h>
 #import <ParseFacebookUtils/PFFacebookUtils.h>

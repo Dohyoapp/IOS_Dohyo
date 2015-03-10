@@ -200,8 +200,8 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
                 joinButton.addTarget(self, action:"joinButtonTap:", forControlEvents:.TouchUpInside)
                 cell.addSubview(joinButton)
                 
-                cell.textLabel.font = UIFont(name:FONT1, size:17)
-                cell.textLabel.textColor = SPECIALBLUE
+                cell.textLabel?.font = UIFont(name:FONT1, size:17)
+                cell.textLabel?.textColor = SPECIALBLUE
             }
             
             cell.tag  = indexPath.row
@@ -213,7 +213,7 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
                     var data: AnyObject? = tableViewDataNew[indexPath.row] as AnyObject
                     if(data != nil){
                         var customLeague = tableViewDataNew[indexPath.row] as PFObject
-                        cell.textLabel.text = customLeague["name"] as NSString
+                        cell.textLabel?.text = customLeague["name"] as NSString
                     }
                 }
             }
@@ -223,7 +223,7 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
                     var data: AnyObject? = tableViewDataOld[indexPath.row] as AnyObject
                     if(data != nil){
                         var customLeague = tableViewDataOld[indexPath.row] as PFObject
-                        cell.textLabel.text = customLeague["name"] as NSString
+                        cell.textLabel?.text = customLeague["name"] as NSString
                     }
                 }
             }
