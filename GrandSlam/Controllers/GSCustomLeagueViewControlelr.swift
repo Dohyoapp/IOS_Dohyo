@@ -167,6 +167,15 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         cell.addSubview(createMatchView(matche))
         
         cell.addSubview(GSCustomLeagueViewControlelr.createCrowdPredictionView(matche, delegate: self))
+        
+        var matcheDate = matche.getDateMatche()
+        if(matcheDate.timeIntervalSinceDate(NSDate()) < 0){
+            
+            var greyView = UIView(frame:CGRectMake(0, 1, 640, CELLHEIGHT-2))
+            greyView.backgroundColor = UIColor.grayColor()
+            greyView.alpha = 0.3
+            cell.addSubview(greyView)
+        }
 
         cell.contentSize = CGSizeMake(640, CELLHEIGHT)
     }
@@ -321,6 +330,22 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     }
     
     
+    func crowdLabelTap(sender: UIButton!){
+        
+        var crowdPredictionView = (sender as UIView).superview!
+        var cell = crowdPredictionView.superview as UIScrollView
+        cell.setContentOffset(CGPointMake(320, 0), animated:true)
+    }
+    
+    func backTap(sender: UIButton!){
+        
+        var crowdPredictionView = (sender as UIView).superview!
+        var cell = crowdPredictionView.superview as UIScrollView
+        cell.setContentOffset(CGPointMake(0, 0), animated:true)
+    }
+    
+    
+    
     class func createCrowdPredictionView(matche:GSMatcheSelection, delegate: CrowdPredictionProtocol) -> UIView{
         
         var crowdPredictionView = UIView(frame:CGRectMake(297, 0, 347, CELLHEIGHT-10))
@@ -328,21 +353,26 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         
         //createTopView(crowdPredictionView, title:matche.pfMatche.valueForKey("title") as NSString, isCrowd:true)
         
-        var crowdLabel  = UILabel(frame:CGRectMake(-60, 70, 140, 23))
-        crowdLabel.textAlignment = .Center
-        crowdLabel.font = UIFont(name:FONT4, size:10)
-        crowdLabel.textColor = UIColor.whiteColor()
-        crowdLabel.text = "Crowd prediction"
+        var crowdLabel  = UIButton(frame:CGRectMake(-57, 67, 140, 23))
+        
+        crowdLabel.titleLabel!.font  = UIFont(name:FONT4, size:11)
+        crowdLabel.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        crowdLabel.setTitle("Crowd Predictions & Odds", forState: .Normal)
+        crowdLabel.addTarget(delegate, action:"crowdLabelTap:", forControlEvents:.TouchUpInside)
+        //crowdLabel.textAlignment = .Center
         let transform = CGAffineTransformRotate(CGAffineTransformIdentity, -3.14/2);
         crowdLabel.transform = transform;
         crowdPredictionView.addSubview(crowdLabel)
+        
 
-        var backLabel  = UILabel(frame:CGRectMake(-48, 60, 166, 23))
+        var backLabel  = UIButton(frame:CGRectMake(-48, 60, 166, 23))
         backLabel.backgroundColor = UIColor.whiteColor()
-        backLabel.textAlignment = .Center
-        backLabel.font = UIFont(name:FONT4, size:13)
-        backLabel.textColor = SPECIALBLUE
-        backLabel.text = "Back"
+        
+        backLabel.titleLabel!.font  = UIFont(name:FONT4, size:13)
+        backLabel.setTitleColor(SPECIALBLUE, forState: .Normal)
+        backLabel.setTitle("Back", forState: .Normal)
+        backLabel.addTarget(delegate, action:"backTap:", forControlEvents:.TouchUpInside)
+        //backLabel.textAlignment = .Center
         backLabel.transform = transform;
         crowdPredictionView.addSubview(backLabel)
         
@@ -588,6 +618,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             
         }
         
+        
         return crowdPredictionView
     }
 
@@ -633,7 +664,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
 
     
     
-    
+    //Your accumulator is based on your match result predictions
     
     func bettButtonTap(sender: UIButton!){
     

@@ -226,6 +226,9 @@ class GSUser:NSObject, UserCaller{
         return cacheBetSlipsUser.objectForKey("bets") as NSArray
     }
     
+    func endGetUserBetSlips(){
+        
+    }
     
 }
 

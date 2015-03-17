@@ -44,13 +44,17 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         var sizeTextLabel   = UILabel()
         sizeTextLabel.font  = UIFont(name:FONT1, size:18)
         
-        var dohyoButton = UILabel(frame: CGRectMake(5, 2, 135, NAVIGATIONBAR_HEIGHT))
-        dohyoButton.text = "Dohyo Leagues:"
+        sizeTextLabel.frame = CGRectMake(0, 0, 160, NAVIGATIONBAR_HEIGHT)
+        sizeTextLabel.text = "Contests:"
+        sizeTextLabel.sizeToFit()
+        var dohyoWidth = sizeTextLabel.frame.size.width+SPACEBETWEENLABELS-8
+        var dohyoButton = UILabel(frame: CGRectMake(5, 2, dohyoWidth, NAVIGATIONBAR_HEIGHT))
+        dohyoButton.text = "Contests:"
         dohyoButton.font = UIFont(name:FONT1, size:18)
         dohyoButton.textColor = SPECIALBLUE
         self.addSubview(dohyoButton)
         
-        var startX:CGFloat = 140
+        var startX:CGFloat = dohyoWidth
         
         sizeTextLabel.frame = CGRectMake(0, 0, 160, NAVIGATIONBAR_HEIGHT)
         sizeTextLabel.text = "Create"
@@ -66,6 +70,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         self.addSubview(createButton)
         self.buttonsArray.addObject(createButton)
         
+        startX += 6
         
         sizeTextLabel.frame = CGRectMake(0, 0, 160, NAVIGATIONBAR_HEIGHT)
         sizeTextLabel.text = "Join"
@@ -123,15 +128,22 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         self.showsHorizontalScrollIndicator = false
         
         if(createCustomLeague == nil){//app launch only
-
-            var gestures:NSArray = (createButton as UIView).gestureRecognizers!
-            var tapGestureRecognizer:UITapGestureRecognizer = gestures[0] as UITapGestureRecognizer
-            createTap(tapGestureRecognizer)
+            goToCreateViewController()
         }
         
         self.addSubview(fakeTextField)
         
         self.setContentOffset(CGPointMake(0, 0), animated:false)
+    }
+    
+    
+    func goToCreateViewController(){
+    
+        var createButton = self.buttonsArray[0] as UILabel
+            
+        var gestures:NSArray = (createButton as UIView).gestureRecognizers!
+        var tapGestureRecognizer:UITapGestureRecognizer = gestures[0] as UITapGestureRecognizer
+        createTap(tapGestureRecognizer)
     }
     
     

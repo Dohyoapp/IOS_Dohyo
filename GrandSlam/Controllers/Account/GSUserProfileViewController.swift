@@ -141,7 +141,7 @@ class GSUserProfileViewController: UIViewController, UITableViewDataSource, UITa
             var objectString = tableViewData.objectAtIndex(indexPath.row) as NSString
             
             cell.labelText.font = UIFont(name:FONT1, size:18)
-            if(indexPath.row == 0 || objectString.isEqualToString(SHARE_TEXXT)){
+            if(indexPath.row == 0 || objectString.isEqualToString(SHARE_TEXT)){
                 cell.labelText.font = UIFont(name:FONT4, size:18)
             }
             cell.labelText.text = tableViewData.objectAtIndex(indexPath.row) as NSString

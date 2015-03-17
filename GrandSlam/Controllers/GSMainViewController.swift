@@ -14,6 +14,13 @@ var profileView = UIView(frame:CGRectMake(260, 20, 60, NAVIGATIONBAR_HEIGHT))
 
 
 
+@objc protocol MainVCgetCustomLeaguesCaller {
+    optional func getCustomLeaguesEnd()
+}
+
+
+
+
 var mainViewControllerInstance:GSMainViewController!
 
 class GSMainViewController: UIViewController, CustomLeagueCaller{
@@ -35,7 +42,7 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
         
         var user = PFUser.currentUser()
         if(user.valueForKey("email") == nil){
-            if((user.sessionToken) != nil){
+            if(user.sessionToken != nil){
                 PFUser.becomeInBackground(user.sessionToken, { (user:PFUser!, error: NSError!) -> Void in
            
                 })
@@ -89,15 +96,18 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        navigationBar.hidden = true
-        profileView.hidden = true
+        navigationBar.hidden    = true
+        profileView.hidden      = true
     }
     
     
-    func getCustomLeagues(){
+    var isAfterNewLeague:Bool = false
+    func getCustomLeagues(isNewLeague:Bool){
         
         GSCustomLeague.getCustomLeagues(self, user:PFUser.currentUser())
         GSUser.pendingInvitations()
+        
+        isAfterNewLeague = isNewLeague
     }
     
     func endGetCustomLeagues(data: NSArray){
@@ -112,6 +122,9 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
         launchImageView.hidden = true
         
         GSCustomLeague.getNewJoinLeagueNumber()
+        if(isAfterNewLeague){
+            (createCustomLeague as MainVCgetCustomLeaguesCaller).getCustomLeaguesEnd!()
+        }
     }
     
     

@@ -23,12 +23,10 @@ class ParseConfig: NSObject {
     class func initialization(){
         
         Parse.enableLocalDatastore()
-        // Enable Crash Reporting
         ParseCrashReporting.enable()
         
         // Initialize Parse.
-        Parse.setApplicationId("XCYnUIgcJKdPcW8u5FsiqMFeL0sFZDiWoeqWrUn2",
-        clientKey:"XIV8NiEBmQDm54CskEMMC8BeEdD2QeTlUAz1m1Mf")
+        Parse.setApplicationId("XCYnUIgcJKdPcW8u5FsiqMFeL0sFZDiWoeqWrUn2", clientKey:"XIV8NiEBmQDm54CskEMMC8BeEdD2QeTlUAz1m1Mf")
         
         
         PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground([:], block: nil)
@@ -38,7 +36,7 @@ class ParseConfig: NSObject {
         
         PFInstallation.currentInstallation().saveInBackgroundWithBlock { (success, error) -> Void in
             PFUser.currentUser().setObject(PFInstallation.currentInstallation(), forKey:"installation")
-            PFUser.currentUser().save()
+            PFUser.currentUser().saveInBackground()
         }
         
         var query = PFQuery(className:"AppConfigData")
@@ -80,9 +78,14 @@ class ParseConfig: NSObject {
             }
         })
     }
+    
+    
+    
+
+    
     /*
     class func fbLogin2(object: FaceBookDelegate){
-        
+
         SVProgressHUD.show()
         var user = PFUser.currentUser()
         if !PFFacebookUtils.isLinkedWithUser(user) {

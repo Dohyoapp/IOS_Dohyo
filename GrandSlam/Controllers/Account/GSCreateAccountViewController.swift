@@ -23,10 +23,13 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
     var signInViewController = GSSignInViewController()
     var forgotPasswordViewController = GSForgotPasswordViewController()
     
+    var tableViewCell:NSMutableArray!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableViewCell = NSMutableArray()
         //GSMainViewController.getMainViewControllerInstance().viewDidDisappear(false);
         
         self.view.backgroundColor = UIColor.whiteColor()
@@ -84,6 +87,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
             if(cell == nil){
                 cell = GSCreateAccountCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"CustomCell")
             }
+            tableViewCell.insertObject(cell, atIndex: indexPath.row)
             cell.selectionStyle = .None
             
             var placeHolderText = ""
@@ -195,29 +199,41 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
     
     func endGetFacebookData(){
         self.closeView()
-        GSMainViewController.getMainViewControllerInstance().getCustomLeagues()
+        GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false)
     }
     
     
     
     func createAccountTap(){
         
-        var cell:GSCreateAccountCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow:0, inSection:1)) as GSCreateAccountCell
+        //var cell:GSCreateAccountCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow:0, inSection:1)) as GSCreateAccountCell
+        
+        var cell:GSCreateAccountCell = tableViewCell.objectAtIndex(0) as GSCreateAccountCell
         var name:NSString = cell.textField.text
         
-        var cell1:GSCreateAccountCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow:1, inSection:1)) as GSCreateAccountCell
+        //var cell1:GSCreateAccountCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow:1, inSection:1)) as GSCreateAccountCell
+        var cell1:GSCreateAccountCell = tableViewCell.objectAtIndex(1) as GSCreateAccountCell
         var email:NSString = cell1.textField.text
         
-        var cell2:GSCreateAccountCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow:2, inSection:1)) as GSCreateAccountCell
+        //var cell2:GSCreateAccountCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow:2, inSection:1)) as GSCreateAccountCell
+        var cell2:GSCreateAccountCell = tableViewCell.objectAtIndex(2) as GSCreateAccountCell
         var password:NSString = cell2.textField.text
         
-        var cell3:GSCreateAccountCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow:3, inSection:1)) as GSCreateAccountCell
+        //var cell3:GSCreateAccountCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow:3, inSection:1)) as GSCreateAccountCell
+        var cell3:GSCreateAccountCell = tableViewCell.objectAtIndex(3) as GSCreateAccountCell
         var confirmPassword:NSString = cell3.textField.text
         
         if(name.length < 2){
             var alertView = UIAlertView(title: "", message: "Please enter your user name", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()
             return;
+        }
+        
+        if(name.length > 40){
+            
+            var alertView = UIAlertView(title: "", message: "Your user name is too long", delegate: nil, cancelButtonTitle: "Ok")
+            alertView.show()
+            return
         }
         
         if(!FieldsValidator.validateName(name)){
@@ -273,7 +289,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
             PFUser.currentUser().saveInBackgroundWithBlock({ (success, error) -> Void in
                 SVProgressHUD.dismiss()
                 self.closeView()
-                GSMainViewController.getMainViewControllerInstance().getCustomLeagues()
+                GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false)
             })
         }
     }

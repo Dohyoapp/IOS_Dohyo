@@ -18,7 +18,7 @@ class GSMatcheSelection {
     
     var bestCorrectScoreSelection:NSDictionary!
     
-
+    
 
     func getDrawSelection() -> NSDictionary{
         
@@ -258,6 +258,19 @@ class GSMatcheSelection {
         }
         
         return CGFloat(awayTeamWin)/(CGFloat(homeTeamWin)+CGFloat(drawP)+CGFloat(awayTeamWin))
+    }
+    
+    
+    
+    
+    func getDateMatche() -> NSDate{
+        
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        var matcheDateString:NSString = self.pfMatche["eventDateTime"] as NSString
+        matcheDateString = matcheDateString.stringByReplacingOccurrencesOfString("T", withString: " ")
+        matcheDateString = matcheDateString.stringByReplacingOccurrencesOfString("Z", withString: "")
+        return dateFormatter.dateFromString(matcheDateString)!
     }
     
 }

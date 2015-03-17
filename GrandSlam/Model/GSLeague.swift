@@ -61,33 +61,33 @@ class GSLeague {
     
     
     class func getLeagues(delegate: LeagueCaller){
-        
-        if(PFUser.currentUser().valueForKey("email") != nil){
-            SVProgressHUD.show()
-        }
-        var query = PFQuery(className:"League")
-        PFObject.pinAllInBackground(query.findObjects())
-        query.fromLocalDatastore()
-        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            
-            SVProgressHUD.dismiss()
-            if (error != nil) {
+
+            if(PFUser.currentUser().valueForKey("email") != nil){
+                SVProgressHUD.show()
+            }
+            var query = PFQuery(className:"League")
+            PFObject.pinAllInBackground(query.findObjects())
+            query.fromLocalDatastore()
+            query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
                 
                 SVProgressHUD.dismiss()
-                delegate.endGetLeagues!([])
-            }
-            else{
-                cacheLeagues = NSMutableArray()
-                
-                for league in objects{
-                    var gsLeague = GSLeague(league:league as PFObject)
-                    gsLeague.getMatchesLeague()
-                    cacheLeagues.addObject( gsLeague )
+                if (error != nil) {
+                    
+                    SVProgressHUD.dismiss()
+                    delegate.endGetLeagues!([])
                 }
-
-                delegate.endGetLeagues!(objects)
+                else{
+                    cacheLeagues = NSMutableArray()
+                    
+                    for league in objects{
+                        var gsLeague = GSLeague(league:league as PFObject)
+                        gsLeague.getMatchesLeague()
+                        cacheLeagues.addObject( gsLeague )
+                    }
+                    
+                    delegate.endGetLeagues!(objects)
+                }
             }
-        }
     }
     
     

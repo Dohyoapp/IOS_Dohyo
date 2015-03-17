@@ -278,15 +278,19 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         
         if(indexPath.section == 0){
             customLeague    = tableViewDataNew[num] as PFObject
-            var firstValue  = NSNumber(integer:(countArray.firstObject as Int) - 1)
-            var secondValue = countArray.lastObject as NSNumber
-            countArray      = [firstValue, secondValue]
+            if(countArray != nil && countArray.count > 1){
+                var firstValue  = NSNumber(integer:(countArray.firstObject as Int) - 1)
+                var secondValue = countArray.lastObject as NSNumber
+                countArray      = [firstValue, secondValue]
+            }
         }
         else{
             customLeague    = tableViewDataOld[num] as PFObject
-            var firstValue  = countArray.firstObject as NSNumber
-            var secondValue = NSNumber(integer:(countArray.lastObject as Int) - 1)
-            countArray      = [firstValue, secondValue]
+            if(countArray != nil && countArray.count > 1){
+                var firstValue  = countArray.firstObject as NSNumber
+                var secondValue = NSNumber(integer:(countArray.lastObject as Int) - 1)
+                countArray      = [firstValue, secondValue]
+            }
         }
         
         GSCustomLeague.joinCurrentUserToCustomLeague(customLeague)

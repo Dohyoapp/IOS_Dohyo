@@ -8,10 +8,10 @@
 
 import Foundation
 
-let SHARE_TEXXT = "Invite Friends!"
+let SHARE_TEXT = "Invite Friends!"
 
 
-class GSProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class GSProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, SendEmailDelegate {
     
     var tableView       = UITableView(frame:CGRectZero)
     var tableViewData   = NSMutableArray()
@@ -36,7 +36,8 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
             tableViewData.addObject(league["name"] as NSString)
         }
         tableViewData.addObject("")
-        tableViewData.addObject(SHARE_TEXXT)
+        tableViewData.addObject(SHARE_TEXT)
+        tableViewData.addObject("")
         tableViewData.addObject("")
         tableViewData.addObject("Sign Out")
         
@@ -139,8 +140,21 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
             if(indexPath.row == 0){
                 return 40
             }
-            if(indexPath.row == tableViewData.count-2){
+            
+            if(indexPath.row == tableViewData.count-5 || indexPath.row == tableViewData.count-4){
+                return 40
+            }
+            
+            if(indexPath.row == tableViewData.count-3){
                 return 70
+            }
+            
+            if(indexPath.row == tableViewData.count-2){
+                return 95
+            }
+            
+            if(indexPath.row == tableViewData.count-1){
+                return 50
             }
             return 32
         }
@@ -167,19 +181,32 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
             var objectString = tableViewData.objectAtIndex(indexPath.row) as NSString
             
             cell.labelText.font = UIFont(name:FONT1, size:18)
-            if(indexPath.row == 0 || objectString.isEqualToString(SHARE_TEXXT)){
+            if(indexPath.row == 0 || objectString.isEqualToString(SHARE_TEXT)){
                 cell.labelText.font = UIFont(name:FONT4, size:18)
             }
             cell.labelText.text = tableViewData.objectAtIndex(indexPath.row) as NSString
             
             
             cell.viewWithTag(556)?.removeFromSuperview()
-            if(indexPath.row == tableViewData.count-2){
+            if(indexPath.row == tableViewData.count-3){
                 socialShareViewController = GSSocialShareViewController()
                 socialShareViewController.isProfileView = true
                 socialShareViewController.view.frame = CGRectMake(0, 0, 320, 40)
                 socialShareViewController.view.tag = 556
                 cell.addSubview(socialShareViewController.view)
+            }
+            
+            cell.viewWithTag(557)?.removeFromSuperview()
+            if(indexPath.row == tableViewData.count-2){
+                
+                var contactButton = UIButton(frame: CGRectMake(70, 25, 180, 30))
+                contactButton.tag = 557
+                contactButton.setTitle("Contact us", forState: .Normal)
+                contactButton.titleLabel!.font = UIFont(name:FONT3, size:15)
+                contactButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+                contactButton.backgroundColor = SPECIALBLUE
+                contactButton.addTarget(self, action:"contactTap", forControlEvents:.TouchUpInside)
+                cell.addSubview(contactButton)
             }
             
             cell.viewWithTag(555)?.removeFromSuperview()
@@ -205,7 +232,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         
         if(indexPath.section == 1){
             
-            if(indexPath.row > 0 && indexPath.row < tableViewData.count-3){
+            if(indexPath.row > 0 && indexPath.row < tableViewData.count-4){
                 
                 closeView()
                 var value = Int(indexPath.row)-1
@@ -229,9 +256,25 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
             
             self.closeView()
             PFUser.logOut()
-            GSMainViewController.getMainViewControllerInstance().getCustomLeagues()
+            GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false)
+            navigationBar.goToCreateViewController()
         }
     }
+    
+    
+    
+    var emailModule:EmailModule!
+    func contactTap(){
+        
+        emailModule = EmailModule(delegate:self)
+        emailModule.sendSimpleMail("Dohyō", adresses:["team@dohyoapp.com"], body: "")
+    }
+    
+    func sendEmailSuccesFinish(){
+        
+    }
+    
+    
     
     
     

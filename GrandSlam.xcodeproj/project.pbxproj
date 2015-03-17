@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		83DD0C0AA9BF81DFDD390D0E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0075AB03032BAD4A88F45A3 /* libPods.a */; };
 		899C07BBDE04517AC785E9F6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0075AB03032BAD4A88F45A3 /* libPods.a */; };
+		AB6C017B1AB496F10082B06A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D19668861A767379003D4F8D /* SystemConfiguration.framework */; };
+		AB6C017C1AB496F90082B06A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D196687E1A76735A003D4F8D /* MobileCoreServices.framework */; };
 		D10E0BCA1A95F714008FB20D /* GSUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10E0BC91A95F714008FB20D /* GSUserProfileViewController.swift */; };
 		D10E0BCB1A95F714008FB20D /* GSUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10E0BC91A95F714008FB20D /* GSUserProfileViewController.swift */; };
 		D115A2561A8E506800EE4664 /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D115A2541A8E506800EE4664 /* TwitterKit.framework */; };
@@ -282,6 +284,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB6C017C1AB496F90082B06A /* MobileCoreServices.framework in Frameworks */,
+				AB6C017B1AB496F10082B06A /* SystemConfiguration.framework in Frameworks */,
 				D196690E1A7AA493003D4F8D /* QuartzCore.framework in Frameworks */,
 				D19668B11A769E6A003D4F8D /* Accounts.framework in Frameworks */,
 				D19668B01A769E5F003D4F8D /* Social.framework in Frameworks */,
@@ -706,6 +710,7 @@
 				D13D8BB61A70163E00303DF3 /* Frameworks */,
 				D13D8BB71A70163E00303DF3 /* Resources */,
 				290B3BE97342568A7490D988 /* Copy Pods Resources */,
+				AB2260FB1AB066D2001AD2F8 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -880,6 +885,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		AB2260FB1AB066D2001AD2F8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=/usr/local/bin:$PATH\ncd GrandSlam/parse\n\nparse symbols \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"";
+		};
 		D16A92E71A84D15C00B11604 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -891,7 +909,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./GrandSlam/Fabric.framework/run 45190a17174d5369010e19cc2a47dd057b37066f 06bf925f294877b168963efb362e582cf1c7da610523165d69c3357259e97a42\n\nexport PATH=/usr/local/bin:$PATH\ncd GrandSlam/parse\n\nparse symbols \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"";
+			shellScript = "./GrandSlam/Fabric.framework/run 45190a17174d5369010e19cc2a47dd057b37066f 06bf925f294877b168963efb362e582cf1c7da610523165d69c3357259e97a42\n\nexport PATH=/usr/local/bin:$PATH\ncd GrandSlam/parse\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1105,6 +1123,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/GrandSlam/parse-library-1.6.1",
@@ -1116,6 +1136,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DLIVE_VERSION";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "c2c66e83-ed13-4bce-8597-9d20a5ce1c96";
 				SWIFT_OBJC_BRIDGING_HEADER = "GrandSlam/GrandSlam-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1128,6 +1149,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/GrandSlam/parse-library-1.6.1",
@@ -1139,6 +1162,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DLIVE_VERSION";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "c2c66e83-ed13-4bce-8597-9d20a5ce1c96";
 				SWIFT_OBJC_BRIDGING_HEADER = "GrandSlam/GrandSlam-Bridging-Header.h";
 			};
 			name = Release;

@@ -21,8 +21,8 @@ class GSBetSlip{
     
     
     init(aMatchId: NSString, aSelection: NSDictionary) {
-        matchId = aMatchId
-        selection = aSelection
+        matchId     = aMatchId
+        selection   = aSelection
     }
     
     
@@ -112,9 +112,109 @@ class GSBetSlip{
             GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
         }
         else{
-            var alertView = UIAlertView(title: "", message: "Sorry, this selection is not possible", delegate: nil, cancelButtonTitle: "Ok")
+            var alertView = UIAlertView(title: "", message: "Sorry,you should have at least one active bet", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()
         }
+    }
+    
+    
+    
+    
+    class func oddsCalculator(bets:NSArray, validMatches:NSMutableArray) -> NSArray{
+        
+        var totalOdds:Double = 0
+        for betSlip in bets{
+            
+            var selection       = getActualisedSelection(betSlip as GSBetSlip, validMatches: validMatches)
+            
+            var currentPrice = selection.objectForKey("currentPrice") as NSDictionary
+            var decimalPrice = currentPrice.objectForKey("decimalPrice") as Double
+            var denPrice = currentPrice.objectForKey("denPrice") as Double
+            var numPrice = currentPrice.objectForKey("numPrice") as Double
+            
+            //var odd = (numPrice/denPrice)+1
+            if(totalOdds == 0){
+                // totalOdds = odd
+                totalOdds = decimalPrice
+            }
+            else{
+                //totalOdds = totalOdds * odd
+                totalOdds = totalOdds * decimalPrice
+            }
+        }
+        
+        var aPGCD = Utils.findPGCD(Int32(totalOdds*100), b:100)
+        
+        return [totalOdds*100/Double(aPGCD), 100/Double(aPGCD)]
+    }
+    
+    
+    /*
+    func getActualisedSelection(betSlip: GSBetSlip) -> NSDictionary{
+    
+    var matchSelection:GSMatcheSelection!
+    for aValidMatche in validMatches{
+    
+    var matchPf = (aValidMatche as GSMatcheSelection).pfMatche as PFObject
+    if(matchPf.objectId == betSlip.matchId){
+    matchSelection = aValidMatche as GSMatcheSelection
+    }
+    }
+    
+    var selection   = betSlip.selection
+    var aSelection  = matchSelection.getScoreCorrectSelectionByName(selection.objectForKey("selectionName") as NSString)
+    if(selection.objectForKey("currentPrice") != nil){
+    selection = aSelection
+    }
+    return selection
+    }*/
+    
+    
+    class func getActualisedSelection(betSlip: GSBetSlip, validMatches:NSMutableArray) -> NSDictionary{
+        
+        var oldBet:Bool = false
+        
+        var matchSelection:GSMatcheSelection!
+        for aValidMatche in validMatches{
+            
+            var matchPf = (aValidMatche as GSMatcheSelection).pfMatche as PFObject
+            if(matchPf.objectId == betSlip.matchId){
+                matchSelection = aValidMatche as GSMatcheSelection
+                var matcheDate = GSCustomLeague.getDateMatche(matchPf)
+                if(matcheDate.timeIntervalSinceDate(NSDate()) < 0){
+                    oldBet = true
+                }
+            }
+        }
+        
+        var selection       = betSlip.selection
+        var selectionName   = selection.objectForKey("selectionName") as NSString
+        var drawArray = selectionName.componentsSeparatedByString("Draw")
+        
+        if(drawArray.count > 1){
+            selection = matchSelection.getDrawSelection()
+        }
+        else{
+            
+            var winnerTeam      = selectionName.substringToIndex(selectionName.length-6)
+            
+            var title = matchSelection.pfMatche.valueForKey("title") as NSString
+            var teams = title.componentsSeparatedByString(" V ") as NSArray
+            
+            if(teams.firstObject as NSString == winnerTeam){
+                
+                selection = matchSelection.getHomeSelection()
+            }
+            else{
+                
+                selection = matchSelection.getAwaySelection()
+            }
+            
+        }
+        
+        selection.setValue(oldBet, forKey: "oldBet")
+        
+        return selection
     }
     
 }

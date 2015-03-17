@@ -21,7 +21,7 @@ class Utils {
         return image
     }
     
-    class func findPGCD(a: Int, b: Int) -> Int
+    class func findPGCD(a: Int32, b: Int32) -> Int32
     {
         if(b == 0){
             return a

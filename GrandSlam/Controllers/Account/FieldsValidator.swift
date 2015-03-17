@@ -25,7 +25,7 @@ class FieldsValidator {
             return false
         }
         
-        var allowTest      = NSPredicate(format:"SELF MATCHES %@", "^\\w{1}[\\w ' \\._\\-]{0,23}")
+        var allowTest      = NSPredicate(format:"SELF MATCHES %@", "^\\w{1}[\\w ' \\._\\-]{0,40}")
         var illeaglTest    = NSPredicate(format:"SELF MATCHES %@", ".*(\\.|\\-|\\_|\\-_)$")
         var illeaglTest2   = NSPredicate(format:"SELF MATCHES %@", "^[0-9].*")
         if ( !allowTest!.evaluateWithObject(name) || illeaglTest!.evaluateWithObject(name) || illeaglTest2!.evaluateWithObject(name) )

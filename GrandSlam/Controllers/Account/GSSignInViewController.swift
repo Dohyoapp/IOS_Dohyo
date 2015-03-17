@@ -95,7 +95,8 @@ class GSSignInViewController: UIViewController, UITextFieldDelegate {
             if user != nil {
                 // Do stuff after successful login.
                 self.closeView()
-                GSMainViewController.getMainViewControllerInstance().getCustomLeagues()
+                GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false)
+                navigationBar.goToCreateViewController()
             } else {
                 // The login failed. Check error to see why.
                 var alertView = UIAlertView(title: "", message: "User name / Password don't match. Please try again.", delegate: nil, cancelButtonTitle: "Ok")

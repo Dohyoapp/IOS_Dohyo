@@ -8,7 +8,7 @@
 
 import Foundation
 
-class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate, LeagueCaller {
+class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate, LeagueCaller, MainVCgetCustomLeaguesCaller {
     
     var scrollView:UIScrollView!
     
@@ -393,6 +393,33 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
             return
         }
         
+        if(countElements(leagueName) > 40){
+            
+            var alertView = UIAlertView(title: "", message: "Your league name is too long", delegate: nil, cancelButtonTitle: "Ok")
+            alertView.show()
+            return
+        }
+        
+        if(!FieldsValidator.validateName(leagueName)){
+            var alertView = UIAlertView(title: "", message: "Please verify that your league name can only include letters and  special characters like ' and -", delegate: nil, cancelButtonTitle: "Ok")
+            alertView.show()
+            return;
+        }
+        
+        if(countElements(prize) > 40){
+            
+            var alertView = UIAlertView(title: "", message: "The prize is too long", delegate: nil, cancelButtonTitle: "Ok")
+            alertView.show()
+            return
+        }
+        
+        if(prize != nil && prize != "" && !FieldsValidator.validateName(prize)){
+            var alertView = UIAlertView(title: "", message: "Please verify that the prize can only include letters and  special characters like ' and -", delegate: nil, cancelButtonTitle: "Ok")
+            alertView.show()
+            return;
+        }
+        
+        
         if(startDate.timeIntervalSinceDate(NSDate()) < -24*3600){
             var alertView = UIAlertView(title: "", message: "Please enter a valid start date", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()
@@ -448,26 +475,32 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         relation.addObject(customLeague)
         user.saveInBackgroundWithBlock { (success, error) -> Void in
             
-            SVProgressHUD.dismiss()
-            self.startButton.alpha = 0.4
+            GSMainViewController.getMainViewControllerInstance().getCustomLeagues(true)
             
-            var alertView = UIAlertView(title: "Your league was successfully created", message: "Please invite your friends to join your league", delegate: nil, cancelButtonTitle: "Ok")
-            alertView.show()
-            
-            GSMainViewController.getMainViewControllerInstance().getCustomLeagues()
-            
-            self.scrollView.contentSize = CGSizeMake(320, 900)
-            self.inviteLabel.alpha = 1
-            self.socialShareViewController.view.alpha = 1
             self.socialShareViewController.customLeagueId = customLeague.objectId
-            
-            var endView = UIView(frame:CGRectMake(0, 0, 320, 780))
-            endView.backgroundColor = UIColor.whiteColor()
-            endView.alpha = 0.4
-            self.scrollView.addSubview(endView)
-            self.scrollView.scrollRectToVisible(CGRectMake(0, 880, 320, 900), animated: true)
         }
 
+    }
+    
+    
+    func getCustomLeaguesEnd(){
+        
+        var alertView = UIAlertView(title: "Your league was successfully created", message: "Please invite your friends to join your league", delegate: nil, cancelButtonTitle: "Ok")
+        alertView.show()
+        
+        SVProgressHUD.dismiss()
+        self.startButton.alpha = 0.4
+        
+        self.scrollView.contentSize = CGSizeMake(320, 900)
+        self.inviteLabel.alpha = 1
+        self.socialShareViewController.view.alpha = 1
+        
+        
+        var endView = UIView(frame:CGRectMake(0, 0, 320, 780))
+        endView.backgroundColor = UIColor.whiteColor()
+        endView.alpha = 0.4
+        self.scrollView.addSubview(endView)
+        self.scrollView.scrollRectToVisible(CGRectMake(0, 880, 320, 900), animated: true)
     }
 
 }

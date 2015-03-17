@@ -142,17 +142,30 @@ class GSCustomLeague: NSObject {
     
     func getValidMatches(matches:NSArray) -> NSArray{
         
+        var returnArray:NSArray = matches
+        
         var numberOfMatches:NSString = pfCustomLeague["numberOfMatches"] as NSString
         
         if(numberOfMatches != "" && numberOfMatches != "0"){
-            return self.getMatchesByNumber(matches, customLeague:pfCustomLeague)
+            returnArray = self.getMatchesByNumber(matches, customLeague:pfCustomLeague)
+        }
+        else if(!(pfCustomLeague["endOfSeason"] as Bool)){
+            returnArray = self.getMatchesByDate(matches, customLeague:pfCustomLeague)
         }
         
-        if(!(pfCustomLeague["endOfSeason"] as Bool)){
-            return self.getMatchesByDate(matches, customLeague:pfCustomLeague)
+        var oldMatches = NSMutableArray()
+        var newMatches = NSMutableArray()
+        for matche in returnArray{
+            var matcheDate = GSCustomLeague.getDateMatche(matche as PFObject)
+            if(matcheDate.timeIntervalSinceDate(NSDate()) < 0){
+                oldMatches.addObject(matche)
+            }
+            else{
+                newMatches.addObject(matche)
+            }
         }
         
-        return matches
+        return newMatches.arrayByAddingObjectsFromArray(oldMatches)
     }
     
     
@@ -212,7 +225,7 @@ class GSCustomLeague: NSObject {
             user.saveInBackgroundWithBlock { (success, error) -> Void in
                 
                 SVProgressHUD.dismiss()
-                GSMainViewController.getMainViewControllerInstance().getCustomLeagues()
+                GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false)
             }
         })
     }
