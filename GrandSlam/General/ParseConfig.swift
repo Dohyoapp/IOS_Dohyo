@@ -36,7 +36,7 @@ class ParseConfig: NSObject {
         
         PFInstallation.currentInstallation().saveInBackgroundWithBlock { (success, error) -> Void in
             PFUser.currentUser().setObject(PFInstallation.currentInstallation(), forKey:"installation")
-            PFUser.currentUser().saveInBackground()
+            PFUser.currentUser().save()
         }
         
         var query = PFQuery(className:"AppConfigData")
@@ -151,7 +151,7 @@ class ParseConfig: NSObject {
                                 }
                             }
                             else{
-                                self.saveUserData(data, object:object)
+                                self.createUserData(data, object:object)
                             }
                             
                         }//querry error
@@ -181,11 +181,11 @@ class ParseConfig: NSObject {
     
     class func saveUserData(data: NSDictionary, object: FaceBookDelegate){
         
-        var user = PFUser.currentUser()
+        var user = PFUser.currentUser() as PFUser
         
-        user.setValue(data.objectForKey("name"), forKey: "username")
-        user.setValue(data.objectForKey("email"), forKey: "email")
-        user.setValue(data.objectForKey("email"), forKey: "password")
+        user["username"]   = data.objectForKey("name")
+        user["email"]      = data.objectForKey("email")
+        user.password      = data.objectForKey("email") as NSString
         
         var idFBUser:NSString = data.objectForKey("id") as NSString
         var imageLink = NSString(format:"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", idFBUser)
@@ -210,6 +210,47 @@ class ParseConfig: NSObject {
                 
                 user.save()
                 object.endGetFacebookData()
+        })
+    }
+    
+    
+    
+    
+    class func createUserData(data: NSDictionary, object: FaceBookDelegate){
+        
+        var user = PFUser.currentUser() as PFUser
+        
+        user["username"]   = data.objectForKey("name")
+        user["email"]      = data.objectForKey("email")
+        user.password      = data.objectForKey("email") as NSString
+        
+        user.signUpInBackgroundWithBlock({ (success, error) -> Void in
+            
+            var idFBUser:NSString = data.objectForKey("id") as NSString
+            var imageLink = NSString(format:"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", idFBUser)
+            
+            var imageView   = UIImageView(frame: CGRectMake(0, 0, 80, 80))
+            var urlRequest  = NSURLRequest(URL:NSURL(string: imageLink)!)
+            imageView.setImageWithURLRequest( urlRequest, placeholderImage: nil, success: { (url, response, image) -> Void in
+                
+                SVProgressHUD.dismiss()
+                var userId:AnyObject! = user.objectId
+                if(userId != nil){
+                    let imageFile = PFFile(name:NSString(format:"image%@.png", userId as NSString), data:UIImagePNGRepresentation(image))
+                    user.setObject(imageFile, forKey: "image")
+                    user.saveInBackgroundWithBlock({ (success, error) -> Void in
+                        object.endGetFacebookData()
+                    })
+                }
+                else{
+                    object.endGetFacebookData()
+                }
+                }, failure: { (url, response, error) -> Void in
+                    
+                    user.save()
+                    object.endGetFacebookData()
+            })
+            
         })
     }
 }

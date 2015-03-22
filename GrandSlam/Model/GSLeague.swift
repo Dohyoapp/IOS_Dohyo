@@ -59,6 +59,8 @@ class GSLeague {
     }
     
     
+
+
     
     class func getLeagues(delegate: LeagueCaller){
 

@@ -53,7 +53,7 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         
         
         var leaderBoardButton = UIButton(frame: CGRectMake(0, YSTART, 320, 35))
-        leaderBoardButton.setTitle("See Leaderboard", forState: .Normal)
+        leaderBoardButton.setTitle("See Leaderboard & Prize", forState: .Normal)
         leaderBoardButton.titleLabel!.font = UIFont(name:FONT3, size:15)
         leaderBoardButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         leaderBoardButton.backgroundColor = SPECIALBLUE

@@ -268,12 +268,18 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
             return;
         }
         
-        PFUser.currentUser().setValue(name, forKey: "username")
-        PFUser.currentUser().setValue(password, forKey: "password")
+        self.oldUserName = PFUser.currentUser()["username"]
+        self.oldPassword = PFUser.currentUser().password
+        PFUser.currentUser()["username"] = name
+        PFUser.currentUser().password = password
         
         SVProgressHUD.show()
         FieldsValidator.fullValidationEmail(email, delegate: self)
     }
+    
+    var oldUserName:AnyObject!
+    var oldPassword:String!
+    var oldEmail:AnyObject!
     
     func validEmail(email: NSString){
         
@@ -285,11 +291,38 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         }
         else{//success
             
-            PFUser.currentUser().setValue(email, forKey: "email")
-            PFUser.currentUser().saveInBackgroundWithBlock({ (success, error) -> Void in
+            var user =  PFUser.currentUser()
+            
+            self.oldEmail = user["email"]
+            user["email"] = email
+            user.signUpInBackgroundWithBlock({ (success, error) -> Void in
                 SVProgressHUD.dismiss()
-                self.closeView()
-                GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false)
+                if(error != nil){
+                    
+                    var userInfoDico:NSDictionary = error.userInfo!
+                    var message = userInfoDico.objectForKey("error") as NSString
+                    
+                    if(self.oldEmail == nil){
+                         PFUser.currentUser().removeObjectForKey("email")
+                    }else{
+                         user["email"] = self.oldEmail
+                    }
+                    
+                    user.password = self.oldPassword
+                    
+                    var alertView = UIAlertView(title: "", message: message, delegate:nil, cancelButtonTitle: "Ok")
+                    alertView.show()
+                    
+                    if(self.oldUserName == nil){
+                        PFUser.currentUser().removeObjectForKey("username")
+                    }else{
+                        user["username"] = self.oldUserName
+                    }
+                
+                }else{
+                    self.closeView()
+                    GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false)
+                }
             })
         }
     }

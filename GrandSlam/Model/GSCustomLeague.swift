@@ -22,6 +22,7 @@ var dateFormatter = NSDateFormatter()
 
 var cacheCustomLeaguesArray:NSMutableArray!
 
+
 class GSCustomLeague: NSObject {
     
     
@@ -37,7 +38,7 @@ class GSCustomLeague: NSObject {
     class func getNewJoinLeagueNumber(){
         
         if(PFUser.currentUser().valueForKey("email") != nil){
-            PFUser.currentUser().fetch()
+            PFUser.currentUser().fetchIfNeeded()
         }
         
         // params: ["JoinViewDate" : date as NSDate]
@@ -86,6 +87,7 @@ class GSCustomLeague: NSObject {
         }
         
     }
+    
     
     class func cacheCustomLeagues(objects : NSArray){
 
@@ -275,7 +277,7 @@ class GSCustomLeague: NSObject {
         
         var user = PFUser.currentUser()
         
-        if(user.valueForKey("email") == nil){
+        if(user["email"] == nil){
             return
         }
 

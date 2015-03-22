@@ -167,7 +167,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
         }
         
         emailModule = EmailModule(delegate:self)
-        emailModule.sendSimpleMail("Dohyō", adresses:nil, body: message)
+        emailModule.sendSimpleMail("Join my league", adresses:nil, body: message)
     }
     
     func sendEmailSuccesFinish(){

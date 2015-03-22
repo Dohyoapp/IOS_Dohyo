@@ -17,10 +17,10 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
     var customLeagueNameTextField:UITextField!
     var numberTextField:UITextField!
     
-    var datePicker:UIDatePicker!
+    //var datePicker:UIDatePicker!
     var datePicker2:UIDatePicker!
     
-    var startDateLabel:UITextField!
+    //var startDateLabel:UITextField!
     var finishDateLabel:UITextField!
     
     var finishDateLabel2:UILabel!
@@ -48,6 +48,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         
         self.view.backgroundColor = UIColor.whiteColor()
         
+        dateFormatter.dateFormat = "dd.MM.yyyy"
 
         scrollView = UIScrollView(frame:CGRectMake(0, YSTART, 320, self.view.frame.size.height - YSTART))
         scrollView.addGestureRecognizer( UITapGestureRecognizer(target: self, action:Selector("hideKeyBoard")) )
@@ -76,7 +77,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         customLeagueNameTextField.keyboardType = UIKeyboardType.Default
         scrollView.addSubview(customLeagueNameTextField)
         
-        
+        /*
         var startOnLabel = UILabel(frame:CGRectMake(0, 100, 320, 38))
         startOnLabel.text = "Start on"
         startOnLabel.textAlignment = .Center
@@ -85,7 +86,6 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         scrollView.addSubview(startOnLabel)
         
         
-        dateFormatter.dateFormat = "dd.MM.yyyy"
         startDateLabel = UITextField(frame:CGRectMake(70, 140, 180, 38))
         startDateLabel.text = dateFormatter.stringFromDate(NSDate())
         startDateLabel.textAlignment = .Center
@@ -95,16 +95,18 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         startDateLabel.textColor = SPECIALBLUE
         startDateLabel.delegate = self
         scrollView.addSubview(startDateLabel)
+        */
         
+        var finishAfterLabelY:CGFloat = 100//200
         
-        var finishAfterLabel = UILabel(frame:CGRectMake(0, 200, 320, 38))
+        var finishAfterLabel = UILabel(frame:CGRectMake(0, finishAfterLabelY, 320, 38))
         finishAfterLabel.text = "Finish after"
         finishAfterLabel.textAlignment = .Center
         finishAfterLabel.font  = UIFont(name:FONT2, size:18)
         finishAfterLabel.textColor = SPECIALBLUE
         scrollView.addSubview(finishAfterLabel)
         
-        numberTextField = UITextField(frame: CGRectMake(70, 250, 60, 33))
+        numberTextField = UITextField(frame: CGRectMake(70, finishAfterLabelY+50, 60, 33))
         numberTextField.font = UIFont(name:FONT3, size:15)
         numberTextField.textColor = SPECIALBLUE
         numberTextField.layer.borderColor = SPECIALBLUE.CGColor
@@ -116,14 +118,14 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         numberTextField.keyboardType = UIKeyboardType.NumberPad
         scrollView.addSubview(numberTextField)
         
-        var numberMatcheLabel = UILabel(frame:CGRectMake(130, 248, 100, 38))
+        var numberMatcheLabel = UILabel(frame:CGRectMake(130, finishAfterLabelY+48, 100, 38))
         numberMatcheLabel.text = "matches"
         numberMatcheLabel.textAlignment = .Center
         numberMatcheLabel.font  = UIFont(name:FONT3, size:18)
         numberMatcheLabel.textColor = SPECIALBLUE
         scrollView.addSubview(numberMatcheLabel)
         
-        var orLabel = UILabel(frame:CGRectMake(0, 290, 320, 38))
+        var orLabel = UILabel(frame:CGRectMake(0, finishAfterLabelY+90, 320, 38))
         orLabel.text = "or"
         orLabel.textAlignment = .Center
         orLabel.font  = UIFont(name:FONT3, size:18)
@@ -131,7 +133,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         scrollView.addSubview(orLabel)
         
         
-        finishDateLabel = UITextField(frame:CGRectMake(70, 330, 180, 38))
+        finishDateLabel = UITextField(frame:CGRectMake(70, finishAfterLabelY+130, 180, 38))
         finishDateLabel.text = dateFormatter.stringFromDate(NSDate())
         finishDateLabel.textAlignment = .Center
         finishDateLabel.font  = UIFont(name:FONT3, size:18)
@@ -141,14 +143,14 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         finishDateLabel.delegate = self
         scrollView.addSubview(finishDateLabel)
         
-        var orLabel2 = UILabel(frame:CGRectMake(0, 380, 320, 38))
+        var orLabel2 = UILabel(frame:CGRectMake(0, finishAfterLabelY+180, 320, 38))
         orLabel2.text = "or"
         orLabel2.textAlignment = .Center
         orLabel2.font  = UIFont(name:FONT3, size:18)
         orLabel2.textColor = SPECIALBLUE
         scrollView.addSubview(orLabel2)
         
-        finishDateLabel2 = UILabel(frame:CGRectMake(70, 430, 180, 38))
+        finishDateLabel2 = UILabel(frame:CGRectMake(70, finishAfterLabelY+230, 180, 38))
         finishDateLabel2.text = "End of the season"
         finishDateLabel2.textAlignment = .Center
         finishDateLabel2.font  = UIFont(name:FONT3, size:18)
@@ -161,41 +163,41 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         endOfSeasonBtn.addTarget(self, action:"endOfSeasonTap:", forControlEvents:.TouchUpInside)
         scrollView.addSubview(endOfSeasonBtn)
         
-        var blueLine2 = UIView(frame:CGRectMake(0, 490, 320, 2))
+        var blueLine2 = UIView(frame:CGRectMake(0, finishAfterLabelY+290, 320, 2))
         blueLine2.backgroundColor = SPECIALBLUE
         scrollView.addSubview(blueLine2)
         
         
         
-        var publicLabel = UILabel(frame:CGRectMake(30, 505, 60, 38))
+        var publicLabel = UILabel(frame:CGRectMake(30, finishAfterLabelY+305, 60, 38))
         publicLabel.text = "Public"
         publicLabel.textAlignment = .Center
         publicLabel.font  = UIFont(name:FONT3, size:18)
         publicLabel.textColor = SPECIALBLUE
         scrollView.addSubview(publicLabel)
         
-        var publicLabel2 = UILabel(frame:CGRectMake(0, 530, 130, 38))
+        var publicLabel2 = UILabel(frame:CGRectMake(0, finishAfterLabelY+330, 130, 38))
         publicLabel2.text = "Anyone can join"
         publicLabel2.textAlignment = .Center
         publicLabel2.font  = UIFont(name:FONT3, size:15)
         publicLabel2.textColor = SPECIALBLUE
         scrollView.addSubview(publicLabel2)
         
-        mySwitch = UISwitch(frame:CGRectMake(140, 520, 200, 20))
+        mySwitch = UISwitch(frame:CGRectMake(140, finishAfterLabelY+320, 200, 20))
         mySwitch.onTintColor = SPECIALBLUE
         mySwitch.on = true
         scrollView.addSubview(mySwitch)
         let transform = CGAffineTransformRotate(CGAffineTransformIdentity, 3.14);
         mySwitch.transform = transform;
         
-        var privateLabel = UILabel(frame:CGRectMake(220, 505, 60, 38))
+        var privateLabel = UILabel(frame:CGRectMake(220, finishAfterLabelY+305, 60, 38))
         privateLabel.text = "Private"
         privateLabel.textAlignment = .Center
         privateLabel.font  = UIFont(name:FONT3, size:18)
         privateLabel.textColor = SPECIALBLUE
         scrollView.addSubview(privateLabel)
         
-        var privateLabel2 = UILabel(frame:CGRectMake(200, 530, 100, 38))
+        var privateLabel2 = UILabel(frame:CGRectMake(200, finishAfterLabelY+330, 100, 38))
         privateLabel2.text = "Invite only"
         privateLabel2.textAlignment = .Center
         privateLabel2.font  = UIFont(name:FONT3, size:15)
@@ -203,12 +205,12 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         scrollView.addSubview(privateLabel2)
         
         
-        var blueLine3 = UIView(frame:CGRectMake(0, 580, 320, 2))
+        var blueLine3 = UIView(frame:CGRectMake(0, finishAfterLabelY+380, 320, 2))
         blueLine3.backgroundColor = SPECIALBLUE
         scrollView.addSubview(blueLine3)
         
         
-        prizeLabel = UITextField(frame:CGRectMake(70, 605, 180, 38))
+        prizeLabel = UITextField(frame:CGRectMake(70, finishAfterLabelY+405, 180, 38))
         prizeLabel.attributedPlaceholder = NSAttributedString(string:"Add prize",
             attributes:[NSForegroundColorAttributeName: SPECIALBLUE])
         prizeLabel.textAlignment = .Center
@@ -219,11 +221,11 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         prizeLabel.delegate = self
         scrollView.addSubview(prizeLabel)
         
-        var blueLine4 = UIView(frame:CGRectMake(0, 670, 320, 2))
+        var blueLine4 = UIView(frame:CGRectMake(0, finishAfterLabelY+470, 320, 2))
         blueLine4.backgroundColor = SPECIALBLUE
         scrollView.addSubview(blueLine4)
         
-        startButton = UIButton(frame: CGRectMake(70, 700, 180, 33))
+        startButton = UIButton(frame: CGRectMake(70, finishAfterLabelY+500, 180, 33))
         startButton.setTitle("Start League!", forState: .Normal)
         startButton.titleLabel!.font = UIFont(name:FONT3, size:15)
         startButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -233,11 +235,11 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         startButton.alpha = 0.4
         scrollView.addSubview(startButton)
         
-        var blueLine5 = UIView(frame:CGRectMake(0, 760, 320, 2))
+        var blueLine5 = UIView(frame:CGRectMake(0, finishAfterLabelY+560, 320, 2))
         blueLine5.backgroundColor = SPECIALBLUE
         scrollView.addSubview(blueLine5)
         
-        inviteLabel = UILabel(frame:CGRectMake(0, 780, 320, 38))
+        inviteLabel = UILabel(frame:CGRectMake(0, finishAfterLabelY+580, 320, 38))
         inviteLabel.text = "Invite your friends"
         inviteLabel.textAlignment = .Center
         inviteLabel.font  = UIFont(name:FONT3, size:18)
@@ -246,21 +248,33 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         inviteLabel.alpha = 0
         
         socialShareViewController = GSSocialShareViewController()
-        socialShareViewController.view.frame = CGRectMake(0, 820, 320, 40)
+        socialShareViewController.view.frame = CGRectMake(0, finishAfterLabelY+620, 320, 40)
         scrollView.addSubview(socialShareViewController.view)
         socialShareViewController.view.alpha = 0
         
         //scrollView.contentSize = CGSizeMake(320, 900)
 
-        scrollView.contentSize = CGSizeMake(320, 760)
+        scrollView.contentSize = CGSizeMake(320, blueLine5.frame.origin.y)
 
-        
+        /*
         datePicker = UIDatePicker()
         datePicker.datePickerMode = UIDatePickerMode.Date
         startDateLabel.inputView = datePicker
         datePicker.addTarget(self, action: Selector("handleDatePicker"), forControlEvents: UIControlEvents.ValueChanged)
+        */
+        
+        var nowDateString = dateFormatter.stringFromDate(NSDate())
+        var arrayNowDate = nowDateString.componentsSeparatedByString(".") as NSArray
+        var yearString = arrayNowDate.lastObject as NSString
+        var monthString = arrayNowDate[1] as NSString
+        if(monthString.integerValue > 5){
+            var nextYear = yearString.integerValue+1
+            yearString = NSString(format:"%d", nextYear)
+        }
+        var maximumDateString = NSString(format:"24.05.%@", yearString)
         
         datePicker2 = UIDatePicker()
+        datePicker2.maximumDate = dateFormatter.dateFromString(maximumDateString)
         datePicker2.datePickerMode = UIDatePickerMode.Date
         finishDateLabel.inputView = datePicker2
         datePicker2.addTarget(self, action: Selector("handleDatePicker2"), forControlEvents: UIControlEvents.ValueChanged)
@@ -290,12 +304,12 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         
         
     }
-    
+    /*
     func handleDatePicker() {
         
         startDateLabel.text = dateFormatter.stringFromDate(datePicker.date)
     }
-    
+    */
     func handleDatePicker2() {
         
         finishDateLabel.text = dateFormatter.stringFromDate(datePicker2.date)
@@ -304,7 +318,8 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool{
         
         var autoCorrectorMargin:CGFloat = 36
-        if(textField == startDateLabel || textField == finishDateLabel || textField == numberTextField){
+        //textField == startDateLabel ||
+        if(textField == finishDateLabel || textField == numberTextField){
             autoCorrectorMargin = 0
         }
         var scrollViewFrame = scrollView.frame
@@ -380,7 +395,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         var leagueTitle = selectedLeague["title"] as NSString
         
         
-        var startDate:NSDate   = dateFormatter.dateFromString(startDateLabel.text)!
+        var startDate:NSDate   = NSDate()//dateFormatter.dateFromString(startDateLabel.text)!
         var leagueName  = customLeagueNameTextField.text
         var prize       = prizeLabel.text
         var numberOfMatches = numberTextField.text

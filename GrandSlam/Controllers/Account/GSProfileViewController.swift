@@ -28,7 +28,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         super.viewDidLoad()
         
         
-        tableViewData.addObject("My leagues")
+        tableViewData.addObject("My contests")
         
         let leagues = GSMainViewController.getMainViewControllerInstance().leagues
         var league:PFObject
@@ -60,10 +60,10 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         var user = PFUser.currentUser()
         // userNameEmailChanges
         var username: AnyObject! = user.objectForKey("username")
-        var email: AnyObject! = user.objectForKey("email")
+        var email: AnyObject!    = user.objectForKey("email")
         if(username != nil && email != nil && (userNameLabel.text != username as NSString || emailLabel.text != email as NSString) ){
-            user.setValue(userNameLabel.text, forKey: "username")
-            user.setValue(emailLabel.text, forKey: "email")
+            user["username"] = userNameLabel.text
+            user["email"]    = emailLabel.text
             user.save()
         }
         
@@ -79,6 +79,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         var user = PFUser.currentUser()
         let userImageFile:AnyObject! = user.valueForKey("image")
         if(userImageFile != nil){
+            
             (userImageFile as PFFile).getDataInBackgroundWithBlock { (imageData: NSData!, error: NSError!) -> Void in
                 if error == nil {
                     self.imageUserView.image = UIImage(data:imageData)
@@ -115,7 +116,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         emailLabel.font = UIFont(name:FONT1, size:15)
         emailLabel.textColor = SPECIALBLUE
         emailLabel.tag = 66
-        cell.addSubview(emailLabel)
+        //cell.addSubview(emailLabel)
     }
     
     
@@ -353,7 +354,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         if(userId != nil){
             SVProgressHUD.show()
             let imageFile = PFFile(name:NSString(format:"image%@.png", userId as NSString), data:UIImagePNGRepresentation(image))
-            PFUser.currentUser().setObject(imageFile, forKey: "image")
+            PFUser.currentUser()["image"] = imageFile
             PFUser.currentUser().saveInBackgroundWithBlock({ (success, error) -> Void in
                 self.imageUserView.image = image
                 SVProgressHUD.dismiss()
@@ -396,8 +397,8 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         
         var user = PFUser.currentUser()
         
-        user.setValue(userNameLabel.text, forKey: "username")
-        user.setValue(emailLabel.text, forKey: "email")
+        user["username"] = userNameLabel.text
+        user["email"]    = emailLabel.text
         user.save()
         
         return true

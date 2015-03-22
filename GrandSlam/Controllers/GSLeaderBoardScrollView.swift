@@ -47,6 +47,15 @@ class GSLeaderBoardScrollView: UIScrollView, UIScrollViewDelegate {
         self.showsHorizontalScrollIndicator = false
     }
     
+    func closeView(){
+        
+        if(leaderBoardViewController != nil){
+            leaderBoardViewController.closeView()
+            leaderBoardViewController.view.removeFromSuperview()
+            self.removeFromSuperview()
+        }
+    }
+    
     
     
     func scrollViewDidScroll(scrollView: UIScrollView) {

@@ -163,10 +163,14 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         if(GSMainViewController.getMainViewControllerInstance().createAccountView){
             
             if(PFUser.currentUser().valueForKey("email") == nil){
-                GSMainViewController.getMainViewControllerInstance().createAccountViewController.closeView()
+                if(GSMainViewController.getMainViewControllerInstance().createAccountViewController != nil){
+                    GSMainViewController.getMainViewControllerInstance().createAccountViewController.closeView()
+                }
             }
             else{
-                GSMainViewController.getMainViewControllerInstance().profileViewController.closeView()
+                if(GSMainViewController.getMainViewControllerInstance().profileViewController != nil){
+                    GSMainViewController.getMainViewControllerInstance().profileViewController.closeView()
+                }
             }
         }
     }
@@ -217,17 +221,26 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
     
     func labelSelected(label: UILabel){
         
-        setButtonFont(label);
-        
-        customLeagueViewControlelr = GSCustomLeagueViewControlelr()
-        customLeagueViewControlelr.customLeague = GSCustomLeague.getCacheCustomLeagues()[label.tag] as GSCustomLeague
-        GSMainViewController.getMainViewControllerInstance().view.addSubview(customLeagueViewControlelr.view)
-        
-        if(joinCustomLeagueViewController != nil){
-            joinCustomLeagueViewController.closeView()
+        if(label.font  != UIFont(name:FONT2, size:18)){
+            
+            setButtonFont(label);
+            
+            if(customLeagueViewControlelr != nil){
+                customLeagueViewControlelr.closeView()
+            }
+            customLeagueViewControlelr = GSCustomLeagueViewControlelr()
+            customLeagueViewControlelr.customLeague = GSCustomLeague.getCacheCustomLeagues()[label.tag] as GSCustomLeague
+            GSMainViewController.getMainViewControllerInstance().view.addSubview(customLeagueViewControlelr.view)
+            
+            if(joinCustomLeagueViewController != nil){
+                joinCustomLeagueViewController.closeView()
+            }
+            
+            self.setContentOffset(CGPointMake(label.center.x-157, 0), animated:true)
         }
-        
-        self.setContentOffset(CGPointMake(label.center.x-157, 0), animated:true)
+        else{
+            customLeagueViewControlelr.backToMainView()
+        }
     }
     
     

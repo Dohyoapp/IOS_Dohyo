@@ -136,6 +136,7 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
         
         if(navigationBar.customLeagueViewControlelr != nil){
             navigationBar.customLeagueViewControlelr.closeView()
+            navigationBar.labelSelected(navigationBar.buttonsArray[0] as UILabel)
         }
         
         var email: AnyObject? = PFUser.currentUser().valueForKey("email")
@@ -158,7 +159,9 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
                 createAccountViewController.closeView()
             }
             else{
-                profileViewController.closeView()
+                if(profileViewController != nil){
+                    profileViewController.closeView()
+                }
             }
         }
     }

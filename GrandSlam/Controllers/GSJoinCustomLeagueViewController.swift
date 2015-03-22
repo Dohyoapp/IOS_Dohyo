@@ -164,7 +164,7 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
             oldInvitationLabel.text = "Older Invitations"
         }
         else{
-            oldInvitationLabel.text = "New League Invitations"
+            oldInvitationLabel.text = "New Invitations"
         }
             
             var blueLineBottom = UIView(frame: CGRectMake(0, 39, 320, 1))

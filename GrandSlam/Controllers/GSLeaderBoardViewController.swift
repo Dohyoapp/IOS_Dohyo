@@ -27,7 +27,7 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
         self.view.backgroundColor = UIColor.whiteColor()
         
         var titleLabel = UIButton(frame: CGRectMake(0, YSTART, 320, 35))
-        titleLabel.setTitle("Leaderboard", forState: .Normal)
+        titleLabel.setTitle("Leaderboard & Prize", forState: .Normal)
         titleLabel.titleLabel!.font = UIFont(name:FONT3, size:15)
         titleLabel.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         titleLabel.backgroundColor = SPECIALBLUE
@@ -87,6 +87,14 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
         
         
         getUsersAndPoints()
+    }
+    
+    
+    func closeView(){
+        
+        if(userProfileViewController != nil){
+            userProfileViewController.view.removeFromSuperview()
+        }
     }
     
     

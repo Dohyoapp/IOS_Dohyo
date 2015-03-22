@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		83DD0C0AA9BF81DFDD390D0E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0075AB03032BAD4A88F45A3 /* libPods.a */; };
 		899C07BBDE04517AC785E9F6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0075AB03032BAD4A88F45A3 /* libPods.a */; };
+		AB0AF3231ABDA0F20026E219 /* GSGameWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0AF3221ABDA0F20026E219 /* GSGameWeek.swift */; };
+		AB0AF3241ABDA0F20026E219 /* GSGameWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0AF3221ABDA0F20026E219 /* GSGameWeek.swift */; };
 		AB6C017B1AB496F10082B06A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D19668861A767379003D4F8D /* SystemConfiguration.framework */; };
 		AB6C017C1AB496F90082B06A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D196687E1A76735A003D4F8D /* MobileCoreServices.framework */; };
 		D10E0BCA1A95F714008FB20D /* GSUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10E0BC91A95F714008FB20D /* GSUserProfileViewController.swift */; };
@@ -179,6 +181,7 @@
 
 /* Begin PBXFileReference section */
 		A9D86365CDF5FDF8DB1A055A /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		AB0AF3221ABDA0F20026E219 /* GSGameWeek.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSGameWeek.swift; sourceTree = "<group>"; };
 		B0075AB03032BAD4A88F45A3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE6B5BA41C0358D67B43E080 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		D10E0BC91A95F714008FB20D /* GSUserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSUserProfileViewController.swift; sourceTree = "<group>"; };
@@ -602,6 +605,7 @@
 				D16A92EE1A84EB1400B11604 /* GSLeague.swift */,
 				D1D2E7611A92375600D491A1 /* GSMatcheSelection.swift */,
 				D1D2E76A1A94CB8300D491A1 /* GSBetSlip.swift */,
+				AB0AF3221ABDA0F20026E219 /* GSGameWeek.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -925,6 +929,7 @@
 				D130EE4C1A88D2D4002FCD6F /* GSJoinCustomLeagueViewController.swift in Sources */,
 				D1D1C2311A7FD0B1007C6FC8 /* SmsModule.swift in Sources */,
 				D19668EA1A7A8674003D4F8D /* FieldsValidator.swift in Sources */,
+				AB0AF3231ABDA0F20026E219 /* GSGameWeek.swift in Sources */,
 				D130EE531A891CCD002FCD6F /* GSLeaderBoardCell.swift in Sources */,
 				D19668551A764BB4003D4F8D /* RestKitConfig.swift in Sources */,
 				D19668641A767077003D4F8D /* ParseConfig.swift in Sources */,
@@ -978,6 +983,7 @@
 				D130EE4D1A88D2D4002FCD6F /* GSJoinCustomLeagueViewController.swift in Sources */,
 				D1D1C2321A7FD0B1007C6FC8 /* SmsModule.swift in Sources */,
 				D19668EB1A7A8674003D4F8D /* FieldsValidator.swift in Sources */,
+				AB0AF3241ABDA0F20026E219 /* GSGameWeek.swift in Sources */,
 				D130EE541A891CCD002FCD6F /* GSLeaderBoardCell.swift in Sources */,
 				D19668561A764BB4003D4F8D /* RestKitConfig.swift in Sources */,
 				D19668651A767077003D4F8D /* ParseConfig.swift in Sources */,

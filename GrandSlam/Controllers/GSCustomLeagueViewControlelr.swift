@@ -36,12 +36,20 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     
     var dateLeagueLabel:UILabel!
     
+    var leaderBoardScrollView:GSLeaderBoardScrollView!
+    
+    
+    
+    
+    
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.whiteColor()
+        
+        
         
        // NSException(name:NSGenericException, reason:"Everything is ok. This is just a test crash.", userInfo:nil).raise()
         
@@ -74,9 +82,18 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         if(customLeague.hasBetSlip().count > 0){
             self.endGetUserBetSlips()
         }else{
-            loadViewWithMatchs()
+            
+            SVProgressHUD.show()
+            dispatch_async(dispatch_get_main_queue(), {
+                self.loadViewWithMatchs()
+            })
         }
         
+    }
+    
+    func refreshDateLeagueLabel(){
+        
+        dateLeagueLabel.text   = cacheNumberGameWeek
     }
     
     
@@ -98,16 +115,25 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             validMatches.addObject(GSMatcheSelection(matche: matche as PFObject, customLeague: customLeague.pfCustomLeague))
         }
         
-        
+        /*
         var dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "dd/MM"
-        var startDate   = customLeague.pfCustomLeague["startDate"] as NSDate
-        var lastMatche = tempMatches.lastObject as PFObject
-        var lastMatcheDate = lastMatche["eventDateTime"] as NSString
-        lastMatcheDate = lastMatcheDate.substringWithRange(NSMakeRange(5, 5))
-        var dateArray = lastMatcheDate.componentsSeparatedByString("-") as NSArray
         
-        dateLeagueLabel.text   = NSString(format:"Matches: %@ - %@/%@", dateFormatter.stringFromDate(startDate), dateArray.lastObject as NSString, dateArray.firstObject as NSString)
+        var startDate   = customLeague.pfCustomLeague["startDate"] as NSDate
+        
+        if(tempMatches.count > 0){
+            
+            var lastMatche = tempMatches.lastObject as PFObject
+            var lastMatcheDate = lastMatche["eventDateTime"] as NSString
+            lastMatcheDate = lastMatcheDate.substringWithRange(NSMakeRange(5, 5))
+            var dateArray = lastMatcheDate.componentsSeparatedByString("-") as NSArray
+        
+            dateLeagueLabel.text   = NSString(format:"Matches: %@ - %@/%@", dateFormatter.stringFromDate(startDate), dateArray.lastObject as NSString, dateArray.firstObject as NSString)
+        }*/
+        
+        if(cacheNumberGameWeek != nil){
+            refreshDateLeagueLabel()
+        }
         
         
         var count:CGFloat = 0
@@ -128,6 +154,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         
             
         self.scrollView.contentSize = CGSizeMake(320, (CELLHEIGHT*count)+60)
+        SVProgressHUD.dismiss()
     }
     
     
@@ -140,14 +167,23 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     
     func closeView(){
         
+        backToMainView()
         self.view.removeFromSuperview()
         //GSMainViewController.getMainViewControllerInstance().dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func backToMainView(){
+        
+        if(leaderBoardScrollView != nil){
+            leaderBoardScrollView.closeView()
+        }
     }
     
 
     func leaderBoardTap(sender: UIButton!){
         
-        var leaderBoardScrollView = GSLeaderBoardScrollView(frame:self.view.frame, customLeague:customLeague)
+        backToMainView()
+        leaderBoardScrollView = GSLeaderBoardScrollView(frame:self.view.frame, customLeague:customLeague)
         self.view.addSubview(leaderBoardScrollView)
     }
     

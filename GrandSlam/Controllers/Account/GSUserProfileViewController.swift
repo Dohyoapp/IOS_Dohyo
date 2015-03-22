@@ -26,7 +26,7 @@ class GSUserProfileViewController: UIViewController, UITableViewDataSource, UITa
         super.viewDidLoad()
         
         
-        tableViewData.addObject("Leagues")
+        tableViewData.addObject("Contests")
         
         let leagues = GSMainViewController.getMainViewControllerInstance().leagues
         var league:PFObject
@@ -92,7 +92,7 @@ class GSUserProfileViewController: UIViewController, UITableViewDataSource, UITa
         emailLabel.font = UIFont(name:FONT1, size:15)
         emailLabel.textColor = SPECIALBLUE
         emailLabel.tag = 66
-        cell.addSubview(emailLabel)
+        //cell.addSubview(emailLabel)
     }
     
     
@@ -149,6 +149,10 @@ class GSUserProfileViewController: UIViewController, UITableViewDataSource, UITa
             
             return cell
         }
+    }
+    
+    func hideKeyBoard (){
+        self.view.endEditing(true)
     }
     
 }
