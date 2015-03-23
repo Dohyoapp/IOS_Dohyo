@@ -127,6 +127,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         self.contentSize = CGSizeMake(xViews+40, 44)
         self.showsHorizontalScrollIndicator = false
         
+        
         if(createCustomLeague == nil){//app launch only
             goToCreateViewController()
         }

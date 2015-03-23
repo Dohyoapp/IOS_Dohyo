@@ -11,8 +11,30 @@
 		899C07BBDE04517AC785E9F6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0075AB03032BAD4A88F45A3 /* libPods.a */; };
 		AB0AF3231ABDA0F20026E219 /* GSGameWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0AF3221ABDA0F20026E219 /* GSGameWeek.swift */; };
 		AB0AF3241ABDA0F20026E219 /* GSGameWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0AF3221ABDA0F20026E219 /* GSGameWeek.swift */; };
+		AB6A32521ABF6C1E008584A8 /* ticker.png in Resources */ = {isa = PBXBuildFile; fileRef = AB6A32511ABF6C1E008584A8 /* ticker.png */; };
+		AB6A32531ABF6C1E008584A8 /* ticker.png in Resources */ = {isa = PBXBuildFile; fileRef = AB6A32511ABF6C1E008584A8 /* ticker.png */; };
+		AB6A32551ABF6C3E008584A8 /* box_unticked.png in Resources */ = {isa = PBXBuildFile; fileRef = AB6A32541ABF6C3E008584A8 /* box_unticked.png */; };
+		AB6A32561ABF6C3E008584A8 /* box_unticked.png in Resources */ = {isa = PBXBuildFile; fileRef = AB6A32541ABF6C3E008584A8 /* box_unticked.png */; };
 		AB6C017B1AB496F10082B06A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D19668861A767379003D4F8D /* SystemConfiguration.framework */; };
 		AB6C017C1AB496F90082B06A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D196687E1A76735A003D4F8D /* MobileCoreServices.framework */; };
+		AB83412C1AC0031A006423A0 /* GSTuttorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB83412B1AC0031A006423A0 /* GSTuttorial.swift */; };
+		AB83412D1AC0031A006423A0 /* GSTuttorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB83412B1AC0031A006423A0 /* GSTuttorial.swift */; };
+		AB8341331AC00457006423A0 /* Dohyo_tutorial_01_plain.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AB83412E1AC00457006423A0 /* Dohyo_tutorial_01_plain.jpg */; };
+		AB8341341AC00457006423A0 /* Dohyo_tutorial_01_plain.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AB83412E1AC00457006423A0 /* Dohyo_tutorial_01_plain.jpg */; };
+		AB8341351AC00457006423A0 /* Dohyo_tutorial_02_plain.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AB83412F1AC00457006423A0 /* Dohyo_tutorial_02_plain.jpg */; };
+		AB8341361AC00457006423A0 /* Dohyo_tutorial_02_plain.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AB83412F1AC00457006423A0 /* Dohyo_tutorial_02_plain.jpg */; };
+		AB8341371AC00457006423A0 /* Dohyo_tutorial_03_plain.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AB8341301AC00457006423A0 /* Dohyo_tutorial_03_plain.jpg */; };
+		AB8341381AC00457006423A0 /* Dohyo_tutorial_03_plain.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AB8341301AC00457006423A0 /* Dohyo_tutorial_03_plain.jpg */; };
+		AB8341391AC00457006423A0 /* Dohyo_tutorial_04_plain.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AB8341311AC00457006423A0 /* Dohyo_tutorial_04_plain.jpg */; };
+		AB83413A1AC00457006423A0 /* Dohyo_tutorial_04_plain.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AB8341311AC00457006423A0 /* Dohyo_tutorial_04_plain.jpg */; };
+		AB83413B1AC00457006423A0 /* Dohyo_tutorial_05_plain.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AB8341321AC00457006423A0 /* Dohyo_tutorial_05_plain.jpg */; };
+		AB83413C1AC00457006423A0 /* Dohyo_tutorial_05_plain.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AB8341321AC00457006423A0 /* Dohyo_tutorial_05_plain.jpg */; };
+		AB8341411AC01C77006423A0 /* Tutorial_Dot_Full@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB83413E1AC01C77006423A0 /* Tutorial_Dot_Full@2x.png */; };
+		AB8341421AC01C77006423A0 /* Tutorial_Dot_Full@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB83413E1AC01C77006423A0 /* Tutorial_Dot_Full@2x.png */; };
+		AB8341451AC0238E006423A0 /* SMPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = AB8341441AC0238E006423A0 /* SMPageControl.m */; };
+		AB8341461AC0238E006423A0 /* SMPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = AB8341441AC0238E006423A0 /* SMPageControl.m */; };
+		AB8341481AC0247C006423A0 /* Tutorial_Dot_Empty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB8341471AC0247C006423A0 /* Tutorial_Dot_Empty@2x.png */; };
+		AB8341491AC0247C006423A0 /* Tutorial_Dot_Empty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB8341471AC0247C006423A0 /* Tutorial_Dot_Empty@2x.png */; };
 		D10E0BCA1A95F714008FB20D /* GSUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10E0BC91A95F714008FB20D /* GSUserProfileViewController.swift */; };
 		D10E0BCB1A95F714008FB20D /* GSUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10E0BC91A95F714008FB20D /* GSUserProfileViewController.swift */; };
 		D115A2561A8E506800EE4664 /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D115A2541A8E506800EE4664 /* TwitterKit.framework */; };
@@ -182,6 +204,18 @@
 /* Begin PBXFileReference section */
 		A9D86365CDF5FDF8DB1A055A /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AB0AF3221ABDA0F20026E219 /* GSGameWeek.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSGameWeek.swift; sourceTree = "<group>"; };
+		AB6A32511ABF6C1E008584A8 /* ticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ticker.png; sourceTree = "<group>"; };
+		AB6A32541ABF6C3E008584A8 /* box_unticked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box_unticked.png; sourceTree = "<group>"; };
+		AB83412B1AC0031A006423A0 /* GSTuttorial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSTuttorial.swift; sourceTree = "<group>"; };
+		AB83412E1AC00457006423A0 /* Dohyo_tutorial_01_plain.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Dohyo_tutorial_01_plain.jpg; sourceTree = "<group>"; };
+		AB83412F1AC00457006423A0 /* Dohyo_tutorial_02_plain.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Dohyo_tutorial_02_plain.jpg; sourceTree = "<group>"; };
+		AB8341301AC00457006423A0 /* Dohyo_tutorial_03_plain.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Dohyo_tutorial_03_plain.jpg; sourceTree = "<group>"; };
+		AB8341311AC00457006423A0 /* Dohyo_tutorial_04_plain.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Dohyo_tutorial_04_plain.jpg; sourceTree = "<group>"; };
+		AB8341321AC00457006423A0 /* Dohyo_tutorial_05_plain.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Dohyo_tutorial_05_plain.jpg; sourceTree = "<group>"; };
+		AB83413E1AC01C77006423A0 /* Tutorial_Dot_Full@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial_Dot_Full@2x.png"; sourceTree = "<group>"; };
+		AB8341431AC0238E006423A0 /* SMPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMPageControl.h; sourceTree = "<group>"; };
+		AB8341441AC0238E006423A0 /* SMPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMPageControl.m; sourceTree = "<group>"; };
+		AB8341471AC0247C006423A0 /* Tutorial_Dot_Empty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial_Dot_Empty@2x.png"; sourceTree = "<group>"; };
 		B0075AB03032BAD4A88F45A3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE6B5BA41C0358D67B43E080 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		D10E0BC91A95F714008FB20D /* GSUserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSUserProfileViewController.swift; sourceTree = "<group>"; };
@@ -389,6 +423,8 @@
 			isa = PBXGroup;
 			children = (
 				D1F2C0A91A7BD50E009DF72D /* GSSocialShareViewController.swift */,
+				D16A92E41A83E5A800B11604 /* GSWebViewController.swift */,
+				AB83412B1AC0031A006423A0 /* GSTuttorial.swift */,
 			);
 			name = OthersViewController;
 			sourceTree = "<group>";
@@ -480,7 +516,6 @@
 				D19668DF1A796046003D4F8D /* Account */,
 				D16CEF581A728B3300964056 /* GSMainViewController.swift */,
 				D16CEF5B1A728E7A00964056 /* GSNavigationBar.swift */,
-				D16A92E41A83E5A800B11604 /* GSWebViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -488,6 +523,15 @@
 		D16CEF671A72966000964056 /* AppImages */ = {
 			isa = PBXGroup;
 			children = (
+				AB8341471AC0247C006423A0 /* Tutorial_Dot_Empty@2x.png */,
+				AB83413E1AC01C77006423A0 /* Tutorial_Dot_Full@2x.png */,
+				AB83412E1AC00457006423A0 /* Dohyo_tutorial_01_plain.jpg */,
+				AB83412F1AC00457006423A0 /* Dohyo_tutorial_02_plain.jpg */,
+				AB8341301AC00457006423A0 /* Dohyo_tutorial_03_plain.jpg */,
+				AB8341311AC00457006423A0 /* Dohyo_tutorial_04_plain.jpg */,
+				AB8341321AC00457006423A0 /* Dohyo_tutorial_05_plain.jpg */,
+				AB6A32541ABF6C3E008584A8 /* box_unticked.png */,
+				AB6A32511ABF6C1E008584A8 /* ticker.png */,
 				D16A92DE1A82997E00B11604 /* Button_Down.png */,
 				D16A92DF1A82997E00B11604 /* Button_Up.png */,
 				D131DC501A7F9E200094F8CE /* Profile_Icon_Holder.png */,
@@ -635,6 +679,8 @@
 		D1F2C0941A7B8DA3009DF72D /* My Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AB8341431AC0238E006423A0 /* SMPageControl.h */,
+				AB8341441AC0238E006423A0 /* SMPageControl.m */,
 				D17BEA491AA0DB6400EB8961 /* parse */,
 				D1F2C0951A7B8DDB009DF72D /* Shared Files */,
 				D19668661A767102003D4F8D /* parse-library-1.6.1 */,
@@ -770,8 +816,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D16A92E21A82997E00B11604 /* Button_Up.png in Resources */,
+				AB6A32551ABF6C3E008584A8 /* box_unticked.png in Resources */,
+				AB8341481AC0247C006423A0 /* Tutorial_Dot_Empty@2x.png in Resources */,
 				D19668B41A793FA0003D4F8D /* launch-screen-iphone4@2x.png in Resources */,
 				D196690A1A7AA46A003D4F8D /* SVProgressHUD.bundle in Resources */,
+				AB8341411AC01C77006423A0 /* Tutorial_Dot_Full@2x.png in Resources */,
 				D13D8B881A7013B600303DF3 /* Main.storyboard in Resources */,
 				D115A2581A8E506800EE4664 /* TwitterKitResources.bundle in Resources */,
 				D17BEA541AA0DB6400EB8961 /* index.html in Resources */,
@@ -786,9 +835,15 @@
 				D19668DD1A795D95003D4F8D /* Profile_Icon.png in Resources */,
 				D1F2C0A71A7BD4BF009DF72D /* whatsapp.png in Resources */,
 				D17BEA501AA0DB6400EB8961 /* main.js in Resources */,
+				AB6A32521ABF6C1E008584A8 /* ticker.png in Resources */,
 				D19668B61A793FA0003D4F8D /* launch-screen-iphone5@2x.png in Resources */,
+				AB8341351AC00457006423A0 /* Dohyo_tutorial_02_plain.jpg in Resources */,
+				AB8341371AC00457006423A0 /* Dohyo_tutorial_03_plain.jpg in Resources */,
+				AB8341331AC00457006423A0 /* Dohyo_tutorial_01_plain.jpg in Resources */,
 				D12905871A827B3E00DA1F0C /* TeamsShortCut.plist in Resources */,
+				AB8341391AC00457006423A0 /* Dohyo_tutorial_04_plain.jpg in Resources */,
 				D17BEA521AA0DB6400EB8961 /* global.json in Resources */,
+				AB83413B1AC00457006423A0 /* Dohyo_tutorial_05_plain.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -804,8 +859,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D16A92E31A82997E00B11604 /* Button_Up.png in Resources */,
+				AB6A32561ABF6C3E008584A8 /* box_unticked.png in Resources */,
+				AB8341491AC0247C006423A0 /* Tutorial_Dot_Empty@2x.png in Resources */,
 				D19668B51A793FA0003D4F8D /* launch-screen-iphone4@2x.png in Resources */,
 				D196690B1A7AA46A003D4F8D /* SVProgressHUD.bundle in Resources */,
+				AB8341421AC01C77006423A0 /* Tutorial_Dot_Full@2x.png in Resources */,
 				D13D8BB81A70163E00303DF3 /* Main.storyboard in Resources */,
 				D115A2591A8E506800EE4664 /* TwitterKitResources.bundle in Resources */,
 				D17BEA551AA0DB6400EB8961 /* index.html in Resources */,
@@ -820,9 +878,15 @@
 				D19668DE1A795D95003D4F8D /* Profile_Icon.png in Resources */,
 				D1F2C0A81A7BD4BF009DF72D /* whatsapp.png in Resources */,
 				D17BEA511AA0DB6400EB8961 /* main.js in Resources */,
+				AB6A32531ABF6C1E008584A8 /* ticker.png in Resources */,
 				D19668B71A793FA0003D4F8D /* launch-screen-iphone5@2x.png in Resources */,
+				AB8341361AC00457006423A0 /* Dohyo_tutorial_02_plain.jpg in Resources */,
+				AB8341381AC00457006423A0 /* Dohyo_tutorial_03_plain.jpg in Resources */,
+				AB8341341AC00457006423A0 /* Dohyo_tutorial_01_plain.jpg in Resources */,
 				D12905881A827B3E00DA1F0C /* TeamsShortCut.plist in Resources */,
+				AB83413A1AC00457006423A0 /* Dohyo_tutorial_04_plain.jpg in Resources */,
 				D17BEA531AA0DB6400EB8961 /* global.json in Resources */,
+				AB83413C1AC00457006423A0 /* Dohyo_tutorial_05_plain.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -929,6 +993,7 @@
 				D130EE4C1A88D2D4002FCD6F /* GSJoinCustomLeagueViewController.swift in Sources */,
 				D1D1C2311A7FD0B1007C6FC8 /* SmsModule.swift in Sources */,
 				D19668EA1A7A8674003D4F8D /* FieldsValidator.swift in Sources */,
+				AB8341451AC0238E006423A0 /* SMPageControl.m in Sources */,
 				AB0AF3231ABDA0F20026E219 /* GSGameWeek.swift in Sources */,
 				D130EE531A891CCD002FCD6F /* GSLeaderBoardCell.swift in Sources */,
 				D19668551A764BB4003D4F8D /* RestKitConfig.swift in Sources */,
@@ -944,6 +1009,7 @@
 				D12905841A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift in Sources */,
 				D1A288441A716EF100D978B6 /* DeviceExtention.swift in Sources */,
 				D16A92E51A83E5A800B11604 /* GSWebViewController.swift in Sources */,
+				AB83412C1AC0031A006423A0 /* GSTuttorial.swift in Sources */,
 				D196690C1A7AA46A003D4F8D /* SVProgressHUD.m in Sources */,
 				D1A2883D1A716EBB00D978B6 /* GSUser.swift in Sources */,
 				D19668E71A7A5E61003D4F8D /* GSCreateAccountCell.swift in Sources */,
@@ -983,6 +1049,7 @@
 				D130EE4D1A88D2D4002FCD6F /* GSJoinCustomLeagueViewController.swift in Sources */,
 				D1D1C2321A7FD0B1007C6FC8 /* SmsModule.swift in Sources */,
 				D19668EB1A7A8674003D4F8D /* FieldsValidator.swift in Sources */,
+				AB8341461AC0238E006423A0 /* SMPageControl.m in Sources */,
 				AB0AF3241ABDA0F20026E219 /* GSGameWeek.swift in Sources */,
 				D130EE541A891CCD002FCD6F /* GSLeaderBoardCell.swift in Sources */,
 				D19668561A764BB4003D4F8D /* RestKitConfig.swift in Sources */,
@@ -998,6 +1065,7 @@
 				D12905851A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift in Sources */,
 				D1A288451A716EF100D978B6 /* DeviceExtention.swift in Sources */,
 				D16A92E61A83E5A800B11604 /* GSWebViewController.swift in Sources */,
+				AB83412D1AC0031A006423A0 /* GSTuttorial.swift in Sources */,
 				D196690D1A7AA46A003D4F8D /* SVProgressHUD.m in Sources */,
 				D1A2883E1A716EBB00D978B6 /* GSUser.swift in Sources */,
 				D19668E81A7A5E61003D4F8D /* GSCreateAccountCell.swift in Sources */,

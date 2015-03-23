@@ -715,7 +715,10 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             var leftScore:NSString  = (cell.viewWithTag(888) as UILabel).text!
             var rightScore:NSString = (cell.viewWithTag(999) as UILabel).text!
             
-            if(leftScore != "0" || rightScore != "0"){
+            
+            var matcheDate = (matche as GSMatcheSelection).getDateMatche()
+            if(matcheDate.timeIntervalSinceDate(NSDate()) > 0){
+            //if(leftScore != "0" || rightScore != "0"){
                 
                 var currentSelectionName = getSelectionNameFromScore(leftScore, rightScore: rightScore, titleMatche: (matche as GSMatcheSelection).pfMatche.valueForKey("title") as NSString)
                 

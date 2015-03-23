@@ -16,7 +16,9 @@ let PLACEHOLDER4 = "Confirm Password"
 let LASTROW_INDEX = 4
 
 
-class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, EmailValidationDelegate, FaceBookDelegate {
+
+
+class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, EmailValidationDelegate, FaceBookDelegate, UIAlertViewDelegate {
     
     var tableView = UITableView(frame:CGRectZero)
     
@@ -27,9 +29,16 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
     
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         tableViewCell = NSMutableArray()
+        tableViewCell.addObject(GSCreateAccountCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"CustomCell"))
+        tableViewCell.addObject(GSCreateAccountCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"CustomCell"))
+        tableViewCell.addObject(GSCreateAccountCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"CustomCell"))
+        tableViewCell.addObject(GSCreateAccountCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"CustomCell"))
+        tableViewCell.addObject(GSCreateAccountCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"CustomCell"))
+        tableViewCell.addObject(GSCreateAccountCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"CustomCell"))
         //GSMainViewController.getMainViewControllerInstance().viewDidDisappear(false);
         
         self.view.backgroundColor = UIColor.whiteColor()
@@ -59,7 +68,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         if(section == 0){
             return 1
         }else{
-            return 5
+            return 6
         }
     }
     
@@ -67,7 +76,10 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         
         if(indexPath.section == 0){
             return 240
-        }else{
+        }else if(indexPath.row == 5){
+            return 60
+        }
+        else{
             return 40
         }
     }
@@ -83,11 +95,14 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         }
         else{
             
-            var cell = tableView.dequeueReusableCellWithIdentifier("CustomCell") as GSCreateAccountCell!
+            var reuseIdentifier = NSString(format: "CustomCell%d", indexPath.row)
+            
+            var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as GSCreateAccountCell!
             if(cell == nil){
-                cell = GSCreateAccountCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"CustomCell")
+                cell = GSCreateAccountCell(style:UITableViewCellStyle.Value1, reuseIdentifier: reuseIdentifier)
             }
-            tableViewCell.insertObject(cell, atIndex: indexPath.row)
+            tableViewCell.replaceObjectAtIndex(indexPath.row, withObject: cell)
+                //.insertObject(cell, atIndex: indexPath.row)
             cell.selectionStyle = .None
             
             var placeHolderText = ""
@@ -128,6 +143,13 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
                 cell.addSubview(signInButton)
             }
             
+            cell.textField.hidden = false
+            cell.viewWithTag(345)?.removeFromSuperview()
+            if(indexPath.row == 5){
+                cell.textField.hidden = true
+                cell.addSubview(createTermsAndConditions())
+            }
+            
             return cell
         }
     }
@@ -137,7 +159,6 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         
         if(indexPath.section == 1 && indexPath.row == LASTROW_INDEX){
             
-            var j = 5;
         }
     }
     
@@ -202,6 +223,15 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false)
     }
     
+    
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int){
+        
+        if(buttonIndex == 1){
+            hasAcceptedOptEmail = true
+            setAcceptOptEmailImage()
+            createAccountTap()
+        }
+    }
     
     
     func createAccountTap(){
@@ -268,6 +298,12 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
             return;
         }
         
+        if(!hasAcceptedOptEmail){
+            var alertView = UIAlertView(title: "", message: "By clicking 'Continue', you agree with the Terms & Conditions and accept the Privacy Policy", delegate: self, cancelButtonTitle: "NO", otherButtonTitles: "Continue")
+            alertView.show()
+            return
+        }
+        
         self.oldUserName = PFUser.currentUser()["username"]
         self.oldPassword = PFUser.currentUser().password
         PFUser.currentUser()["username"] = name
@@ -295,6 +331,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
             
             self.oldEmail = user["email"]
             user["email"] = email
+            user["pPTC"]  = hasAcceptedOptEmail
             user.signUpInBackgroundWithBlock({ (success, error) -> Void in
                 SVProgressHUD.dismiss()
                 if(error != nil){
@@ -368,5 +405,93 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         tableViewFrame.size.height = self.view.frame.size.height-YSTART
         tableView.frame = tableViewFrame
     }
+    
+    var acceptTermsImageView:UIImageView!
+    var acceptTermsLabel:UILabel!
+    
+    var hasAcceptedOptEmail = true
+    
+    func createTermsAndConditions() -> UIView{
+        
+        var acceptTAndCView = UIView(frame:CGRectMake(0, 0, 320, 40))
+        acceptTAndCView.tag = 345
+        acceptTAndCView.backgroundColor = UIColor.clearColor()
+        
+        var tick_boxImageView = UIImageView(frame:CGRectMake(70, 10, 20, 20))
+        tick_boxImageView.image = UIImage(named:"box_unticked")
+        acceptTAndCView.addSubview(tick_boxImageView)
+        
+        acceptTermsImageView = UIImageView(frame:CGRectMake(70, 9, 20, 20))
+        acceptTermsImageView.image = nil
+        acceptTermsImageView.userInteractionEnabled = true
+        acceptTAndCView.addSubview(self.acceptTermsImageView)
+        
+        acceptTermsLabel = UILabel(frame:CGRectMake(90, 6, 260, 30))
+        acceptTermsLabel.text = " I have read the"
+        acceptTermsLabel.font = UIFont(name:FONT3, size:13)
+        acceptTermsLabel.textColor = SPECIALBLUE
+        acceptTermsLabel.backgroundColor = UIColor.clearColor()
+        acceptTermsLabel.userInteractionEnabled  = true
+        acceptTAndCView.addSubview(self.acceptTermsLabel)
+        
+        var acceptTermsLabel2 = UILabel(frame:CGRectMake(75, 25, 160, 30))
+        acceptTermsLabel2.text = "and agree with the"
+        acceptTermsLabel2.font = UIFont(name:FONT3, size:13)
+        acceptTermsLabel2.textColor = SPECIALBLUE
+        acceptTermsLabel2.backgroundColor = UIColor.clearColor()
+        acceptTermsLabel2.userInteractionEnabled  = true
+        acceptTAndCView.addSubview(acceptTermsLabel2)
+        
+        acceptTAndCView.addGestureRecognizer( UITapGestureRecognizer(target: self, action:Selector("acceptViewTap")) )
+        
+        var ppButton = UIButton(frame: CGRectMake(170, 6, 120, 30))
+        ppButton.setTitle("Privacy Policy", forState: .Normal)
+        ppButton.titleLabel!.font = UIFont(name:FONT2, size:13)
+        ppButton.setTitleColor(SPECIALBLUE, forState: .Normal)
+        ppButton.backgroundColor = UIColor.clearColor()
+        ppButton.addTarget(self, action:"ppTap", forControlEvents:.TouchUpInside)
+        acceptTAndCView.addSubview(ppButton)
+        
+        
+        var tcButton = UIButton(frame: CGRectMake(165, 25, 180, 30))
+        tcButton.setTitle("Terms & Conditions", forState: .Normal)
+        tcButton.titleLabel!.font = UIFont(name:FONT2, size:13)
+        tcButton.setTitleColor(SPECIALBLUE, forState: .Normal)
+        tcButton.backgroundColor = UIColor.clearColor()
+        tcButton.addTarget(self, action:"tcTap", forControlEvents:.TouchUpInside)
+        acceptTAndCView.addSubview(tcButton)
+        
+        setAcceptOptEmailImage()
+        
+        return acceptTAndCView
+    }
+    
+    
 
+    func acceptViewTap(){
+    
+        hasAcceptedOptEmail = !hasAcceptedOptEmail;
+        setAcceptOptEmailImage()
+    }
+    
+    func setAcceptOptEmailImage(){
+    
+        if (hasAcceptedOptEmail){
+            acceptTermsImageView.image = UIImage(named:"ticker.png")
+        }else{
+            acceptTermsImageView.image = nil
+        }
+    }
+    
+    func ppTap(){
+        
+        webViewController.loadViewWithUrl(NSURL(string:appConfigData["PrivacyPolicy"] as NSString)!)
+        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+    }
+    
+    func tcTap(){
+        
+        webViewController.loadViewWithUrl(NSURL(string:appConfigData["TermsConditions"] as NSString)!)
+        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+    }
 }

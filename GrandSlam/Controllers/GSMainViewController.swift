@@ -34,11 +34,14 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
     }
     
     override func awakeFromNib() {
+        
         super.awakeFromNib()
     }
     
     
     override func viewDidLoad() {
+        
+        //self.presentViewController(GSTuttorial(), animated: false, completion: nil)
         
         var user = PFUser.currentUser()
         if(user.valueForKey("email") == nil){
@@ -78,7 +81,6 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
         profileView.addSubview(profileButton)
         
         
-        
         endGetCustomLeagues([])
     }
     
@@ -110,16 +112,32 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
         isAfterNewLeague = isNewLeague
     }
     
+    
+    var gsTuttorial = GSTuttorial()
+    
     func endGetCustomLeagues(data: NSArray){
         
         leagues = data
         
-        navigationBar = GSNavigationBar(frame: CGRectMake(0, 20, 260, NAVIGATIONBAR_HEIGHT), objects: data)
-        self.navigationController?.navigationBar.hidden = false
-        //self.navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
-        self.navigationController?.view.addSubview(navigationBar)
-        self.navigationController?.view.addSubview(profileView)
-        launchImageView.hidden = true
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        var isTutorialShown: AnyObject? = defaults.objectForKey("tutorialShown")
+        if(isTutorialShown == nil){
+            
+            self.navigationController?.view.addSubview(gsTuttorial.view)
+        }
+        else{
+            
+            navigationBar = GSNavigationBar(frame: CGRectMake(0, 20, 260, NAVIGATIONBAR_HEIGHT), objects: data)
+            self.navigationController?.navigationBar.hidden = false
+            //self.navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
+            self.navigationController?.view.addSubview(navigationBar)
+            self.navigationController?.view.addSubview(profileView)
+            launchImageView.hidden = true
+        }
+        
+        
+        
         
         GSCustomLeague.getNewJoinLeagueNumber()
         if(isAfterNewLeague){
