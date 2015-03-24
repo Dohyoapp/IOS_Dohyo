@@ -30,12 +30,16 @@ class GSLeague {
     
     func getMatchesLeague(){
         
+        SVProgressHUD.show()
+        
         var relation:PFRelation = pfLeague.relationForKey("events")
         relation.query().limit = 1000
         relation.query().findObjectsInBackgroundWithBlock{ (objects: [AnyObject]!, error: NSError!) -> Void in
+            
             if error != nil {
                 
             } else {
+                
                 var events:NSArray = objects
                 
                 var matches = NSMutableArray()
@@ -55,6 +59,8 @@ class GSLeague {
                 
                 self.matches = sortedArray
             }
+            
+            SVProgressHUD.dismiss()
         }
     }
     
@@ -85,7 +91,6 @@ class GSLeague {
                         var gsLeague = GSLeague(league:league as PFObject)
                         gsLeague.getMatchesLeague()
                         cacheLeagues.addObject( gsLeague )
-                        (league as PFObject).fetch()
                     }
                     
                     delegate.endGetLeagues!(objects)

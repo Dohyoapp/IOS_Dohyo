@@ -30,6 +30,7 @@ class GSBetSlip{
     class func getbetMatches(matches:NSArray, bets:NSArray) -> NSArray{
         
         var returnArray = NSMutableArray()
+        
         for match in matches{
             
             for bet in bets{

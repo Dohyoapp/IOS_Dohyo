@@ -204,17 +204,20 @@ class GSCustomLeague: NSObject {
         }
         
         //step 2 check if all matches are past
-        var numberOldBets = 0
-        var tempMatches:NSArray = GSBetSlip.getbetMatches(league.matches, bets: result)
-        for matche in tempMatches{
+        if(league.matches != nil){
             
-            var matcheDate = GSCustomLeague.getDateMatche(matche as PFObject)
-            if(matcheDate.timeIntervalSinceDate(NSDate()) < 0){
-                numberOldBets += 1
+            var numberOldBets = 0
+            var tempMatches:NSArray = GSBetSlip.getbetMatches(league.matches, bets: result)
+            for matche in tempMatches{
+                
+                var matcheDate = GSCustomLeague.getDateMatche(matche as PFObject)
+                if(matcheDate.timeIntervalSinceDate(NSDate()) < 0){
+                    numberOldBets += 1
+                }
             }
-        }
-        if(numberOldBets == result.count){
-            return []
+            if(numberOldBets == result.count){
+                return []
+            }
         }
         
         return result
