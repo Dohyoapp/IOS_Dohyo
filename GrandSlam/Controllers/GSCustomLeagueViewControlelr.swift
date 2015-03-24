@@ -55,7 +55,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         
         
         var leaderBoardButton = UIButton(frame: CGRectMake(0, YSTART, 320, 35))
-        leaderBoardButton.setTitle("See Leaderboard", forState: .Normal)
+        leaderBoardButton.setTitle("See Leaderboard & Prze", forState: .Normal)
         leaderBoardButton.titleLabel!.font = UIFont(name:FONT3, size:15)
         leaderBoardButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         leaderBoardButton.backgroundColor = SPECIALBLUE
@@ -91,10 +91,6 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         
     }
     
-    func refreshDateLeagueLabel(){
-        
-        dateLeagueLabel.text   = cacheNumberGameWeek
-    }
     
     
     func loadViewWithMatchs(){
@@ -131,8 +127,8 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             dateLeagueLabel.text   = NSString(format:"Matches: %@ - %@/%@", dateFormatter.stringFromDate(startDate), dateArray.lastObject as NSString, dateArray.firstObject as NSString)
         }*/
         
-        if(cacheNumberGameWeek != nil){
-            refreshDateLeagueLabel()
+        if(league.pfLeague["weekNumber"] != nil){
+            dateLeagueLabel.text   = league.pfLeague["weekNumber"] as NSString
         }
         
         
@@ -807,7 +803,12 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             var maxScore    = (arraySpaces[count-3] as NSString)
             var smallScore  = (arraySpaces[count-1] as NSString)
             
-            if(selectionName.substringToIndex(selectionName.length-6) == names[0] as NSString){
+            
+            var teamName = selectionName
+            if(selectionName.length > 6){
+                teamName = selectionName.substringToIndex(selectionName.length-6)
+            }
+            if(teamName == names[0] as NSString){
                 
                 return [maxScore, smallScore]
             }

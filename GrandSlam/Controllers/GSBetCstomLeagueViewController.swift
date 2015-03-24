@@ -28,6 +28,8 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
     var returnLabel:UILabel!
     var sliderStake:UISlider!
     
+    var socialShareViewController : GSSocialShareViewController!
+    
     
     func sliderValueDidChange(sender: UISlider) {
 
@@ -176,7 +178,7 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
             count += 1
         }
         
-        self.scrollView.contentSize = CGSizeMake(320, (CELLHEIGHT*count))
+        self.scrollView.contentSize = CGSizeMake(320, (CELLHEIGHT*count)+100)
         
         var oddsArray       = GSBetSlip.oddsCalculator(currentBets, validMatches: validMatches)
         var totalOddLeft    = oddsArray.firstObject as Double
@@ -186,6 +188,14 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         
         accumulatorLabel.text   = NSString(format:"Your accumulator odds: %0.0f/%0.0f", totalOddLeft-totalOddRight, totalOddRight)
         sliderValueDidChange(sliderStake)
+        
+        
+
+        socialShareViewController = GSSocialShareViewController()
+        socialShareViewController.customLeagueId = customLeague.pfCustomLeague.objectId
+        socialShareViewController.view.frame = CGRectMake(0, 20+(CELLHEIGHT*count), 320, 40)
+        self.scrollView.addSubview(socialShareViewController.view)
+        
     }
     
     
@@ -295,7 +305,10 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
     
         var selection       = betSlip.selection
         var selectionName   = selection.objectForKey("selectionName") as NSString
-        var winnerTeam      = selectionName.substringToIndex(selectionName.length-6)
+        var winnerTeam      = selectionName
+        if(selectionName.length > 6){
+            winnerTeam = selectionName.substringToIndex(selectionName.length-6)
+        }
         
         var teams = matchTitle.componentsSeparatedByString(" V ") as NSArray
         

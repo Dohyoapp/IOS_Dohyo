@@ -9,8 +9,16 @@
 /* Begin PBXBuildFile section */
 		83DD0C0AA9BF81DFDD390D0E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0075AB03032BAD4A88F45A3 /* libPods.a */; };
 		899C07BBDE04517AC785E9F6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0075AB03032BAD4A88F45A3 /* libPods.a */; };
-		AB0AF3231ABDA0F20026E219 /* GSGameWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0AF3221ABDA0F20026E219 /* GSGameWeek.swift */; };
-		AB0AF3241ABDA0F20026E219 /* GSGameWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0AF3221ABDA0F20026E219 /* GSGameWeek.swift */; };
+		AB4CBA851AC186DF009CC69C /* email.png in Resources */ = {isa = PBXBuildFile; fileRef = AB4CBA801AC186DF009CC69C /* email.png */; };
+		AB4CBA861AC186DF009CC69C /* email.png in Resources */ = {isa = PBXBuildFile; fileRef = AB4CBA801AC186DF009CC69C /* email.png */; };
+		AB4CBA871AC186DF009CC69C /* facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = AB4CBA811AC186DF009CC69C /* facebook.png */; };
+		AB4CBA881AC186DF009CC69C /* facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = AB4CBA811AC186DF009CC69C /* facebook.png */; };
+		AB4CBA891AC186DF009CC69C /* chat.png in Resources */ = {isa = PBXBuildFile; fileRef = AB4CBA821AC186DF009CC69C /* chat.png */; };
+		AB4CBA8A1AC186DF009CC69C /* chat.png in Resources */ = {isa = PBXBuildFile; fileRef = AB4CBA821AC186DF009CC69C /* chat.png */; };
+		AB4CBA8B1AC186DF009CC69C /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = AB4CBA831AC186DF009CC69C /* twitter.png */; };
+		AB4CBA8C1AC186DF009CC69C /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = AB4CBA831AC186DF009CC69C /* twitter.png */; };
+		AB4CBA8D1AC186DF009CC69C /* whatsapp.png in Resources */ = {isa = PBXBuildFile; fileRef = AB4CBA841AC186DF009CC69C /* whatsapp.png */; };
+		AB4CBA8E1AC186DF009CC69C /* whatsapp.png in Resources */ = {isa = PBXBuildFile; fileRef = AB4CBA841AC186DF009CC69C /* whatsapp.png */; };
 		AB6A32521ABF6C1E008584A8 /* ticker.png in Resources */ = {isa = PBXBuildFile; fileRef = AB6A32511ABF6C1E008584A8 /* ticker.png */; };
 		AB6A32531ABF6C1E008584A8 /* ticker.png in Resources */ = {isa = PBXBuildFile; fileRef = AB6A32511ABF6C1E008584A8 /* ticker.png */; };
 		AB6A32551ABF6C3E008584A8 /* box_unticked.png in Resources */ = {isa = PBXBuildFile; fileRef = AB6A32541ABF6C3E008584A8 /* box_unticked.png */; };
@@ -177,16 +185,6 @@
 		D1D2E76C1A94CB8300D491A1 /* GSBetSlip.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2E76A1A94CB8300D491A1 /* GSBetSlip.swift */; };
 		D1F2C0981A7BCF83009DF72D /* GSProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F2C0971A7BCF83009DF72D /* GSProfileCell.swift */; };
 		D1F2C0991A7BCF83009DF72D /* GSProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F2C0971A7BCF83009DF72D /* GSProfileCell.swift */; };
-		D1F2C09F1A7BD4BF009DF72D /* chat.png in Resources */ = {isa = PBXBuildFile; fileRef = D1F2C09A1A7BD4BF009DF72D /* chat.png */; };
-		D1F2C0A01A7BD4BF009DF72D /* chat.png in Resources */ = {isa = PBXBuildFile; fileRef = D1F2C09A1A7BD4BF009DF72D /* chat.png */; };
-		D1F2C0A11A7BD4BF009DF72D /* email.png in Resources */ = {isa = PBXBuildFile; fileRef = D1F2C09B1A7BD4BF009DF72D /* email.png */; };
-		D1F2C0A21A7BD4BF009DF72D /* email.png in Resources */ = {isa = PBXBuildFile; fileRef = D1F2C09B1A7BD4BF009DF72D /* email.png */; };
-		D1F2C0A31A7BD4BF009DF72D /* facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = D1F2C09C1A7BD4BF009DF72D /* facebook.png */; };
-		D1F2C0A41A7BD4BF009DF72D /* facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = D1F2C09C1A7BD4BF009DF72D /* facebook.png */; };
-		D1F2C0A51A7BD4BF009DF72D /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = D1F2C09D1A7BD4BF009DF72D /* twitter.png */; };
-		D1F2C0A61A7BD4BF009DF72D /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = D1F2C09D1A7BD4BF009DF72D /* twitter.png */; };
-		D1F2C0A71A7BD4BF009DF72D /* whatsapp.png in Resources */ = {isa = PBXBuildFile; fileRef = D1F2C09E1A7BD4BF009DF72D /* whatsapp.png */; };
-		D1F2C0A81A7BD4BF009DF72D /* whatsapp.png in Resources */ = {isa = PBXBuildFile; fileRef = D1F2C09E1A7BD4BF009DF72D /* whatsapp.png */; };
 		D1F2C0AA1A7BD50E009DF72D /* GSSocialShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F2C0A91A7BD50E009DF72D /* GSSocialShareViewController.swift */; };
 		D1F2C0AB1A7BD50E009DF72D /* GSSocialShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F2C0A91A7BD50E009DF72D /* GSSocialShareViewController.swift */; };
 /* End PBXBuildFile section */
@@ -203,7 +201,11 @@
 
 /* Begin PBXFileReference section */
 		A9D86365CDF5FDF8DB1A055A /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		AB0AF3221ABDA0F20026E219 /* GSGameWeek.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSGameWeek.swift; sourceTree = "<group>"; };
+		AB4CBA801AC186DF009CC69C /* email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = email.png; sourceTree = "<group>"; };
+		AB4CBA811AC186DF009CC69C /* facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook.png; sourceTree = "<group>"; };
+		AB4CBA821AC186DF009CC69C /* chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat.png; sourceTree = "<group>"; };
+		AB4CBA831AC186DF009CC69C /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter.png; sourceTree = "<group>"; };
+		AB4CBA841AC186DF009CC69C /* whatsapp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whatsapp.png; sourceTree = "<group>"; };
 		AB6A32511ABF6C1E008584A8 /* ticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ticker.png; sourceTree = "<group>"; };
 		AB6A32541ABF6C3E008584A8 /* box_unticked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box_unticked.png; sourceTree = "<group>"; };
 		AB83412B1AC0031A006423A0 /* GSTuttorial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSTuttorial.swift; sourceTree = "<group>"; };
@@ -308,11 +310,6 @@
 		D1D2E7641A93AE7100D491A1 /* GSBetCstomLeagueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSBetCstomLeagueViewController.swift; sourceTree = "<group>"; };
 		D1D2E76A1A94CB8300D491A1 /* GSBetSlip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSBetSlip.swift; sourceTree = "<group>"; };
 		D1F2C0971A7BCF83009DF72D /* GSProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSProfileCell.swift; sourceTree = "<group>"; };
-		D1F2C09A1A7BD4BF009DF72D /* chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat.png; sourceTree = "<group>"; };
-		D1F2C09B1A7BD4BF009DF72D /* email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = email.png; sourceTree = "<group>"; };
-		D1F2C09C1A7BD4BF009DF72D /* facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook.png; sourceTree = "<group>"; };
-		D1F2C09D1A7BD4BF009DF72D /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter.png; sourceTree = "<group>"; };
-		D1F2C09E1A7BD4BF009DF72D /* whatsapp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whatsapp.png; sourceTree = "<group>"; };
 		D1F2C0A91A7BD50E009DF72D /* GSSocialShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GSSocialShareViewController.swift; path = Account/GSSocialShareViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -523,6 +520,11 @@
 		D16CEF671A72966000964056 /* AppImages */ = {
 			isa = PBXGroup;
 			children = (
+				AB4CBA801AC186DF009CC69C /* email.png */,
+				AB4CBA811AC186DF009CC69C /* facebook.png */,
+				AB4CBA821AC186DF009CC69C /* chat.png */,
+				AB4CBA831AC186DF009CC69C /* twitter.png */,
+				AB4CBA841AC186DF009CC69C /* whatsapp.png */,
 				AB8341471AC0247C006423A0 /* Tutorial_Dot_Empty@2x.png */,
 				AB83413E1AC01C77006423A0 /* Tutorial_Dot_Full@2x.png */,
 				AB83412E1AC00457006423A0 /* Dohyo_tutorial_01_plain.jpg */,
@@ -536,11 +538,6 @@
 				D16A92DF1A82997E00B11604 /* Button_Up.png */,
 				D131DC501A7F9E200094F8CE /* Profile_Icon_Holder.png */,
 				D131DC4D1A7F9D490094F8CE /* Profile_Plus.png */,
-				D1F2C09A1A7BD4BF009DF72D /* chat.png */,
-				D1F2C09B1A7BD4BF009DF72D /* email.png */,
-				D1F2C09C1A7BD4BF009DF72D /* facebook.png */,
-				D1F2C09D1A7BD4BF009DF72D /* twitter.png */,
-				D1F2C09E1A7BD4BF009DF72D /* whatsapp.png */,
 				D19668DC1A795D95003D4F8D /* Profile_Icon.png */,
 				D19668B21A793FA0003D4F8D /* launch-screen-iphone4@2x.png */,
 				D19668B31A793FA0003D4F8D /* launch-screen-iphone5@2x.png */,
@@ -649,7 +646,6 @@
 				D16A92EE1A84EB1400B11604 /* GSLeague.swift */,
 				D1D2E7611A92375600D491A1 /* GSMatcheSelection.swift */,
 				D1D2E76A1A94CB8300D491A1 /* GSBetSlip.swift */,
-				AB0AF3221ABDA0F20026E219 /* GSGameWeek.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -819,26 +815,26 @@
 				AB6A32551ABF6C3E008584A8 /* box_unticked.png in Resources */,
 				AB8341481AC0247C006423A0 /* Tutorial_Dot_Empty@2x.png in Resources */,
 				D19668B41A793FA0003D4F8D /* launch-screen-iphone4@2x.png in Resources */,
+				AB4CBA871AC186DF009CC69C /* facebook.png in Resources */,
 				D196690A1A7AA46A003D4F8D /* SVProgressHUD.bundle in Resources */,
 				AB8341411AC01C77006423A0 /* Tutorial_Dot_Full@2x.png in Resources */,
 				D13D8B881A7013B600303DF3 /* Main.storyboard in Resources */,
 				D115A2581A8E506800EE4664 /* TwitterKitResources.bundle in Resources */,
+				AB4CBA8D1AC186DF009CC69C /* whatsapp.png in Resources */,
 				D17BEA541AA0DB6400EB8961 /* index.html in Resources */,
 				D131DC4E1A7F9D490094F8CE /* Profile_Plus.png in Resources */,
-				D1F2C09F1A7BD4BF009DF72D /* chat.png in Resources */,
-				D1F2C0A31A7BD4BF009DF72D /* facebook.png in Resources */,
 				D131DC511A7F9E200094F8CE /* Profile_Icon_Holder.png in Resources */,
-				D1F2C0A11A7BD4BF009DF72D /* email.png in Resources */,
+				AB4CBA8B1AC186DF009CC69C /* twitter.png in Resources */,
 				D13D8B8A1A7013B600303DF3 /* Images.xcassets in Resources */,
 				D16A92E01A82997E00B11604 /* Button_Down.png in Resources */,
-				D1F2C0A51A7BD4BF009DF72D /* twitter.png in Resources */,
+				AB4CBA891AC186DF009CC69C /* chat.png in Resources */,
 				D19668DD1A795D95003D4F8D /* Profile_Icon.png in Resources */,
-				D1F2C0A71A7BD4BF009DF72D /* whatsapp.png in Resources */,
 				D17BEA501AA0DB6400EB8961 /* main.js in Resources */,
 				AB6A32521ABF6C1E008584A8 /* ticker.png in Resources */,
 				D19668B61A793FA0003D4F8D /* launch-screen-iphone5@2x.png in Resources */,
 				AB8341351AC00457006423A0 /* Dohyo_tutorial_02_plain.jpg in Resources */,
 				AB8341371AC00457006423A0 /* Dohyo_tutorial_03_plain.jpg in Resources */,
+				AB4CBA851AC186DF009CC69C /* email.png in Resources */,
 				AB8341331AC00457006423A0 /* Dohyo_tutorial_01_plain.jpg in Resources */,
 				D12905871A827B3E00DA1F0C /* TeamsShortCut.plist in Resources */,
 				AB8341391AC00457006423A0 /* Dohyo_tutorial_04_plain.jpg in Resources */,
@@ -862,26 +858,26 @@
 				AB6A32561ABF6C3E008584A8 /* box_unticked.png in Resources */,
 				AB8341491AC0247C006423A0 /* Tutorial_Dot_Empty@2x.png in Resources */,
 				D19668B51A793FA0003D4F8D /* launch-screen-iphone4@2x.png in Resources */,
+				AB4CBA881AC186DF009CC69C /* facebook.png in Resources */,
 				D196690B1A7AA46A003D4F8D /* SVProgressHUD.bundle in Resources */,
 				AB8341421AC01C77006423A0 /* Tutorial_Dot_Full@2x.png in Resources */,
 				D13D8BB81A70163E00303DF3 /* Main.storyboard in Resources */,
 				D115A2591A8E506800EE4664 /* TwitterKitResources.bundle in Resources */,
+				AB4CBA8E1AC186DF009CC69C /* whatsapp.png in Resources */,
 				D17BEA551AA0DB6400EB8961 /* index.html in Resources */,
 				D131DC4F1A7F9D490094F8CE /* Profile_Plus.png in Resources */,
-				D1F2C0A01A7BD4BF009DF72D /* chat.png in Resources */,
-				D1F2C0A41A7BD4BF009DF72D /* facebook.png in Resources */,
 				D131DC521A7F9E200094F8CE /* Profile_Icon_Holder.png in Resources */,
-				D1F2C0A21A7BD4BF009DF72D /* email.png in Resources */,
+				AB4CBA8C1AC186DF009CC69C /* twitter.png in Resources */,
 				D13D8BBA1A70163E00303DF3 /* Images.xcassets in Resources */,
 				D16A92E11A82997E00B11604 /* Button_Down.png in Resources */,
-				D1F2C0A61A7BD4BF009DF72D /* twitter.png in Resources */,
+				AB4CBA8A1AC186DF009CC69C /* chat.png in Resources */,
 				D19668DE1A795D95003D4F8D /* Profile_Icon.png in Resources */,
-				D1F2C0A81A7BD4BF009DF72D /* whatsapp.png in Resources */,
 				D17BEA511AA0DB6400EB8961 /* main.js in Resources */,
 				AB6A32531ABF6C1E008584A8 /* ticker.png in Resources */,
 				D19668B71A793FA0003D4F8D /* launch-screen-iphone5@2x.png in Resources */,
 				AB8341361AC00457006423A0 /* Dohyo_tutorial_02_plain.jpg in Resources */,
 				AB8341381AC00457006423A0 /* Dohyo_tutorial_03_plain.jpg in Resources */,
+				AB4CBA861AC186DF009CC69C /* email.png in Resources */,
 				AB8341341AC00457006423A0 /* Dohyo_tutorial_01_plain.jpg in Resources */,
 				D12905881A827B3E00DA1F0C /* TeamsShortCut.plist in Resources */,
 				AB83413A1AC00457006423A0 /* Dohyo_tutorial_04_plain.jpg in Resources */,
@@ -994,7 +990,6 @@
 				D1D1C2311A7FD0B1007C6FC8 /* SmsModule.swift in Sources */,
 				D19668EA1A7A8674003D4F8D /* FieldsValidator.swift in Sources */,
 				AB8341451AC0238E006423A0 /* SMPageControl.m in Sources */,
-				AB0AF3231ABDA0F20026E219 /* GSGameWeek.swift in Sources */,
 				D130EE531A891CCD002FCD6F /* GSLeaderBoardCell.swift in Sources */,
 				D19668551A764BB4003D4F8D /* RestKitConfig.swift in Sources */,
 				D19668641A767077003D4F8D /* ParseConfig.swift in Sources */,
@@ -1050,7 +1045,6 @@
 				D1D1C2321A7FD0B1007C6FC8 /* SmsModule.swift in Sources */,
 				D19668EB1A7A8674003D4F8D /* FieldsValidator.swift in Sources */,
 				AB8341461AC0238E006423A0 /* SMPageControl.m in Sources */,
-				AB0AF3241ABDA0F20026E219 /* GSGameWeek.swift in Sources */,
 				D130EE541A891CCD002FCD6F /* GSLeaderBoardCell.swift in Sources */,
 				D19668561A764BB4003D4F8D /* RestKitConfig.swift in Sources */,
 				D19668651A767077003D4F8D /* ParseConfig.swift in Sources */,

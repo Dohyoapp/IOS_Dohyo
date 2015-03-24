@@ -68,8 +68,8 @@ class GSLeague {
                 SVProgressHUD.show()
             }
             var query = PFQuery(className:"League")
-            PFObject.pinAllInBackground(query.findObjects())
-            query.fromLocalDatastore()
+            //PFObject.pinAllInBackground(query.findObjects())
+            //query.fromLocalDatastore()
             query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
                 
                 SVProgressHUD.dismiss()
@@ -85,6 +85,7 @@ class GSLeague {
                         var gsLeague = GSLeague(league:league as PFObject)
                         gsLeague.getMatchesLeague()
                         cacheLeagues.addObject( gsLeague )
+                        (league as PFObject).fetch()
                     }
                     
                     delegate.endGetLeagues!(objects)
@@ -99,6 +100,10 @@ class GSLeague {
     
 
     class func getLeagueFromCache(nameLeague: NSString) -> GSLeague{
+        
+        if(cacheLeagues == nil){
+            return GSLeague(league: PFObject())
+        }
         
         var league:GSLeague!
         for league in cacheLeagues{

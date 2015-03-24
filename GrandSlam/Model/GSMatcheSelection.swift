@@ -22,6 +22,9 @@ class GSMatcheSelection {
 
     func getDrawSelection() -> NSDictionary{
         
+        if(self.matchBettingSelections == nil){
+            return NSDictionary()
+        }
         for selection in self.matchBettingSelections{
             
             if( ((selection as NSDictionary).objectForKey("outcomeMeaningMinorCode") as NSString) == "D"){
@@ -33,6 +36,9 @@ class GSMatcheSelection {
     
     func getHomeSelection() -> NSDictionary{
         
+        if(self.matchBettingSelections == nil){
+            return NSDictionary()
+        }
         for selection in self.matchBettingSelections{
             
             if( ((selection as NSDictionary).objectForKey("outcomeMeaningMinorCode") as NSString) == "H"){
@@ -44,6 +50,9 @@ class GSMatcheSelection {
     
     func getAwaySelection() -> NSDictionary{
         
+        if(self.matchBettingSelections == nil){
+            return NSDictionary()
+        }
         for selection in self.matchBettingSelections{
             
             if( ((selection as NSDictionary).objectForKey("outcomeMeaningMinorCode") as NSString) == "A"){
@@ -137,6 +146,11 @@ class GSMatcheSelection {
     func getScoreCorrectSelectionByName(selectionName:NSString) -> NSDictionary{
         
         var retSelection:NSDictionary = [:]
+        
+        if(self.correctScoreSelections == nil){
+            return retSelection
+        }
+        
         for selection in (self.correctScoreSelections as NSArray) {
             
             if(selection.objectForKey("selectionName") as NSString == selectionName){

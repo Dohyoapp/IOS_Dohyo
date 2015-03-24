@@ -40,12 +40,15 @@ class ParseConfig: NSObject {
         }
         
         var query = PFQuery(className:"AppConfigData")
-        PFObject.pinAllInBackground(query.findObjects())
-        query.fromLocalDatastore()
+        //PFObject.pinAllInBackground(query.findObjects())
+        //query.fromLocalDatastore()
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if(error == nil){
                 if(objects.count > 0){
                     appConfigData = (objects as NSArray).firstObject as PFObject
+                    if( appConfigData["appRepository"] != nil){
+                        TEAMS_IMAGES_URL_ROOT = appConfigData["appRepository"] as NSString
+                    }
                 }
             }
         }

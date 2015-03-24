@@ -14,6 +14,8 @@ class GSTuttorial: UIViewController, UIWebViewDelegate, UIScrollViewDelegate {
     var pageControl:SMPageControl!
     
     
+    var skipButton:UIButton!
+    
     override func viewDidLoad() {
         
         self.view.backgroundColor = UIColor.whiteColor()
@@ -59,7 +61,7 @@ class GSTuttorial: UIViewController, UIWebViewDelegate, UIScrollViewDelegate {
         pageControl.indicatorDiameter = 15
         self.view.addSubview(pageControl)
         
-        var skipButton = UIButton(frame: CGRectMake(220, scrollView.frame.size.height-60, 100, 40))
+        skipButton = UIButton(frame: CGRectMake(220, scrollView.frame.size.height-60, 100, 40))
         skipButton.titleLabel!.font  = UIFont(name:FONT2, size:17)
         //closeButton.backgroundColor   = SPECIALBLUE
         skipButton.setTitleColor(SPECIALBLUE, forState: .Normal)
@@ -75,6 +77,13 @@ class GSTuttorial: UIViewController, UIWebViewDelegate, UIScrollViewDelegate {
         var page:NSInteger    = lround(Double(fractionalPage))
         if (pageControl.currentPage != page) {
             pageControl.currentPage = page;
+        }
+        
+        if(page == 4){
+            skipButton.setTitle("Done", forState: .Normal)
+        }
+        else{
+            skipButton.setTitle("Skip", forState: .Normal)
         }
     }
     

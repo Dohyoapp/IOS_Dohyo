@@ -396,6 +396,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         
         
         var startDate:NSDate   = NSDate()//dateFormatter.dateFromString(startDateLabel.text)!
+        // needed to show the past match in the leaderboard
         var leagueName  = customLeagueNameTextField.text
         var prize       = prizeLabel.text
         var numberOfMatches = numberTextField.text

@@ -196,7 +196,10 @@ class GSBetSlip{
         }
         else{
             
-            var winnerTeam      = selectionName.substringToIndex(selectionName.length-6)
+            var winnerTeam      = selectionName
+            if(selectionName.length > 6){
+                winnerTeam = selectionName.substringToIndex(selectionName.length-6)
+            }
             
             var title = matchSelection.pfMatche.valueForKey("title") as NSString
             var teams = title.componentsSeparatedByString(" V ") as NSArray

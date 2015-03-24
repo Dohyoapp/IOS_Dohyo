@@ -28,10 +28,16 @@ class GSCustomLeague: NSObject {
     
     var pfCustomLeague: PFObject
     var cluMatches: NSArray!
+    var league: GSLeague!
     
     
     init(customLeague: PFObject) {
         pfCustomLeague = customLeague
+        
+        if(GSLeague.getCacheLeagues() != nil){
+            
+            league = GSLeague.getLeagueFromCache(customLeague["leagueTitle"] as NSString)
+        }
     }
 
     
@@ -167,7 +173,7 @@ class GSCustomLeague: NSObject {
             }
         }
         
-        return newMatches.arrayByAddingObjectsFromArray(oldMatches)
+        return newMatches//.arrayByAddingObjectsFromArray(oldMatches)
     }
     
     
@@ -195,6 +201,20 @@ class GSCustomLeague: NSObject {
                 var betSlip = GSBetSlip(aMatchId: (bet as NSDictionary).objectForKey("matchId") as NSString, aSelection: (bet as NSDictionary).objectForKey("selection") as NSDictionary)
                 result.addObject(betSlip)
             }
+        }
+        
+        //step 2 check if all matches are past
+        var numberOldBets = 0
+        var tempMatches:NSArray = GSBetSlip.getbetMatches(league.matches, bets: result)
+        for matche in tempMatches{
+            
+            var matcheDate = GSCustomLeague.getDateMatche(matche as PFObject)
+            if(matcheDate.timeIntervalSinceDate(NSDate()) < 0){
+                numberOldBets += 1
+            }
+        }
+        if(numberOldBets == result.count){
+            return []
         }
         
         return result

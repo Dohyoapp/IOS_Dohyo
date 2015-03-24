@@ -108,6 +108,16 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
             if error == nil {
                 self.tableViewData = result as NSArray
                 if(self.tableView != nil){
+                    
+                    var sortedArray = sorted(self.tableViewData) { (obj1, obj2) in
+                        
+                        let p1 = obj1.objectForKey("userPoints") as NSString
+                        let p2 = obj2.objectForKey("userPoints") as NSString
+                        return p1.integerValue > p2.integerValue
+                    }
+                    
+                    self.tableViewData = sortedArray
+                    
                     self.tableView.reloadData()
                 }
             }

@@ -15,7 +15,7 @@
 #endif
 
 
-let TEAMS_IMAGES_URL_ROOT = "https://s3.amazonaws.com/grandslam-explovia/"
+var TEAMS_IMAGES_URL_ROOT = "https://s3.amazonaws.com/grandslam-explovia/"
 
 let KEYBOARD_HEIGHT = 216 as CGFloat
 

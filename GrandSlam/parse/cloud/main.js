@@ -8,6 +8,7 @@ require('cloud/League_functions_V2.js')
 require('cloud/Scores_functions.js')
 require('cloud/JoinNumber.js')
 require('cloud/User_functions.js')
+require('cloud/WeekNumber_functions.js')
 
 
 Parse.Cloud.afterSave("Event", function(request) {
