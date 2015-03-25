@@ -68,6 +68,8 @@ class GSTuttorial: UIViewController, UIWebViewDelegate, UIScrollViewDelegate {
         skipButton.setTitle("Skip", forState: .Normal)
         skipButton.addTarget(self, action:"skipTap", forControlEvents:.TouchUpInside)
         self.view.addSubview(skipButton)
+        
+        Mixpanel.sharedInstance().track("0100 - First launch")
     }
     
     

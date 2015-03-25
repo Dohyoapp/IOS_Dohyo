@@ -15,6 +15,9 @@
 #endif
 
 
+
+let MIXPANEL_TOKEN = "89d9f5cd98cf6d410915d00b297c0849"
+
 var TEAMS_IMAGES_URL_ROOT = "https://s3.amazonaws.com/grandslam-explovia/"
 
 let KEYBOARD_HEIGHT = 216 as CGFloat

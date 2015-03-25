@@ -333,19 +333,13 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         
         var selection:NSDictionary  = (currentBets[row] as GSBetSlip).selection
         GSBetSlip.goToLadBrokes([selection])
-    }
-    
-    
-    
-    func oddButtonTap(sender: UIButton!){
-        
-        var cell    = (sender as UIView).superview!
-        var row     = cell.superview!.tag
         
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
-        var bestSelection:NSDictionary  = matche.bestCorrectScoreSelection
-        GSBetSlip.goToLadBrokes([bestSelection])
+        matche.track()
     }
+    
+    
+    
     
     func firstTeamOddButtonTap(sender: UIButton!){
         
@@ -355,6 +349,8 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
         var selection:NSDictionary      = matche.getHomeSelection()
         GSBetSlip.goToLadBrokes([selection])
+        
+        matche.track()
     }
     
     func secondTeamOddButtonTap(sender: UIButton!){
@@ -365,6 +361,8 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
         var selection:NSDictionary      = matche.getAwaySelection()
         GSBetSlip.goToLadBrokes([selection])
+        
+        matche.track()
     }
     
     func drawOddButtonTap(sender: UIButton!){
@@ -375,21 +373,43 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
         var selection:NSDictionary      = matche.getDrawSelection()
         GSBetSlip.goToLadBrokes([selection])
+        
+        matche.track()
     }
 
 
     func stakeButtonTap(sender: UIButton!){
         
         var selections = NSMutableArray()
+        var matchsId:NSString = ""
         for betSlip in currentBets{
         
             //var selection:NSDictionary  = (betSlip as GSBetSlip).selection
             var selection       = GSBetSlip.getActualisedSelection(betSlip as GSBetSlip, validMatches: validMatches)
             if(!(selection.objectForKey("oldBet") as Bool)){
                 selections.addObject(selection)
+                if(matchsId.isEqualToString("")){
+                    matchsId = (betSlip as GSBetSlip).matchId
+                }
+                else{
+                    matchsId = NSString(format:"%@, %@", matchsId, (betSlip as GSBetSlip).matchId)
+                }
             }
         }
         GSBetSlip.goToLadBrokes(selections)
+        
+        if(!matchsId.isEqualToString("")){
+            
+            var currentValue   = Int(sliderStake.value)
+            var oddString:NSString =  String(format:"%0.2f", totalOdd)
+            Mixpanel.sharedInstance().track("0108 - Accumulator Bet Now", properties: [
+                "user": PFUser.currentUser()["username"],
+                "league": customLeague.pfCustomLeague["name"],
+                "match": matchsId,
+                "accumulator odds": oddString,
+                "accumulator money in": String(format:"%0.2f", totalOdd*Float(currentValue))
+            ])
+        }
     }
 
     

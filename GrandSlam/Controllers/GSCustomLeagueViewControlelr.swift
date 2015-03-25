@@ -12,7 +12,7 @@ import Foundation
 
 @objc protocol CrowdPredictionProtocol {
     
-    func oddButtonTap(sender: UIButton!)
+    optional func oddButtonTap(sender: UIButton!)
     func firstTeamOddButtonTap(sender: UIButton!)
     func secondTeamOddButtonTap(sender: UIButton!)
     func drawOddButtonTap(sender: UIButton!)
@@ -55,7 +55,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         
         
         var leaderBoardButton = UIButton(frame: CGRectMake(0, YSTART, 320, 35))
-        leaderBoardButton.setTitle("See Leaderboard & Prze", forState: .Normal)
+        leaderBoardButton.setTitle("See Leaderboard & Prize", forState: .Normal)
         leaderBoardButton.titleLabel!.font = UIFont(name:FONT3, size:15)
         leaderBoardButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         leaderBoardButton.backgroundColor = SPECIALBLUE
@@ -89,6 +89,10 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             })
         }
         
+        Mixpanel.sharedInstance().track("0103 - View league", properties: [
+            "user": PFUser.currentUser()["username"],
+            "league": customLeague.pfCustomLeague["name"]
+        ])
     }
     
     
@@ -653,7 +657,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         
         return crowdPredictionView
     }
-
+/*
     func oddButtonTap(sender: UIButton!){
         
         var cell    = (sender as UIView).superview!
@@ -662,7 +666,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
         var bestSelection:NSDictionary  = matche.bestCorrectScoreSelection
         GSBetSlip.goToLadBrokes([bestSelection])
-    }
+    }*/
     
     func firstTeamOddButtonTap(sender: UIButton!){
         
@@ -672,6 +676,8 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
         var selection:NSDictionary      = matche.getHomeSelection()
         GSBetSlip.goToLadBrokes([selection])
+        
+        matche.track()
     }
     
     func secondTeamOddButtonTap(sender: UIButton!){
@@ -682,6 +688,8 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
         var selection:NSDictionary      = matche.getAwaySelection()
         GSBetSlip.goToLadBrokes([selection])
+        
+        matche.track()
     }
     
     func drawOddButtonTap(sender: UIButton!){
@@ -692,6 +700,8 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
         var selection:NSDictionary      = matche.getDrawSelection()
         GSBetSlip.goToLadBrokes([selection])
+        
+        matche.track()
     }
 
     
@@ -749,6 +759,11 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
                 SVProgressHUD.dismiss()
                 
                 GSUser.loadUserBetSlips(user, delegate: self)
+                
+                Mixpanel.sharedInstance().track("0104 - Submit predictions", properties: [
+                    "user": PFUser.currentUser()["username"],
+                    "league": self.customLeague.pfCustomLeague["name"]
+                    ])
             })
             
            // GSBetSlip.buildSlip(betSelections)

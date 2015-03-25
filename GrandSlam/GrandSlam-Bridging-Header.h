@@ -12,3 +12,4 @@
 #import "SVProgressHUD.h"
 #import <Bolts/Bolts.h>
 #import "SMPageControl.h"
+#import "Mixpanel.h"

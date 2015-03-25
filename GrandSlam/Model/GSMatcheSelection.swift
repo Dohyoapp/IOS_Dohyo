@@ -287,5 +287,15 @@ class GSMatcheSelection {
         return dateFormatter.dateFromString(matcheDateString)!
     }
     
+    
+    func track(){
+        
+        Mixpanel.sharedInstance().track("0107 - Bet Now", properties: [
+            "user": PFUser.currentUser()["username"],
+            "league": self.pfCustomLeague["name"],
+            "match": self.pfMatche["title"]
+            ])
+    }
+    
 }
 

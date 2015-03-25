@@ -75,6 +75,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LeagueCaller {
         
         
         FBAppCall.handleDidBecomeActiveWithSession(PFFacebookUtils.session())
+        
+        Mixpanel.sharedInstance().track("0102 - App launch")
     }
 
     func applicationWillTerminate(application: UIApplication) {

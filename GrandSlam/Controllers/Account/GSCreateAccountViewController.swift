@@ -27,6 +27,8 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
     
     var tableViewCell:NSMutableArray!
     
+    var isFromCreateLeague:Bool = false
+    
     
     override func viewDidLoad() {
         
@@ -362,6 +364,14 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
                     GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false, joinedLeague:nil)
                 }
             })
+            
+            var from = "Profile"
+            if(isFromCreateLeague){
+                from = "CreateLeague"
+            }
+            Mixpanel.sharedInstance().track("0101 - Register", properties: [
+                "from": from
+            ])
         }
     }
     

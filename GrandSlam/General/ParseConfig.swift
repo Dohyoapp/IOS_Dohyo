@@ -54,6 +54,8 @@ class ParseConfig: NSObject {
         }
         
         PFFacebookUtils.initializeFacebook()
+        
+        Mixpanel.sharedInstanceWithToken(MIXPANEL_TOKEN)
     }
     
     
@@ -69,7 +71,7 @@ class ParseConfig: NSObject {
             }
             if user == nil {
                 SVProgressHUD.dismiss()
-                var alertView = UIAlertView(title: "", message: "Login with facebook failed. \nPlease try again.", delegate:nil, cancelButtonTitle: "Ok")
+                var alertView = UIAlertView(title: "", message: "Login with facebook failed. \nPlease check your Settings -> Facebook and try again.", delegate:nil, cancelButtonTitle: "Ok")
                 alertView.show()
                 
             } else if user.isNew {

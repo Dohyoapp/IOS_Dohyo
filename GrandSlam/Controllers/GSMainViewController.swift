@@ -169,6 +169,9 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
             //self.navigationController?.pushViewController(GSCreateAccountViewController(), animated: true)
             if(email == nil){
                 createAccountViewController = GSCreateAccountViewController()
+                if(sender == nil){
+                    createAccountViewController.isFromCreateLeague = true
+                }
                 self.view.addSubview(createAccountViewController.view)
             }
             else{
