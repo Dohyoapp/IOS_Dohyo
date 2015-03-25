@@ -13,6 +13,8 @@ var createCustomLeague:GSCreateCustomLeagueViewController!
 
 let SPACEBETWEENLABELS:CGFloat = 20
 
+var fakeTextField = UITextField(frame:CGRectZero)
+
 
 class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
     
@@ -26,8 +28,6 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
     var customLeagueViewControlelr:GSCustomLeagueViewControlelr!
     var joinCustomLeagueViewController:GSJoinCustomLeagueViewController!
     
-    
-    var fakeTextField = UITextField(frame:CGRectZero)
     
     
     var joinNumber:UILabel!
@@ -158,8 +158,10 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
     
     func closeAccountViewIfNeeded(){
         
-        fakeTextField.becomeFirstResponder()
-        fakeTextField.resignFirstResponder()
+        dispatch_async(dispatch_get_main_queue(), {
+            fakeTextField.becomeFirstResponder()
+            fakeTextField.resignFirstResponder()
+        })
         
         if(GSMainViewController.getMainViewControllerInstance().createAccountView){
             

@@ -41,6 +41,7 @@ class EmailModule: NSObject, MFMailComposeViewControllerDelegate{
             var alertView = UIAlertView(title: "Email error", message: "We cannot connect to your email", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()
         }
+        SVProgressHUD.dismiss()
     }
     
     func mailComposeController(controller:MFMailComposeViewController, didFinishWithResult result:MFMailComposeResult, error:NSError) {

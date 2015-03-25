@@ -86,7 +86,9 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
         tableViewData = []
         
         
-        getUsersAndPoints()
+        dispatch_async(dispatch_get_main_queue(), {
+            self.getUsersAndPoints()
+        })
     }
     
     
@@ -107,19 +109,28 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
             
             if error == nil {
                 self.tableViewData = result as NSArray
-                if(self.tableView != nil){
+                
+                if(self.tableViewData != nil){
+                    var myData = NSMutableArray(array:self.tableViewData)
+                    if(myData.count > 1){
                     
-                    var sortedArray = sorted(self.tableViewData) { (obj1, obj2) in
+                        var sortedArray = sorted(myData) { (obj1, obj2) in
+                            
+                            var p1:NSString = "0"
+                            if(obj1.isKindOfClass(NSDictionary) && obj1.objectForKey("userPoints") != nil){
+                                p1 = obj1.objectForKey("userPoints") as NSString
+                            }
+                            var p2:NSString = "0"
+                            if(obj2.isKindOfClass(NSDictionary) && obj2.objectForKey("userPoints") != nil){
+                                p2 = obj2.objectForKey("userPoints") as NSString
+                            }
+                            return p1.integerValue > p2.integerValue
+                        }
                         
-                        let p1 = obj1.objectForKey("userPoints") as NSString
-                        let p2 = obj2.objectForKey("userPoints") as NSString
-                        return p1.integerValue > p2.integerValue
+                        self.tableViewData = sortedArray
                     }
-                    
-                    self.tableViewData = sortedArray
-                    
-                    self.tableView.reloadData()
                 }
+                self.tableView.reloadData()
             }
             SVProgressHUD.dismiss()
         }

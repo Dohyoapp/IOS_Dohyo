@@ -40,24 +40,31 @@ class GSLeague {
                 
             } else {
                 
-                var events:NSArray = objects
+                var events:NSArray! = objects
                 
-                var matches = NSMutableArray()
-                for event in events {
-                    var title = event.valueForKey("title") as NSString
-                    if(title.componentsSeparatedByString("V").count > 1){
-                        matches.addObject(event)
-                    }
-                }
-                
-                var sortedArray = sorted(matches) { (obj1, obj2) in
+                if(events != nil){
                     
-                    let p1 = GSCustomLeague.getDateMatche(obj1 as PFObject)
-                    let p2 = GSCustomLeague.getDateMatche(obj2 as PFObject)
-                    return p1.timeIntervalSinceDate(p2) < 0
+                    var matches = NSMutableArray()
+                    for event in events {
+                        var title = event.valueForKey("title") as NSString
+                        if(title.componentsSeparatedByString("V").count > 1){
+                            matches.addObject(event)
+                        }
+                    }
+                    
+                    if(matches.count > 1){
+                        
+                        var sortedArray = sorted(matches) { (obj1, obj2) in
+                            
+                            var p1 = GSCustomLeague.getDateMatche(obj1 as PFObject)
+                            var p2 = GSCustomLeague.getDateMatche(obj2 as PFObject)
+                            return p1.timeIntervalSinceDate(p2) < 0
+                        }
+                        self.matches = sortedArray
+                    }
+                    
                 }
                 
-                self.matches = sortedArray
             }
             
             SVProgressHUD.dismiss()
@@ -106,24 +113,24 @@ class GSLeague {
 
     class func getLeagueFromCache(nameLeague: NSString) -> GSLeague{
         
-        if(cacheLeagues == nil){
+        if(cacheLeagues == nil || cacheLeagues.count < 1){
             return GSLeague(league: PFObject())
         }
         
-        var league:GSLeague!
         for league in cacheLeagues{
             
             var leagueName = (league as GSLeague).pfLeague.valueForKey("title") as NSString
             if(leagueName == nameLeague){
                 
-                if(league.matches == nil){
+                if((league as GSLeague).matches == nil){
                     (league as GSLeague).getMatchesLeague()
                 }
                 return (league as GSLeague)
             }
             
         }
-        return league
+        
+        return cacheLeagues.firstObject as GSLeague
     }
     
     

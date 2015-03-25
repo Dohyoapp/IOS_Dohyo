@@ -59,6 +59,7 @@ class TwitterFaceBookModule: NSObject{
             var alertView = UIAlertView(title: "Sorry", message: "You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()
         }
+        SVProgressHUD.dismiss()
     }
     
     func facebook(text: NSString, image: UIImage, link: NSString){
@@ -97,6 +98,7 @@ class TwitterFaceBookModule: NSObject{
 */
             oldSendFaceBook(text, image: image, link: link)
         }
+        SVProgressHUD.dismiss()
     }
     
     

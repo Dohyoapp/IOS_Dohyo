@@ -67,8 +67,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LeagueCaller {
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
-        
-        GSLeague.getMatchResults(self)
+        dispatch_async(dispatch_get_main_queue(), {
+            GSLeague.getMatchResults(self)
+        })
         GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false)
         GSCustomLeague.getNewJoinLeagueNumber()
         

@@ -33,29 +33,29 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
         
         var yButtons = 10 as CGFloat
         
-        fbButton = UIButton(frame: CGRectMake(30, yButtons, 40, 40))
+        fbButton = UIButton(frame: CGRectMake(30, yButtons, 50, 50))
         fbButton.setBackgroundImage(UIImage(named: "facebook"), forState: .Normal)
         fbButton.addTarget(self, action:"fbButtonTap:", forControlEvents:.TouchUpInside)
         self.view.addSubview(fbButton)
         
         
-        twitterButton = UIButton(frame: CGRectMake(85, yButtons, 40, 40))
+        twitterButton = UIButton(frame: CGRectMake(85, yButtons, 50, 50))
         twitterButton.setBackgroundImage(UIImage(named: "twitter"), forState: .Normal)
         twitterButton.addTarget(self, action:"twitterButtonTap:", forControlEvents:.TouchUpInside)
         self.view.addSubview(twitterButton)
         
-        whatsAppButton = UIButton(frame: CGRectMake(140, yButtons, 40, 40))
+        whatsAppButton = UIButton(frame: CGRectMake(140, yButtons, 50, 50))
         whatsAppButton.setBackgroundImage(UIImage(named: "whatsapp"), forState: .Normal)
         whatsAppButton.addTarget(self, action:"whatsAppButtonTap:", forControlEvents:.TouchUpInside)
         self.view.addSubview(whatsAppButton)
         
         
-        smsButton = UIButton(frame: CGRectMake(195, yButtons, 40, 40))
+        smsButton = UIButton(frame: CGRectMake(195, yButtons, 50, 50))
         smsButton.setBackgroundImage(UIImage(named: "chat"), forState: .Normal)
         smsButton.addTarget(self, action:"smsButtonTap:", forControlEvents:.TouchUpInside)
         self.view.addSubview(smsButton)
         
-        mailButton = UIButton(frame: CGRectMake(250, yButtons, 40, 40))
+        mailButton = UIButton(frame: CGRectMake(250, yButtons, 50, 50))
         mailButton.setBackgroundImage(UIImage(named: "email"), forState: .Normal)
         mailButton.addTarget(self, action:"mailButtonTap:", forControlEvents:.TouchUpInside)
         self.view.addSubview(mailButton)
@@ -74,6 +74,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     
     func fbButtonTap(sender: UIButton!){
         
+        SVProgressHUD.show()
         twitterFaceBookModule = TwitterFaceBookModule(delegate:self)
         if(!isProfileView){
             var link = String(format:"%@appLaunch.html?userId=%@&costumLeagueId=%@", TEAMS_IMAGES_URL_ROOT, PFUser.currentUser().objectId, customLeagueId)
@@ -94,6 +95,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     
     func twitterButtonTap(sender: UIButton!){
         
+        SVProgressHUD.show()
         twitterFaceBookModule = TwitterFaceBookModule(delegate:self)
         if(!isProfileView){
             
@@ -115,6 +117,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     
     func whatsAppButtonTap(sender: UIButton!){
         
+        SVProgressHUD.show()
         var message = String(format:"%@ %@", MESSAGE_TEXT1, appConfigData["itunesAppUrl"] as NSString)
         if(!isProfileView){
             var link = String(format:"Dohyo://userId/%@/costumLeagueId/%@", PFUser.currentUser().objectId, customLeagueId)
@@ -131,6 +134,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
             var alertView = UIAlertView(title: "", message: "Your device does not support whats app!", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()
         }
+        SVProgressHUD.dismiss()
     }
     
     
@@ -140,6 +144,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     var smsModule:SmsModule!
     func smsButtonTap(sender: UIButton!){
         
+        SVProgressHUD.show()
         var message = String(format:"%@ %@", MESSAGE_TEXT1, appConfigData["itunesAppUrl"] as NSString)
         if(!isProfileView){
             var link = String(format:"Dohyo://userId/%@/costumLeagueId/%@", PFUser.currentUser().objectId, customLeagueId)
@@ -160,6 +165,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     var emailModule:EmailModule!
     func mailButtonTap(sender: UIButton!){
         
+        SVProgressHUD.show()
         var message = String(format:"%@ %@", MESSAGE_TEXT1, appConfigData["itunesAppUrl"] as NSString)
         if(!isProfileView){
             var link = String(format:"%@appLaunch.html?userId=%@&costumLeagueId=%@", TEAMS_IMAGES_URL_ROOT, PFUser.currentUser().objectId, customLeagueId)

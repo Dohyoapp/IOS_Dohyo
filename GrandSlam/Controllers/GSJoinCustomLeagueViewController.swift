@@ -99,7 +99,10 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         
         tableViewDataNew = []
         tableViewDataOld = []
-        GSCustomLeague.getAllPublicCustomLeagues(self)
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            GSCustomLeague.getAllPublicCustomLeagues(self)
+        })
     }
     
     func closeView(){

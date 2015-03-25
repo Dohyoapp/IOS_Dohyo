@@ -40,6 +40,7 @@ class SmsModule: NSObject, MFMessageComposeViewControllerDelegate{
             var alertView = UIAlertView(title: "SMS error", message: "Your device does not support SMS", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()
         }
+        SVProgressHUD.dismiss()
     }
     
     func messageComposeViewController(controller: MFMessageComposeViewController!, didFinishWithResult result: MessageComposeResult) {
