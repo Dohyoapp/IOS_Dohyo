@@ -220,7 +220,8 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
     
     func endGetFacebookData(){
         self.closeView()
-        GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false)
+        GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false, joinedLeague:nil)
+        navigationBar.goToCreateViewController()
     }
     
     
@@ -358,7 +359,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
                 
                 }else{
                     self.closeView()
-                    GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false)
+                    GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false, joinedLeague:nil)
                 }
             })
         }

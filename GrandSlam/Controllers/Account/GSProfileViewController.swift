@@ -233,7 +233,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         
         if(indexPath.section == 1){
             
-            if(indexPath.row > 0 && indexPath.row < tableViewData.count-4){
+            if(indexPath.row > 0 && indexPath.row < tableViewData.count-5){
                 
                 closeView()
                 var value = Int(indexPath.row)-1
@@ -257,7 +257,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
             
             self.closeView()
             PFUser.logOut()
-            GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false)
+            GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false, joinedLeague:nil)
             navigationBar.goToCreateViewController()
         }
     }

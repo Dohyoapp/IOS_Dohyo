@@ -31,7 +31,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
         
         self.view.backgroundColor = UIColor.clearColor()
         
-        var yButtons = 10 as CGFloat
+        var yButtons = 5 as CGFloat
         
         fbButton = UIButton(frame: CGRectMake(30, yButtons, 50, 50))
         fbButton.setBackgroundImage(UIImage(named: "facebook"), forState: .Normal)

@@ -491,7 +491,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         relation.addObject(customLeague)
         user.saveInBackgroundWithBlock { (success, error) -> Void in
             
-            GSMainViewController.getMainViewControllerInstance().getCustomLeagues(true)
+            GSMainViewController.getMainViewControllerInstance().getCustomLeagues(true, joinedLeague:nil)
             
             self.socialShareViewController.customLeagueId = customLeague.objectId
         }

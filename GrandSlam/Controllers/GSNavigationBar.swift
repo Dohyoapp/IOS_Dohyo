@@ -29,7 +29,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
     var joinCustomLeagueViewController:GSJoinCustomLeagueViewController!
     
     
-    
+    var joinButton:UILabel!
     var joinNumber:UILabel!
     
     
@@ -76,7 +76,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         sizeTextLabel.text = "Join"
         sizeTextLabel.sizeToFit()
         var joinWidth = sizeTextLabel.frame.size.width+SPACEBETWEENLABELS
-        var joinButton = UILabel(frame: CGRectMake(startX+createWidth-5, 2, joinWidth, NAVIGATIONBAR_HEIGHT))
+        joinButton = UILabel(frame: CGRectMake(startX+createWidth-5, 2, joinWidth, NAVIGATIONBAR_HEIGHT))
         joinButton.userInteractionEnabled = true
         joinButton.text = "Join"
         joinButton.textAlignment = .Center

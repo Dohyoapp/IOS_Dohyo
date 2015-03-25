@@ -270,8 +270,12 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         tableView.reloadData()
     }
     
-    func joinButtonTap(sender: UIButton!){
+    func joinButtonTap (sender: UIButton!){
         
+        if(!sender.isKindOfClass(UIButton) ){
+        
+            return
+        }
         var cell = (sender as UIView).superview!
         
         var indexPath: NSIndexPath = tableView.indexPathForCell(cell as UITableViewCell) as NSIndexPath!

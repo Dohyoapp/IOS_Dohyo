@@ -104,12 +104,14 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
     
     
     var isAfterNewLeague:Bool = false
-    func getCustomLeagues(isNewLeague:Bool){
+    var lastJoinedLeague:PFObject!
+    func getCustomLeagues(isNewLeague:Bool, joinedLeague: PFObject!){
         
         GSCustomLeague.getCustomLeagues(self, user:PFUser.currentUser())
         GSUser.pendingInvitations()
         
         isAfterNewLeague = isNewLeague
+        lastJoinedLeague = joinedLeague
     }
     
     
@@ -143,6 +145,11 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
         if(isAfterNewLeague){
             (createCustomLeague as MainVCgetCustomLeaguesCaller).getCustomLeaguesEnd!()
         }
+        
+        if(lastJoinedLeague != nil && lastJoinedLeague.objectId != nil){
+            var index = data.indexOfObject(lastJoinedLeague)
+            navigationBar.goToLeague(index)
+        }
     }
     
     
@@ -154,7 +161,6 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
         
         if(navigationBar.customLeagueViewControlelr != nil){
             navigationBar.customLeagueViewControlelr.closeView()
-            navigationBar.labelSelected(navigationBar.buttonsArray[0] as UILabel)
         }
         
         var email: AnyObject? = PFUser.currentUser().valueForKey("email")

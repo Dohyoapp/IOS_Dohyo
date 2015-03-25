@@ -95,7 +95,7 @@ class GSSignInViewController: UIViewController, UITextFieldDelegate {
             if user != nil {
                 // Do stuff after successful login.
                 self.closeView()
-                GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false)
+                GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false, joinedLeague:nil)
                 navigationBar.goToCreateViewController()
             } else {
                 // The login failed. Check error to see why.

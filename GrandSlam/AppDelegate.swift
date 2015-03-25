@@ -70,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LeagueCaller {
         dispatch_async(dispatch_get_main_queue(), {
             GSLeague.getMatchResults(self)
         })
-        GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false)
+        GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false, joinedLeague:nil)
         GSCustomLeague.getNewJoinLeagueNumber()
         
         

@@ -250,7 +250,7 @@ class GSCustomLeague: NSObject {
             user.saveInBackgroundWithBlock { (success, error) -> Void in
                 
                 SVProgressHUD.dismiss()
-                GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false)
+                GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false, joinedLeague:toCustomLeague)
             }
         })
     }
