@@ -132,7 +132,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
             goToCreateViewController()
         }
         
-        self.addSubview(fakeTextField)
+        //self.addSubview(fakeTextField)
         
         self.setContentOffset(CGPointMake(0, 0), animated:false)
     }
@@ -249,8 +249,10 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
     
     func goToLeague(num: Int){
         
-        var label:UILabel = buttonsArray.objectAtIndex(num+2) as UILabel
-        labelSelected(label)
+        if(buttonsArray.count > num+2){
+            var label:UILabel = buttonsArray.objectAtIndex(num+2) as UILabel
+            labelSelected(label)
+        }
     }
     
     

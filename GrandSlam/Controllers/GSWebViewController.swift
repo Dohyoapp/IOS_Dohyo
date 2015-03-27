@@ -12,8 +12,9 @@ import Foundation
 class GSWebViewController: UIViewController, UIWebViewDelegate {
     
     var webView:UIWebView!
+    var betTextLoading:UIImageView!
+    //var timer:NSTimer!
     
-    var timer:NSTimer!
     
     
     override func viewDidLoad() {
@@ -36,6 +37,13 @@ class GSWebViewController: UIViewController, UIWebViewDelegate {
     
     func loadViewWithUrl(url:NSURL){
         
+        if(url.path?.componentsSeparatedByString("RemoteBetslip").count > 1){
+            
+            betTextLoading = UIImageView(frame: CGRectMake(0, 120, 320, 76))
+            betTextLoading.image = UIImage(named:"betTextLoading")
+            self.view.addSubview(betTextLoading)
+        }
+
         self.view.backgroundColor = UIColor.whiteColor()
         let requestObj = NSURLRequest(URL: url)
         SVProgressHUD.show()
@@ -46,25 +54,40 @@ class GSWebViewController: UIViewController, UIWebViewDelegate {
         
         SVProgressHUD.dismiss()
         dismissViewControllerAnimated(true, completion: nil)
-        if(timer != nil){
+        /*if(timer != nil){
             timer.invalidate()
-        }
+        }*/
     }
-    
+    /*
     func webViewDidStartLoad(webView: UIWebView){
         timer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "dismissLoading", userInfo: nil, repeats: false)
     }
     
     func dismissLoading() {
         SVProgressHUD.dismiss()
+    }*/
+    
+    func webViewDidFinishLoad(webView: UIWebView){
+        
+        if(betTextLoading != nil){
+            betTextLoading.removeFromSuperview()
+        }
+        SVProgressHUD.dismiss()
     }
     
+    
     func webView(webView: UIWebView, didFailLoadWithError error: NSError){
+        
+        if(betTextLoading != nil){
+            betTextLoading.removeFromSuperview()
+        }
+        SVProgressHUD.dismiss()
         
         var alertView = UIAlertView(title: "", message: "Sorry, this page is not available", delegate: nil, cancelButtonTitle: "Ok")
         alertView.show()
         
         closeTap(nil)
     }
+    
 
 }

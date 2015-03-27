@@ -20,7 +20,7 @@ class GSCreateAccountCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        textField = UITextField(frame: CGRectMake(70, 0, 180, 33))
+        textField = UITextField(frame: CGRectMake(60, 0, 200, 33))
         textField.font = UIFont(name:FONT1, size:15)
         textField.textColor = SPECIALBLUE
         textField.layer.borderColor = SPECIALBLUE.CGColor

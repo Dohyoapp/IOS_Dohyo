@@ -18,11 +18,13 @@ class GSBetSlip{
     
     var matchId: NSString
     var selection: NSDictionary
+    var score: NSString
     
     
-    init(aMatchId: NSString, aSelection: NSDictionary) {
+    init(aMatchId: NSString, aSelection: NSDictionary, aScore: NSString) {
         matchId     = aMatchId
         selection   = aSelection
+        score = aScore
     }
     
     
@@ -107,7 +109,9 @@ class GSBetSlip{
         
         if(countElements(selectionsKey) > 1){
             
-            var urlString = NSString(format:"https://betslip.ladbrokes.com/RemoteBetslip/bets/betslip.html?selections=%@&locale=en-GB&aff-tag=123&aff-id=123",  selectionsKey)
+            webViewController = GSWebViewController()
+            
+            var urlString = NSString(format:"https://betslip.ladbrokes.com/RemoteBetslip/bets/betslip.html?selections=%@&locale=en-GB",  selectionsKey)
             
             webViewController.loadViewWithUrl(NSURL(string:urlString)!)
             GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)

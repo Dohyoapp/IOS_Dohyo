@@ -89,10 +89,12 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             })
         }
         
-        Mixpanel.sharedInstance().track("0103 - View league", properties: [
-            "user": PFUser.currentUser()["username"],
-            "league": customLeague.pfCustomLeague["name"]
-        ])
+        dispatch_async(dispatch_get_main_queue(), {
+            Mixpanel.sharedInstance().track("0103 - View league", properties: [
+                "user": PFUser.currentUser()["username"],
+                "league": self.customLeague.pfCustomLeague["name"]
+            ])
+        })
     }
     
     
@@ -710,6 +712,8 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     
     func bettButtonTap(sender: UIButton!){
     
+        SVProgressHUD.show()
+        
         var betSelections = NSMutableArray()
         
         var count:Int = 0
@@ -726,14 +730,25 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             if(matcheDate.timeIntervalSinceDate(NSDate()) > 0){
             //if(leftScore != "0" || rightScore != "0"){
                 
-                var currentSelectionName = getSelectionNameFromScore(leftScore, rightScore: rightScore, titleMatche: (matche as GSMatcheSelection).pfMatche.valueForKey("title") as NSString)
-                
+                var titleMatch = (matche as GSMatcheSelection).pfMatche.valueForKey("title") as NSString
+                var currentSelectionName = getSelectionNameFromScore(leftScore, rightScore: rightScore, titleMatche: titleMatch)
                 
                 var selection:NSDictionary = (matche as GSMatcheSelection).getScoreCorrectSelectionByName(currentSelectionName)
+
+                /*
+                var selection:NSDictionary = (matche as GSMatcheSelection).getDrawSelection()
+                if(leftScore.integerValue > rightScore.integerValue){
+                    selection = (matche as GSMatcheSelection).getHomeSelection()
+                }
+                else if(rightScore.integerValue > leftScore.integerValue){
+                    selection = (matche as GSMatcheSelection).getAwaySelection()
+                }
+                */
                 if(selection.objectForKey("selectionKey") != nil){
                     var bet = NSMutableDictionary()
                     bet.setObject(selection, forKey: "selection")
-                    bet.setObject((matche as GSMatcheSelection).pfMatche.objectId , forKey: "matchId")
+                    bet.setObject((matche as GSMatcheSelection).pfMatche.objectId, forKey: "matchId")
+                    bet.setObject(leftScore+" - "+rightScore, forKey:"score")
                     betSelections.addObject(bet)
                 }
                 
@@ -743,8 +758,6 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         }
         
         if(betSelections.count > 0){
-            
-            SVProgressHUD.show()
             
             var betSlip = PFObject(className:"BetSlip")
             betSlip["customLeagueId"] = customLeague.pfCustomLeague.objectId
@@ -760,13 +773,18 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
                 
                 GSUser.loadUserBetSlips(user, delegate: self)
                 
-                Mixpanel.sharedInstance().track("0104 - Submit predictions", properties: [
-                    "user": PFUser.currentUser()["username"],
-                    "league": self.customLeague.pfCustomLeague["name"]
+                dispatch_async(dispatch_get_main_queue(), {
+                    Mixpanel.sharedInstance().track("0104 - Submit predictions", properties: [
+                        "user": PFUser.currentUser()["username"],
+                        "league": self.customLeague.pfCustomLeague["name"]
                     ])
+                })
             })
             
            // GSBetSlip.buildSlip(betSelections)
+        }
+        else{
+            SVProgressHUD.dismiss()
         }
     }
     

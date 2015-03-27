@@ -16,7 +16,7 @@
 
 
 
-let MIXPANEL_TOKEN = "89d9f5cd98cf6d410915d00b297c0849"
+let MIXPANEL_TOKEN = "261b3280edfef7caa0f7a8e9a422287a"
 
 var TEAMS_IMAGES_URL_ROOT = "https://s3.amazonaws.com/grandslam-explovia/"
 

@@ -23,6 +23,11 @@ var dateFormatter = NSDateFormatter()
 var cacheCustomLeaguesArray:NSMutableArray!
 
 
+var isAllPublicCustomLeaguesLoading = false
+var isAllPrivateCustomLeagues = false
+var isNewJoinLeagueNumber = false
+
+
 class GSCustomLeague: NSObject {
     
     
@@ -47,11 +52,17 @@ class GSCustomLeague: NSObject {
             PFUser.currentUser().fetchIfNeeded()
         }
         
+        if(isNewJoinLeagueNumber == true){
+            return
+        }
+        
+        isNewJoinLeagueNumber = true
         // params: ["JoinViewDate" : date as NSDate]
         PFCloud.callFunctionInBackground("NewJoinLeagueNumber", withParameters:[:]) { (result: AnyObject!, error: NSError!) -> Void in
             if error == nil {
                 GSMainViewController.getMainViewControllerInstance().refreshJoinCount(result as NSArray)
             }
+            isNewJoinLeagueNumber = false
         }
     }
 
@@ -198,13 +209,16 @@ class GSCustomLeague: NSObject {
             var bets: NSArray = (currentBetSlip as PFObject)["bets"] as NSArray
             for bet in bets{
                 
-                var betSlip = GSBetSlip(aMatchId: (bet as NSDictionary).objectForKey("matchId") as NSString, aSelection: (bet as NSDictionary).objectForKey("selection") as NSDictionary)
+                var matchId = (bet as NSDictionary).objectForKey("matchId") as NSString
+                var selection = (bet as NSDictionary).objectForKey("selection") as NSDictionary
+                var score = (bet as NSDictionary).objectForKey("score") as NSString
+                var betSlip = GSBetSlip(aMatchId: matchId, aSelection: selection, aScore: score)
                 result.addObject(betSlip)
             }
         }
         
         //step 2 check if all matches are past
-        if(league.matches != nil){
+        if(league != nil && league.matches != nil){
             
             var numberOldBets = 0
             var tempMatches:NSArray = GSBetSlip.getbetMatches(league.matches, bets: result)
@@ -300,9 +314,11 @@ class GSCustomLeague: NSObject {
         
         var user = PFUser.currentUser()
         
-        if(user["email"] == nil){
+        if(user["email"] == nil || isAllPublicCustomLeaguesLoading == true){
             return
         }
+        
+        isAllPublicCustomLeaguesLoading = true
 
         SVProgressHUD.show()
         var query = PFQuery(className:"CustomLeague")
@@ -313,6 +329,7 @@ class GSCustomLeague: NSObject {
             
             SVProgressHUD.dismiss()
             if (error != nil) {
+                isAllPublicCustomLeaguesLoading = false
                 delegate.endGetAllPublicCustomLeagues!(self.splitCustomLeagueByDate([]))
             }
             else{
@@ -335,6 +352,7 @@ class GSCustomLeague: NSObject {
                         data.addObject(customLeague)
                     }
                 }
+                isAllPublicCustomLeaguesLoading = false
                 delegate.endGetAllPublicCustomLeagues!(self.splitCustomLeagueByDate(data))
             }
         }
@@ -346,9 +364,11 @@ class GSCustomLeague: NSObject {
         
         var user = PFUser.currentUser()
         
-        if(user.valueForKey("email") == nil){
+        if(user.valueForKey("email") == nil || isAllPrivateCustomLeagues == true){
             return
         }
+        
+        isAllPrivateCustomLeagues = true
         
         SVProgressHUD.show()
         var query = PFQuery(className:"CustomLeague")
@@ -359,6 +379,7 @@ class GSCustomLeague: NSObject {
             
             SVProgressHUD.dismiss()
             if (error != nil) {
+                isAllPrivateCustomLeagues = false
                 delegate.endGetAllPrivateCustomLeagues!(self.splitCustomLeagueByDate([]))
             }
             else{
@@ -395,7 +416,7 @@ class GSCustomLeague: NSObject {
                     }
                 }
                 
-                
+                isAllPrivateCustomLeagues = false
                 delegate.endGetAllPrivateCustomLeagues!(self.splitCustomLeagueByDate(finalData))
             }
         }

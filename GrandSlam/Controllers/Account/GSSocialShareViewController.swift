@@ -148,7 +148,8 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
         SVProgressHUD.show()
         var message = String(format:"%@ %@", MESSAGE_TEXT1, appConfigData["itunesAppUrl"] as NSString)
         if(!isProfileView){
-            var link = String(format:"Dohyo://userId/%@/costumLeagueId/%@", PFUser.currentUser().objectId, customLeagueId)
+            //var link = String(format:"Dohyo://userId/%@/costumLeagueId/%@", PFUser.currentUser().objectId, customLeagueId)
+            var link = String(format:"%@appLaunch.html?userId=%@&costumLeagueId=%@", TEAMS_IMAGES_URL_ROOT, PFUser.currentUser().objectId, customLeagueId)
             message = String(format:"%@ %@", MESSAGE_TEXT2, link)
             
             Mixpanel.sharedInstance().track("0106 - Invite Friend", properties: [
@@ -191,7 +192,8 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
         SVProgressHUD.show()
         var message = String(format:"%@ %@", MESSAGE_TEXT1, appConfigData["itunesAppUrl"] as NSString)
         if(!isProfileView){
-            var link = String(format:"Dohyo://userId/%@/costumLeagueId/%@", PFUser.currentUser().objectId, customLeagueId)
+           // var link = String(format:"Dohyo://userId/%@/costumLeagueId/%@", PFUser.currentUser().objectId, customLeagueId)
+            var link = String(format:"%@appLaunch.html?userId=%@&costumLeagueId=%@", TEAMS_IMAGES_URL_ROOT, PFUser.currentUser().objectId, customLeagueId)
             message = String(format:"%@ %@", MESSAGE_TEXT2, link)
             
             Mixpanel.sharedInstance().track("0106 - Invite Friend", properties: [

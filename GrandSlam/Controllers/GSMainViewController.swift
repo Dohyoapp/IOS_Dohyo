@@ -147,8 +147,10 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
         }
         
         if(lastJoinedLeague != nil && lastJoinedLeague.objectId != nil){
-            var index = data.indexOfObject(lastJoinedLeague)
-            navigationBar.goToLeague(index)
+            if(data.containsObject(lastJoinedLeague)){
+                var index = data.indexOfObject(lastJoinedLeague)
+                navigationBar.goToLeague(index)
+            }
         }
     }
     
