@@ -26,7 +26,7 @@ class ParseConfig: NSObject {
         ParseCrashReporting.enable()
         
         // Initialize Parse.
-        Parse.setApplicationId("XCYnUIgcJKdPcW8u5FsiqMFeL0sFZDiWoeqWrUn2", clientKey:"XIV8NiEBmQDm54CskEMMC8BeEdD2QeTlUAz1m1Mf")
+        Parse.setApplicationId(PARSE_APPLICATION_KEY, clientKey:PARSE_CLIENT_KEY)
         
         
         PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground([:], block: nil)

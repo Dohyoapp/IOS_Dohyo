@@ -14,6 +14,11 @@
     let URL_ROOT = "https://api.ladbrokes.com/"
 #endif
 
+//devAPPKey "XCYnUIgcJKdPcW8u5FsiqMFeL0sFZDiWoeqWrUn2"
+let PARSE_APPLICATION_KEY = "ZliITZEO4ZM30ObrmYb6tPuJwnjFaQJnmp27cU80"
+
+//devClientKey "XIV8NiEBmQDm54CskEMMC8BeEdD2QeTlUAz1m1Mf"
+let PARSE_CLIENT_KEY = "qC9qxdB5ycoZnZgl8l7HOglM37FQfH2ef7hVYB3E"
 
 
 let MIXPANEL_TOKEN = "261b3280edfef7caa0f7a8e9a422287a"

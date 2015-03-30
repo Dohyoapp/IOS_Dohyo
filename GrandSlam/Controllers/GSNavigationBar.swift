@@ -132,7 +132,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
             goToCreateViewController()
         }
         
-        //self.addSubview(fakeTextField)
+        self.addSubview(fakeTextField)
         
         self.setContentOffset(CGPointMake(0, 0), animated:false)
     }
@@ -156,12 +156,18 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         sender.font  = UIFont(name:FONT2, size:18)
     }
     
-    func closeAccountViewIfNeeded(){
+    
+    func navBarHideKeyBoard(){
         
         dispatch_async(dispatch_get_main_queue(), {
             fakeTextField.becomeFirstResponder()
             fakeTextField.resignFirstResponder()
         })
+    }
+    
+    func closeAccountViewIfNeeded(){
+        
+        navBarHideKeyBoard()
         
         if(GSMainViewController.getMainViewControllerInstance().createAccountView){
             
@@ -224,6 +230,10 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
     
     func labelSelected(label: UILabel){
         
+        if(joinCustomLeagueViewController != nil){
+            joinCustomLeagueViewController.closeView()
+        }
+        
         if(label.font  != UIFont(name:FONT2, size:18)){
             
             setButtonFont(label);
@@ -234,10 +244,6 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
             customLeagueViewControlelr = GSCustomLeagueViewControlelr()
             customLeagueViewControlelr.customLeague = GSCustomLeague.getCacheCustomLeagues()[label.tag] as GSCustomLeague
             GSMainViewController.getMainViewControllerInstance().view.addSubview(customLeagueViewControlelr.view)
-            
-            if(joinCustomLeagueViewController != nil){
-                joinCustomLeagueViewController.closeView()
-            }
             
             self.setContentOffset(CGPointMake(label.center.x-157, 0), animated:true)
         }

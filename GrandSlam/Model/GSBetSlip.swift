@@ -220,9 +220,10 @@ class GSBetSlip{
             
         }
         
-        selection.setValue(oldBet, forKey: "oldBet")
+        var newSelection = NSMutableDictionary(dictionary: selection)
+        newSelection.setValue(oldBet, forKey: "oldBet")
         
-        return selection
+        return newSelection
     }
     
 }

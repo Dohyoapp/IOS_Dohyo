@@ -414,6 +414,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
     }
     
     func hideKeyBoard (){
+        
         self.view.endEditing(true)
         var tableViewFrame = tableView.frame
         tableViewFrame.size.height = self.view.frame.size.height-YSTART
@@ -505,15 +506,15 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         
         var lbTcButton = UIButton(frame: CGRectMake(35, 240, 120, 30))
         lbTcButton.setTitle("Ladbrokes T&Cs", forState: .Normal)
-        lbTcButton.titleLabel!.font = UIFont(name:FONT2, size:13)
+        lbTcButton.titleLabel!.font = UIFont(name:FONT2, size:12)
         lbTcButton.setTitleColor(SPECIALBLUE, forState: .Normal)
         lbTcButton.backgroundColor = UIColor.clearColor()
         lbTcButton.addTarget(self, action:"lbTcButtonTap", forControlEvents:.TouchUpInside)
         cell.addSubview(lbTcButton)
         
-        var lbPrivacyButton = UIButton(frame: CGRectMake(155, 240, 140, 30))
+        var lbPrivacyButton = UIButton(frame: CGRectMake(150, 240, 140, 30))
         lbPrivacyButton.setTitle("Ladbrokes Privacy", forState: .Normal)
-        lbPrivacyButton.titleLabel!.font = UIFont(name:FONT2, size:13)
+        lbPrivacyButton.titleLabel!.font = UIFont(name:FONT2, size:12)
         lbPrivacyButton.setTitleColor(SPECIALBLUE, forState: .Normal)
         lbPrivacyButton.backgroundColor = UIColor.clearColor()
         lbPrivacyButton.addTarget(self, action:"lbPpButtonTap", forControlEvents:.TouchUpInside)
@@ -521,15 +522,15 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         
         var lbPolicyButton = UIButton(frame: CGRectMake(35, 270, 40, 30))
         lbPolicyButton.setTitle("Policy", forState: .Normal)
-        lbPolicyButton.titleLabel!.font = UIFont(name:FONT2, size:13)
+        lbPolicyButton.titleLabel!.font = UIFont(name:FONT2, size:12)
         lbPolicyButton.setTitleColor(SPECIALBLUE, forState: .Normal)
         lbPolicyButton.backgroundColor = UIColor.clearColor()
         lbPolicyButton.addTarget(self, action:"lbPpButtonTap", forControlEvents:.TouchUpInside)
         cell.addSubview(lbPolicyButton)
         
-        var lbRGButton = UIButton(frame: CGRectMake(70, 270, 230, 30))
+        var lbRGButton = UIButton(frame: CGRectMake(65, 270, 230, 30))
         lbRGButton.setTitle("Ladbrokes Responsible Gambling", forState: .Normal)
-        lbRGButton.titleLabel!.font = UIFont(name:FONT2, size:13)
+        lbRGButton.titleLabel!.font = UIFont(name:FONT2, size:12)
         lbRGButton.setTitleColor(SPECIALBLUE, forState: .Normal)
         lbRGButton.backgroundColor = UIColor.clearColor()
         lbRGButton.addTarget(self, action:"lbRGButtonTap", forControlEvents:.TouchUpInside)
@@ -537,15 +538,15 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         
         var coockiePButton = UIButton(frame: CGRectMake(35, 300, 180, 30))
         coockiePButton.setTitle("Ladbrokes Cookie Policy", forState: .Normal)
-        coockiePButton.titleLabel!.font = UIFont(name:FONT2, size:13)
+        coockiePButton.titleLabel!.font = UIFont(name:FONT2, size:12)
         coockiePButton.setTitleColor(SPECIALBLUE, forState: .Normal)
         coockiePButton.backgroundColor = UIColor.clearColor()
         coockiePButton.addTarget(self, action:"coockiePButtonTap", forControlEvents:.TouchUpInside)
         cell.addSubview(coockiePButton)
         
-        var gameCareButton = UIButton(frame: CGRectMake(190, 300, 100, 30))
+        var gameCareButton = UIButton(frame: CGRectMake(185, 300, 100, 30))
         gameCareButton.setTitle("GamCare", forState: .Normal)
-        gameCareButton.titleLabel!.font = UIFont(name:FONT2, size:13)
+        gameCareButton.titleLabel!.font = UIFont(name:FONT2, size:12)
         gameCareButton.setTitleColor(SPECIALBLUE, forState: .Normal)
         gameCareButton.backgroundColor = UIColor.clearColor()
         gameCareButton.addTarget(self, action:"gameCareButtonTap", forControlEvents:.TouchUpInside)
@@ -553,7 +554,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         
         var rgtButton = UIButton(frame: CGRectMake(35, 330, 260, 30))
         rgtButton.setTitle("Responsible Gambling Trust Remote", forState: .Normal)
-        rgtButton.titleLabel!.font = UIFont(name:FONT2, size:13)
+        rgtButton.titleLabel!.font = UIFont(name:FONT2, size:12)
         rgtButton.setTitleColor(SPECIALBLUE, forState: .Normal)
         rgtButton.backgroundColor = UIColor.clearColor()
         rgtButton.addTarget(self, action:"rgtButtonTap", forControlEvents:.TouchUpInside)
@@ -561,39 +562,39 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         
         var gfgButton = UIButton(frame: CGRectMake(35, 360, 180, 30))
         gfgButton.setTitle("Gambling form Gibraltar", forState: .Normal)
-        gfgButton.titleLabel!.font = UIFont(name:FONT2, size:13)
+        gfgButton.titleLabel!.font = UIFont(name:FONT2, size:12)
         gfgButton.setTitleColor(SPECIALBLUE, forState: .Normal)
         gfgButton.backgroundColor = UIColor.clearColor()
         gfgButton.addTarget(self, action:"gfgButtonTap", forControlEvents:.TouchUpInside)
         cell.addSubview(gfgButton)
         
-        var gComissionButton = UIButton(frame: CGRectMake(190, 360, 100, 30))
+        var gComissionButton = UIButton(frame: CGRectMake(185, 360, 100, 30))
         gComissionButton.setTitle("Gambling", forState: .Normal)
-        gComissionButton.titleLabel!.font = UIFont(name:FONT2, size:13)
+        gComissionButton.titleLabel!.font = UIFont(name:FONT2, size:12)
         gComissionButton.setTitleColor(SPECIALBLUE, forState: .Normal)
         gComissionButton.backgroundColor = UIColor.clearColor()
         gComissionButton.addTarget(self, action:"gComissionButtonTap", forControlEvents:.TouchUpInside)
         cell.addSubview(gComissionButton)
         
-        var gComissionButton2 = UIButton(frame: CGRectMake(30, 390, 100, 30))
+        var gComissionButton2 = UIButton(frame: CGRectMake(30, 390, 90, 30))
         gComissionButton2.setTitle("Commission", forState: .Normal)
-        gComissionButton2.titleLabel!.font = UIFont(name:FONT2, size:13)
+        gComissionButton2.titleLabel!.font = UIFont(name:FONT2, size:12)
         gComissionButton2.setTitleColor(SPECIALBLUE, forState: .Normal)
         gComissionButton2.backgroundColor = UIColor.clearColor()
         gComissionButton2.addTarget(self, action:"gComissionButtonTap", forControlEvents:.TouchUpInside)
         cell.addSubview(gComissionButton2)
         
-        var gTherappyButton = UIButton(frame: CGRectMake(110, 390, 170, 30))
+        var gTherappyButton = UIButton(frame: CGRectMake(95, 390, 170, 30))
         gTherappyButton.setTitle("Gambling Therapy", forState: .Normal)
-        gTherappyButton.titleLabel!.font = UIFont(name:FONT2, size:13)
+        gTherappyButton.titleLabel!.font = UIFont(name:FONT2, size:12)
         gTherappyButton.setTitleColor(SPECIALBLUE, forState: .Normal)
         gTherappyButton.backgroundColor = UIColor.clearColor()
         gTherappyButton.addTarget(self, action:"gTherappyButtonTap", forControlEvents:.TouchUpInside)
         cell.addSubview(gTherappyButton)
         
-        var essaButton = UIButton(frame: CGRectMake(260, 390, 40, 30))
+        var essaButton = UIButton(frame: CGRectMake(240, 390, 40, 30))
         essaButton.setTitle("Essa", forState: .Normal)
-        essaButton.titleLabel!.font = UIFont(name:FONT2, size:13)
+        essaButton.titleLabel!.font = UIFont(name:FONT2, size:12)
         essaButton.setTitleColor(SPECIALBLUE, forState: .Normal)
         essaButton.backgroundColor = UIColor.clearColor()
         essaButton.addTarget(self, action:"essaButtonTap", forControlEvents:.TouchUpInside)
@@ -625,18 +626,24 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         }
     }
     
+    
+    
+    func loadWebView(url:String){
+        
+        hideKeyBoard()
+        webViewController = GSWebViewController()
+        webViewController.loadViewWithUrl(NSURL(string:url)!)
+        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+    }
+    
     func ppTap(){
         
-        webViewController = GSWebViewController()
-        webViewController.loadViewWithUrl(NSURL(string:appConfigData["PrivacyPolicy"] as NSString)!)
-        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+        loadWebView(appConfigData["PrivacyPolicy"] as NSString)
     }
     
     func tcTap(){
         
-        webViewController = GSWebViewController()
-        webViewController.loadViewWithUrl(NSURL(string:appConfigData["TermsConditions"] as NSString)!)
-        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+        loadWebView(appConfigData["TermsConditions"] as NSString)
     }
     
     
@@ -644,123 +651,89 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
     
     func licence1611ButtonTap(){
         
-        webViewController = GSWebViewController()
-        
         var urlString = NSString(format:"https://secure.gamblingcommission.gov.uk/gccustomweb/PublicRegister/PRSearch.aspx?ExternalAccountId=1611")
         
-        webViewController.loadViewWithUrl(NSURL(string:urlString)!)
-        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+        loadWebView(urlString)
     }
     
     func lbTcButtonTap(){
         
-        webViewController = GSWebViewController()
-        
         var urlString = NSString(format:"http://help.ladbrokes.com/display/4/kb/article.aspx?aid=2665")
         
-        webViewController.loadViewWithUrl(NSURL(string:urlString)!)
-        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+        loadWebView(urlString)
     }
     
     func lbPpButtonTap(){
     
-        webViewController = GSWebViewController()
-        
         var urlString = NSString(format:"http://help.ladbrokes.com/display/4/kb/article.aspx?aid=1120")
         
-        webViewController.loadViewWithUrl(NSURL(string:urlString)!)
-        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+        loadWebView(urlString)
     }
     
     func lbRGButtonTap(){
         
-        webViewController = GSWebViewController()
-        
         var urlString = NSString(format:"http://help.ladbrokes.com/display/4/kb/article.aspx?aid=1077")
         
-        webViewController.loadViewWithUrl(NSURL(string:urlString)!)
-        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+        loadWebView(urlString)
     }
     
     func coockiePButtonTap(){
     
-        webViewController = GSWebViewController()
-        
         var urlString = NSString(format:"http://help.ladbrokes.com/display/4/kb/article.aspx?aid=1120#r5")
         
-        webViewController.loadViewWithUrl(NSURL(string:urlString)!)
-        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+        loadWebView(urlString)
     }
     
     func gameCareButtonTap(){
         
-        webViewController = GSWebViewController()
-        
         var urlString = NSString(format:"http://www.gamcare.org.uk")
         
-        webViewController.loadViewWithUrl(NSURL(string:urlString)!)
-        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+        loadWebView(urlString)
     }
     
     func rgtButtonTap(){
         
-        webViewController = GSWebViewController()
-        
         var urlString = NSString(format:"http://www.responsiblegamblingtrust.org.uk")
         
-        webViewController.loadViewWithUrl(NSURL(string:urlString)!)
-        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+        loadWebView(urlString)
     }
     
     
     func gfgButtonTap(){
         
-        webViewController = GSWebViewController()
-        
         var urlString = NSString(format:"https://www.gibraltar.gov.gi/new/remote-gambling?w_id=20120704133407")
         
-        webViewController.loadViewWithUrl(NSURL(string:urlString)!)
-        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+        loadWebView(urlString)
     }
     
     func gComissionButtonTap(){
         
-        webViewController = GSWebViewController()
-        
         var urlString = NSString(format:"http://www.gamblingcommission.gov.uk/Home.aspx")
         
-        webViewController.loadViewWithUrl(NSURL(string:urlString)!)
-        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+        loadWebView(urlString)
     }
     
     func gTherappyButtonTap(){
         
-        webViewController = GSWebViewController()
-        
         var urlString = NSString(format:"https://www.gamblingtherapy.org/?ReferrerID=310")
         
-        webViewController.loadViewWithUrl(NSURL(string:urlString)!)
-        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+        loadWebView(urlString)
     }
     
     func essaButtonTap(){
         
-        webViewController = GSWebViewController()
-        
         var urlString = NSString(format:"http://www.ladbrokes.com/essaPopup.html")
         
-        webViewController.loadViewWithUrl(NSURL(string:urlString)!)
-        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+        loadWebView(urlString)
     }
     
     
     func ageButtonTap(){
         
-        webViewController = GSWebViewController()
-        
         var urlString = NSString(format:"http://help.ladbrokes.com/display/4/kb/article.aspx?aid=1077&n=1&docid=28682&tab=search#r2")
         
-        webViewController.loadViewWithUrl(NSURL(string:urlString)!)
-        GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
+        loadWebView(urlString)
     }
+    
+    
 }

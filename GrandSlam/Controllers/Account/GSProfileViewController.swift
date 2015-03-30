@@ -62,9 +62,14 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         var username: AnyObject! = user.objectForKey("username")
         var email: AnyObject!    = user.objectForKey("email")
         if(username != nil && email != nil && (userNameLabel.text != username as NSString || emailLabel.text != email as NSString) ){
-            user["username"] = userNameLabel.text
-            user["email"]    = emailLabel.text
-            user.save()
+            
+            var name:NSString = userNameLabel.text
+            if(name.length < 40 && FieldsValidator.validateName(name)){
+                
+                user["username"] = name
+                user["email"]    = emailLabel.text
+                user.save()
+            }
         }
         
         self.view.removeFromSuperview()
@@ -397,7 +402,21 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         
         var user = PFUser.currentUser()
         
-        user["username"] = userNameLabel.text
+        var name:NSString = userNameLabel.text
+        if(name.length > 40){
+            
+            var alertView = UIAlertView(title: "", message: "Your user name is too long", delegate: nil, cancelButtonTitle: "Ok")
+            alertView.show()
+            return true
+        }
+        
+        if(!FieldsValidator.validateName(name)){
+            var alertView = UIAlertView(title: "", message: "Please verify that your user name can only include letters and  special characters like ' and -", delegate: nil, cancelButtonTitle: "Ok")
+            alertView.show()
+            return true
+        }
+        
+        user["username"] = name
         user["email"]    = emailLabel.text
         user.save()
         
@@ -405,6 +424,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func hideKeyBoard (){
+        
         self.view.endEditing(true)
         var tableViewFrame = tableView.frame
         tableViewFrame.size.height = self.view.frame.size.height-YSTART

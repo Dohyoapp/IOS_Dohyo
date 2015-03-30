@@ -165,6 +165,8 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
             navigationBar.customLeagueViewControlelr.closeView()
         }
         
+        navigationBar.navBarHideKeyBoard()
+        
         var email: AnyObject? = PFUser.currentUser().valueForKey("email")
         
         if(!createAccountView){

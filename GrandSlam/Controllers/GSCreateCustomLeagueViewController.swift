@@ -512,7 +512,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         self.socialShareViewController.view.alpha = 1
         
         
-        var endView = UIView(frame:CGRectMake(0, 0, 320, 780))
+        var endView = UIView(frame:CGRectMake(0, 0, 320, 680))
         endView.backgroundColor = UIColor.whiteColor()
         endView.alpha = 0.4
         self.scrollView.addSubview(endView)
