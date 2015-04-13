@@ -26,7 +26,7 @@ class TwitterFaceBookModule: NSObject{
         myDelegate = delegate
     }
     
-    func twitter(text: NSString, image: UIImage, link: NSString){
+    func twitter(text: String, image: UIImage, link: String){
         
         if(SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter)){
             
@@ -62,7 +62,7 @@ class TwitterFaceBookModule: NSObject{
         SVProgressHUD.dismiss()
     }
     
-    func facebook(text: NSString, image: UIImage, link: NSString){
+    func facebook(text: String, image: UIImage, link: String){
         
         if(SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)){
             
@@ -102,7 +102,7 @@ class TwitterFaceBookModule: NSObject{
     }
     
     
-    func oldSendFaceBook(text: NSString, image: UIImage, link: NSString){
+    func oldSendFaceBook(text: String, image: UIImage, link: String){
     
         var params:FBLinkShareParams = FBLinkShareParams()
         //FBShareDialogParams
@@ -120,10 +120,10 @@ class TwitterFaceBookModule: NSObject{
                 } else {
                     // Success
                     NSLog("result %@", results)
-                    var completition = (results as NSDictionary).objectForKey("completionGesture") as NSString
-                    var complete = (results as NSDictionary).valueForKey("didComplete") as Int
+                    var completition = (results as NSDictionary).objectForKey("completionGesture") as! String
+                    var complete = (results as NSDictionary).valueForKey("didComplete") as! Int
                     
-                     if (completition.isEqualToString("post")  && (complete == 1)){
+                     if (completition == "post"  && (complete == 1)){
                         self.myDelegate.shareFBSuccesFinish()
                     }
                 }
@@ -170,9 +170,9 @@ class TwitterFaceBookModule: NSObject{
         var pairs:NSArray = query.componentsSeparatedByString("&")
         var params:NSMutableDictionary = NSMutableDictionary()
         for pair in pairs {
-            var kv:NSArray     = (pair as NSString).componentsSeparatedByString("=")
+            var kv:NSArray     = (pair as! String).componentsSeparatedByString("=")
             var val:NSString   = kv[1].stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-            params.setObject(val, forKey: kv[0] as NSString)
+            params.setObject(val, forKey: kv[0] as! String)
         }
         return params;
     }
@@ -217,7 +217,7 @@ class TwitterFaceBookModule: NSObject{
         for pair in pairs {
             var kv:NSArray = pair.componentsSeparatedByString("=")
             var val:NSString = kv[1].stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-            params[kv[0] as NSString] = val
+            params[kv[0] as! String] = val
         }
         return params;
     }

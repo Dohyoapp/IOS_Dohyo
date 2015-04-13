@@ -8,6 +8,8 @@
 
 import Foundation
 
+let AUTHENTIFICATION_LINK = "https://api.ladbrokes.com/forms/authorise-client?client_id="
+
 
 class GSWebViewController: UIViewController, UIWebViewDelegate {
     
@@ -58,17 +60,50 @@ class GSWebViewController: UIViewController, UIWebViewDelegate {
             timer.invalidate()
         }*/
     }
-    /*
-    func webViewDidStartLoad(webView: UIWebView){
-        timer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "dismissLoading", userInfo: nil, repeats: false)
+    
+    
+    var state = false
+    //&state=stjoe
+    
+    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool{
+        
+        var urlString:NSString = request.URL!.absoluteString!
+        var urlsArray:NSArray = urlString.componentsSeparatedByString(AUTHENTIFICATION_LINK)
+        if (urlsArray.count > 1){
+            
+            if(!state){
+
+                var range:Range = (urlsArray.lastObject as! String).rangeOfString("&")!
+                
+                var newString = (urlsArray.lastObject as! String).substringFromIndex(range.startIndex) as String
+                var newUrl = AUTHENTIFICATION_LINK+LADBROKES_API_KEY+newString
+                
+                newUrl = newUrl.stringByReplacingOccurrencesOfString("prompt=0", withString: "prompt=1")
+                
+                var requestObj = NSURLRequest(URL: NSURL(string:newUrl)!)
+                webView.loadRequest(requestObj)
+                
+                state = true
+                
+                return false
+            }
+            else{
+                state = false
+            }
+        }
+        /*
+        var urlsArray2:NSArray = urlString.componentsSeparatedByString("betslip.ladbrokes.com/RemoteBetslip/bets/betslip.html?token=")
+        if(urlsArray.count > 2){
+            
+        }*/
+        
+        return true
     }
     
-    func dismissLoading() {
-        SVProgressHUD.dismiss()
-    }*/
+
     
     func webViewDidFinishLoad(webView: UIWebView){
-        
+
         if(betTextLoading != nil){
             betTextLoading.removeFromSuperview()
         }

@@ -992,7 +992,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./GrandSlam/Fabric.framework/run 45190a17174d5369010e19cc2a47dd057b37066f 06bf925f294877b168963efb362e582cf1c7da610523165d69c3357259e97a42\n\nexport PATH=/usr/local/bin:$PATH\ncd GrandSlam/parse\n";
+			shellScript = "./GrandSlam/Fabric.framework/run 45190a17174d5369010e19cc2a47dd057b37066f 06bf925f294877b168963efb362e582cf1c7da610523165d69c3357259e97a42\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1223,7 +1223,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DLIVE_VERSION";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3783cbbf-ada5-4aa9-a33d-74fb47daa00a";
+				PROVISIONING_PROFILE = "f074487a-c75f-4e91-8788-09cc63d79630";
 				SWIFT_OBJC_BRIDGING_HEADER = "GrandSlam/GrandSlam-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1249,7 +1249,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DLIVE_VERSION";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3783cbbf-ada5-4aa9-a33d-74fb47daa00a";
+				PROVISIONING_PROFILE = "f074487a-c75f-4e91-8788-09cc63d79630";
 				SWIFT_OBJC_BRIDGING_HEADER = "GrandSlam/GrandSlam-Bridging-Header.h";
 			};
 			name = Release;

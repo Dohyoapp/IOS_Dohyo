@@ -265,13 +265,13 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         
         var nowDateString = dateFormatter.stringFromDate(NSDate())
         var arrayNowDate = nowDateString.componentsSeparatedByString(".") as NSArray
-        var yearString = arrayNowDate.lastObject as NSString
-        var monthString = arrayNowDate[1] as NSString
-        if(monthString.integerValue > 5){
-            var nextYear = yearString.integerValue+1
-            yearString = NSString(format:"%d", nextYear)
+        var yearString = arrayNowDate.lastObject as! String
+        var monthString = arrayNowDate[1] as! String
+        if(monthString.toInt() > 5){
+            var nextYear = yearString.toInt()!+1
+            yearString = String(format:"%d", nextYear)
         }
-        var maximumDateString = NSString(format:"24.05.%@", yearString)
+        var maximumDateString = String(format:"24.05.%@", yearString)
         
         datePicker2 = UIDatePicker()
         datePicker2.maximumDate = dateFormatter.dateFromString(maximumDateString)
@@ -284,8 +284,8 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         }
         else   {
             leagues = GSLeague.getCacheLeagues()
-            selectedLeague = (leagues.firstObject as GSLeague).pfLeague
-            premierLeagueLabel.text = String(format:"%@ Football", selectedLeague["title"] as NSString)
+            selectedLeague = (leagues.firstObject as! GSLeague).pfLeague
+            premierLeagueLabel.text = String(format:"%@ Football", selectedLeague["title"] as! String)
         }
     }
     
@@ -293,8 +293,8 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         
         leagues = data
         if(leagues.count > 0){
-            selectedLeague = leagues.firstObject as PFObject
-            premierLeagueLabel.text = String(format:"%@ Football", selectedLeague["title"] as NSString)
+            selectedLeague = leagues.firstObject as! PFObject
+            premierLeagueLabel.text = String(format:"%@ Football", selectedLeague["title"] as! String)
         }
     }
     
@@ -392,7 +392,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
             return
         }
         
-        var leagueTitle = selectedLeague["title"] as NSString
+        var leagueTitle = selectedLeague["title"] as! String
         
         
         var startDate:NSDate   = NSDate()//dateFormatter.dateFromString(startDateLabel.text)!
@@ -409,7 +409,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
             return
         }
         
-        if(countElements(leagueName) > 40){
+        if(count(leagueName) > 40){
             
             var alertView = UIAlertView(title: "", message: "Your league name is too long", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()
@@ -422,7 +422,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
             return;
         }
         
-        if(countElements(prize) > 40){
+        if(count(prize) > 40){
             
             var alertView = UIAlertView(title: "", message: "The prize is too long", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()
@@ -442,7 +442,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
             return
         }
         
-        if(numberTextField.alpha == 1 && (countElements(numberOfMatches) == 0 || numberOfMatches == "0") ){
+        if(numberTextField.alpha == 1 && (count(numberOfMatches) == 0 || numberOfMatches == "0") ){
             
             var alertView = UIAlertView(title: "", message: "Please enter a valid number of matches", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()

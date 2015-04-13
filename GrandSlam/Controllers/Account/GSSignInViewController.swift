@@ -67,10 +67,10 @@ class GSSignInViewController: UIViewController, UITextFieldDelegate {
     
     func singInTap(sender: UIButton!){
         
-        var name:NSString       = userNameField.text
-        var password:NSString   = passwordField.text
+        var name:String       = userNameField.text
+        var password:String   = passwordField.text
         
-        if(name.length < 2){
+        if(count(name) < 2){
             var alertView = UIAlertView(title: "", message: "Please enter your user name", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()
             return;
@@ -82,7 +82,7 @@ class GSSignInViewController: UIViewController, UITextFieldDelegate {
             return;
         }
         
-        if(password.length < 6){
+        if(count(password) < 6){
             
             var alertView = UIAlertView(title: "", message: "Uh oh...the passwords is too short. \nPlease enter more than 6 characters.", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()

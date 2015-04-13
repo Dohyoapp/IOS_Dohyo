@@ -56,7 +56,7 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         publicNumber.hidden = true
         
         if(countArray != nil && countArray.count > 0){
-            var publicCount = countArray.firstObject as Int
+            var publicCount = countArray.firstObject as! Int
             if(publicCount > 0){
                 publicNumber.text = String(publicCount)
                 publicNumber.hidden = false
@@ -83,7 +83,7 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         privateNumber.hidden = true
         
         if(countArray != nil && countArray.count > 0){
-            var privateCount = countArray.lastObject as Int
+            var privateCount = countArray.lastObject as! Int
             if(privateCount > 0){
                 privateNumber.text = String(privateCount)
                 privateNumber.hidden = false
@@ -114,8 +114,8 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         
         publicData = data
         
-        tableViewDataNew = publicData.firstObject as NSArray
-        tableViewDataOld = publicData.lastObject as NSArray
+        tableViewDataNew = publicData.firstObject as! NSArray
+        tableViewDataOld = publicData.lastObject as! NSArray
         
         tableView.reloadData()
         
@@ -191,7 +191,7 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
             
-            var cell = tableView.dequeueReusableCellWithIdentifier("JoinCustomCell") as UITableViewCell!
+            var cell = tableView.dequeueReusableCellWithIdentifier("JoinCustomCell") as! UITableViewCell!
             if(cell == nil){
                 cell = UITableViewCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"JoinCustomCell")
                 
@@ -215,8 +215,8 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
                 if(tableViewDataNew.count > indexPath.row){
                     var data: AnyObject? = tableViewDataNew[indexPath.row] as AnyObject
                     if(data != nil){
-                        var customLeague = tableViewDataNew[indexPath.row] as PFObject
-                        cell.textLabel?.text = customLeague["name"] as NSString
+                        var customLeague = tableViewDataNew[indexPath.row] as! PFObject
+                        cell.textLabel?.text = customLeague["name"] as? String
                     }
                 }
             }
@@ -225,8 +225,8 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
                 if(tableViewDataOld.count > indexPath.row){
                     var data: AnyObject? = tableViewDataOld[indexPath.row] as AnyObject
                     if(data != nil){
-                        var customLeague = tableViewDataOld[indexPath.row] as PFObject
-                        cell.textLabel?.text = customLeague["name"] as NSString
+                        var customLeague = tableViewDataOld[indexPath.row] as! PFObject
+                        cell.textLabel?.text = customLeague["name"] as? String
                     }
                 }
             }
@@ -243,8 +243,8 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         privateButton.titleLabel!.font = UIFont(name:FONT1, size:18)
         
         if(publicData != nil){
-            tableViewDataNew = publicData.firstObject as NSArray
-            tableViewDataOld = publicData.lastObject as NSArray
+            tableViewDataNew = publicData.firstObject as! NSArray
+            tableViewDataOld = publicData.lastObject as! NSArray
         }
         
         tableView.reloadData()
@@ -259,8 +259,8 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         privateButton.titleLabel!.font = UIFont(name:FONT2, size:18)
         
         if(privateData != nil){
-            tableViewDataNew = privateData.firstObject as NSArray
-            tableViewDataOld = privateData.lastObject as NSArray
+            tableViewDataNew = privateData.firstObject as! NSArray
+            tableViewDataOld = privateData.lastObject as! NSArray
         }
         else{
             tableViewDataNew = []
@@ -278,24 +278,24 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         }
         var cell = (sender as UIView).superview!
         
-        var indexPath: NSIndexPath = tableView.indexPathForCell(cell as UITableViewCell) as NSIndexPath!
+        var indexPath: NSIndexPath = tableView.indexPathForCell(cell as! UITableViewCell) as NSIndexPath!
         
         var num = cell.tag
         var customLeague:PFObject!
         
         if(indexPath.section == 0){
-            customLeague    = tableViewDataNew[num] as PFObject
+            customLeague    = tableViewDataNew[num] as! PFObject
             if(countArray != nil && countArray.count > 1){
-                var firstValue  = NSNumber(integer:(countArray.firstObject as Int) - 1)
-                var secondValue = countArray.lastObject as NSNumber
+                var firstValue  = NSNumber(integer:(countArray.firstObject as! Int) - 1)
+                var secondValue = countArray.lastObject as! NSNumber
                 countArray      = [firstValue, secondValue]
             }
         }
         else{
-            customLeague    = tableViewDataOld[num] as PFObject
+            customLeague    = tableViewDataOld[num] as! PFObject
             if(countArray != nil && countArray.count > 1){
-                var firstValue  = countArray.firstObject as NSNumber
-                var secondValue = NSNumber(integer:(countArray.lastObject as Int) - 1)
+                var firstValue  = countArray.firstObject as! NSNumber
+                var secondValue = NSNumber(integer:(countArray.lastObject as! Int) - 1)
                 countArray      = [firstValue, secondValue]
             }
         }
@@ -306,7 +306,7 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         
         
         if(countArray != nil && countArray.count > 0){
-            var publicCount = countArray.firstObject as Int
+            var publicCount = countArray.firstObject as! Int
             if(publicCount > 0){
                 publicNumber.text = String(publicCount)
                 publicNumber.hidden = false
@@ -317,7 +317,7 @@ class GSJoinCustomLeagueViewController: UIViewController, UITableViewDataSource,
         }
         
         if(countArray != nil && countArray.count > 0){
-            var privateCount = countArray.lastObject as Int
+            var privateCount = countArray.lastObject as! Int
             if(privateCount > 0){
                 privateNumber.text = String(privateCount)
                 privateNumber.hidden = false

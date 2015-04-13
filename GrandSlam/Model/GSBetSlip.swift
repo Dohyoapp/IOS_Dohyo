@@ -30,6 +30,12 @@ class GSBetSlip{
     
     
     class func getbetMatches(matches:NSArray, bets:NSArray) -> NSArray{
+        /*
+        var weekNumber = ""
+        if(!Utils.isParseNull(league.pfLeague["weekNumber"])){
+            weekNumber   = league.pfLeague["weekNumber"] as? String
+        }
+        */
         
         var returnArray = NSMutableArray()
         
@@ -37,8 +43,10 @@ class GSBetSlip{
             
             for bet in bets{
                 
-                var betMatchId:NSString = (bet as GSBetSlip).matchId as NSString
+                var betMatchId:NSString = (bet as! GSBetSlip).matchId as! String
                 if(betMatchId == match.objectId){
+                    //may need to check buy week number
+
                     returnArray.addObject(match)
                 }
             }
@@ -51,11 +59,11 @@ class GSBetSlip{
     
     class func buildSlip(betSelections: NSArray){
         
-        var betSlip = betSelections[0] as NSDictionary
-        var selection = betSlip.objectForKey("selection") as NSDictionary
-        var selectionKey = Int(selection.objectForKey("selectionKey") as NSNumber)
+        var betSlip = betSelections[0] as! NSDictionary
+        var selection = betSlip.objectForKey("selection") as! NSDictionary
+        var selectionKey = Int(selection.objectForKey("selectionKey") as! NSNumber)
         
-        var urlString:NSString = URL_ROOT+"v2/betting-api/sportsbook/betslips/build"
+        var urlString:String = URL_ROOT+"v2/betting-api/sportsbook/betslips/build"
         urlString = urlString+"?locale=en-GB&"+"api-key="+LADBROKES_API_KEY
         
         let params:[String: AnyObject] = [
@@ -76,7 +84,7 @@ class GSBetSlip{
             SVProgressHUD.dismiss()
 
             var err: NSError?
-            var jsonData:NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as NSDictionary
+            var jsonData:NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as! NSDictionary
             
             var g = 0
         }
@@ -94,24 +102,24 @@ class GSBetSlip{
         var selectionsKey = ""
         for selection in selections {
             //var currentPrice:NSDictionary!  = selection.objectForKey("currentPrice") as NSDictionary //denPrice = 1; numPrice = 100;
-            var selectionKey:AnyObject!     = (selection as NSDictionary).objectForKey("selectionKey")
+            var selectionKey:AnyObject!     = (selection as! NSDictionary).objectForKey("selectionKey")
             if(selectionKey != nil){
-                var intSelectionKey = Int(selectionKey as NSNumber)
-                if(countElements(selectionsKey) > 1){
-                    selectionsKey = NSString(format:"%@,%d", selectionsKey, intSelectionKey)
+                var intSelectionKey = Int(selectionKey as! NSNumber)
+                if(count(selectionsKey) > 1){
+                    selectionsKey = String(format:"%@,%d", selectionsKey, intSelectionKey)
                 }
                 else{
-                    selectionsKey = NSString(format:"%d", intSelectionKey)
+                    selectionsKey = String(format:"%d", intSelectionKey)
                 }
             }
         }
         
         
-        if(countElements(selectionsKey) > 1){
+        if(count(selectionsKey) > 1){
             
             webViewController = GSWebViewController()
             
-            var urlString = NSString(format:"https://betslip.ladbrokes.com/RemoteBetslip/bets/betslip.html?selections=%@&locale=en-GB",  selectionsKey)
+            var urlString = String(format:"https://betslip.ladbrokes.com/RemoteBetslip/bets/betslip.html?selections=%@&locale=en-GB",  selectionsKey)
             
             webViewController.loadViewWithUrl(NSURL(string:urlString)!)
             GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
@@ -130,25 +138,31 @@ class GSBetSlip{
         var totalOdds:Double = 0
         for betSlip in bets{
             
-            var selection       = getActualisedSelection(betSlip as GSBetSlip, validMatches: validMatches)
+            var selection       = getActualisedSelection(betSlip as! GSBetSlip, validMatches: validMatches)
             
-            var currentPrice = selection.objectForKey("currentPrice") as NSDictionary
-            var decimalPrice = currentPrice.objectForKey("decimalPrice") as Double
-            var denPrice = currentPrice.objectForKey("denPrice") as Double
-            var numPrice = currentPrice.objectForKey("numPrice") as Double
+            var oldBet:Bool = selection.objectForKey("oldBet") as! Bool
+            if(!oldBet){
             
-            //var odd = (numPrice/denPrice)+1
-            if(totalOdds == 0){
-                // totalOdds = odd
-                totalOdds = decimalPrice
-            }
-            else{
-                //totalOdds = totalOdds * odd
-                totalOdds = totalOdds * decimalPrice
+                var currentPrice = selection.objectForKey("currentPrice") as! NSDictionary
+                var decimalPrice = currentPrice.objectForKey("decimalPrice") as! Double
+                var denPrice = currentPrice.objectForKey("denPrice") as! Double
+                var numPrice = currentPrice.objectForKey("numPrice") as! Double
+                
+                //var odd = (numPrice/denPrice)+1
+                if(totalOdds == 0){
+                    // totalOdds = odd
+                    totalOdds = decimalPrice
+                }
+                else{
+                    //totalOdds = totalOdds * odd
+                    totalOdds = totalOdds * decimalPrice
+                }
             }
         }
         
-        var aPGCD = Utils.findPGCD(Int32(totalOdds*100), b:100)
+        var totalOddsString = NSString(format:"%f", totalOdds*100)
+        var totalOddsArray = totalOddsString.componentsSeparatedByString(".")
+        var aPGCD = Utils.findPGCD(totalOddsArray[0].integerValue, b:100)
         
         return [totalOdds*100/Double(aPGCD), 100/Double(aPGCD)]
     }
@@ -182,9 +196,9 @@ class GSBetSlip{
         var matchSelection:GSMatcheSelection!
         for aValidMatche in validMatches{
             
-            var matchPf = (aValidMatche as GSMatcheSelection).pfMatche as PFObject
+            var matchPf = (aValidMatche as! GSMatcheSelection).pfMatche as PFObject
             if(matchPf.objectId == betSlip.matchId){
-                matchSelection = aValidMatche as GSMatcheSelection
+                matchSelection = aValidMatche as! GSMatcheSelection
                 var matcheDate = GSCustomLeague.getDateMatche(matchPf)
                 if(matcheDate.timeIntervalSinceDate(NSDate()) < 0){
                     oldBet = true
@@ -193,29 +207,35 @@ class GSBetSlip{
         }
         
         var selection       = betSlip.selection
-        var selectionName   = selection.objectForKey("selectionName") as NSString
+        var selectionName   = selection.objectForKey("selectionName") as! String
         var drawArray = selectionName.componentsSeparatedByString("Draw")
         
         if(drawArray.count > 1){
-            selection = matchSelection.getDrawSelection()
+            if(matchSelection != nil){
+                selection = matchSelection.getDrawSelection()
+            }
         }
         else{
             
             var winnerTeam      = selectionName
-            if(selectionName.length > 6){
-                winnerTeam = selectionName.substringToIndex(selectionName.length-6)
+            if(count(selectionName) > 6){
+                winnerTeam = (selectionName as NSString).substringToIndex(count(selectionName)-6)
             }
             
-            var title = matchSelection.pfMatche.valueForKey("title") as NSString
-            var teams = title.componentsSeparatedByString(" V ") as NSArray
-            
-            if(teams.firstObject as NSString == winnerTeam){
+            if(matchSelection != nil){
                 
-                selection = matchSelection.getHomeSelection()
-            }
-            else{
+                var title = matchSelection.pfMatche.valueForKey("title") as! String
+                var teams = title.componentsSeparatedByString(" V ") as NSArray
                 
-                selection = matchSelection.getAwaySelection()
+                if(teams.firstObject as! String == winnerTeam){
+                    
+                    selection = matchSelection.getHomeSelection()
+                }
+                else{
+                    
+                    selection = matchSelection.getAwaySelection()
+                }
+                
             }
             
         }

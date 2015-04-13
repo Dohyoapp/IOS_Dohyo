@@ -30,9 +30,9 @@ class SmsModule: NSObject, MFMessageComposeViewControllerDelegate{
             
             var messageComposeVC = MFMessageComposeViewController()
             messageComposeVC.messageComposeDelegate = self
-            messageComposeVC.body = body
+            messageComposeVC.body = body as String
             if(adresses != nil && adresses.count > 0){
-                messageComposeVC.recipients = adresses
+                messageComposeVC.recipients = adresses as [AnyObject]
             }
             GSMainViewController.getMainViewControllerInstance().presentViewController(messageComposeVC, animated: true, completion: nil)
         }

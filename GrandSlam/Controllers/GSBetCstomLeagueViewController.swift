@@ -27,6 +27,7 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
     var stakeLabel:UILabel!
     var returnLabel:UILabel!
     var sliderStake:UISlider!
+    var stakeButton:UIButton!
     
     var socialShareViewController : GSSocialShareViewController!
     
@@ -38,6 +39,14 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         
         if(totalOdd > 0){
             returnLabel.text   = String(format:"Returns : £%0.2f", totalOdd*Float(currentValue))
+            if(count(returnLabel.text!) > 22){
+                returnLabel.frame  = CGRectMake(20, 110, 220, 38)
+                stakeButton.frame = CGRectMake(230, 110, 90, 38)
+            }
+            else{
+                returnLabel.frame  = CGRectMake(50, 110, 220, 38)
+                stakeButton.frame = CGRectMake(215, 110, 90, 38)
+            }
         }
     }
     
@@ -64,7 +73,7 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         
 
         
-        var betSummaryView = UIView(frame:CGRectMake(0, YSTART+35, 320, CELLHEIGHT))
+        var betSummaryView = UIView(frame:CGRectMake(0, YSTART+35, 320, CELLHEIGHT+10))
         betSummaryView.backgroundColor = UIColor.whiteColor()
         self.view.addSubview(betSummaryView)
         
@@ -85,15 +94,16 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
 
         
         
-        accumulatorLabel        = UILabel(frame:CGRectMake(0, 60, 320, 38))
+        accumulatorLabel        = UILabel(frame:CGRectMake(0, 60, 320, 60))
         accumulatorLabel.text   = "Your accumulator odds:"
         accumulatorLabel.textAlignment = .Center
+        accumulatorLabel.numberOfLines = 2
         accumulatorLabel.font   = UIFont(name:FONT3, size:15)
         accumulatorLabel.textColor = SPECIALBLUE
         betSummaryView.addSubview(accumulatorLabel)
         
         
-        sliderStake = UISlider(frame: CGRectMake(140, 142, 140, 20))
+        sliderStake = UISlider(frame: CGRectMake(140, 152, 140, 20))
         sliderStake.layer.borderColor = SPECIALBLUE.CGColor
         sliderStake.layer.borderWidth = 1
         sliderStake.setMaximumTrackImage(Utils.getImageWithColor(UIColor.whiteColor(), size: CGSize(width: 100, height: 20)), forState:.Normal)
@@ -106,7 +116,7 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         sliderStake.setNeedsDisplay()
         
         
-        stakeLabel    = UILabel(frame:CGRectMake(50, 135, 85, 38))
+        stakeLabel    = UILabel(frame:CGRectMake(50, 145, 85, 38))
         stakeLabel.text   = String(format:"Stake : £%d", 5)
         stakeLabel.font   = UIFont(name:FONT3, size:15)
         stakeLabel.textColor = SPECIALBLUE
@@ -114,7 +124,7 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
 
         
 
-        returnLabel        = UILabel(frame:CGRectMake(50, 98, 170, 38))
+        returnLabel        = UILabel(frame:CGRectMake(50, 110, 210, 38))
         returnLabel.text   = "Returns : £20.00"
         returnLabel.font   = UIFont(name:FONT3, size:15)
         returnLabel.textColor = SPECIALBLUE
@@ -130,7 +140,7 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         betSummaryView.addSubview(yourPicksLabel)
         */
         
-        var stakeButton = UIButton(frame: CGRectMake(205, 98, 90, 38))
+        stakeButton = UIButton(frame: CGRectMake(225, 110, 90, 38))
         stakeButton.titleLabel!.font = UIFont(name:FONT2, size:18)
         stakeButton.backgroundColor = UIColor.whiteColor()
         stakeButton.setTitleColor(SPECIALBLUE, forState: .Normal)
@@ -151,11 +161,43 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         self.loadViewWithMatchs()
     }
     
-    
+    /*
+    func loadBetAccumulator(){
+        
+        var bets = NSMutableArray()
+        for(var i = 0; i < currentBets.count; i++){
+            var betSlip = currentBets[i] as GSBetSlip
+            bets.addObject(["matchId":betSlip.matchId, "score":betSlip.score, "selection":betSlip.selection])
+        }
+        
+        PFCloud.callFunctionInBackground("oddsCalculator", withParameters:["bets" : bets]) { (result: AnyObject!, error: NSError!) -> Void in
+            if error == nil {
+                
+                var oddsArray       = result as NSArray
+                
+                if(oddsArray.count > 1){
+                    
+                    var totalOddLeft    = oddsArray.firstObject as Double
+                    var totalOddRight   = oddsArray.lastObject as Double
+                    
+                    self.totalOdd = Float(totalOddLeft)/Float(totalOddRight)
+                    
+                    if(self.accumulatorLabel != nil){
+                        self.accumulatorLabel.text   = NSString(format:"Your accumulator odds:\n %0.0f/%0.0f", totalOddLeft-totalOddRight, totalOddRight)
+                        self.sliderValueDidChange(self.sliderStake)
+                    }
+                }
+                
+            }
+        }
+    }
+    */
     
     func loadViewWithMatchs(){
         
-        var leagueName  = customLeague.pfCustomLeague.valueForKey("leagueTitle") as NSString
+       // loadBetAccumulator();
+        
+        var leagueName  = customLeague.pfCustomLeague.valueForKey("leagueTitle") as! String
         var league      = GSLeague.getLeagueFromCache(leagueName)
         
         if(league.matches == nil){
@@ -168,27 +210,35 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         var tempMatches:NSArray = GSBetSlip.getbetMatches(league.matches, bets: currentBets)
         for matche in tempMatches{
             
-            validMatches.addObject(GSMatcheSelection(matche: matche as PFObject, customLeague: customLeague.pfCustomLeague))
+            validMatches.addObject(GSMatcheSelection(matche: matche as! PFObject, customLeague: customLeague.pfCustomLeague))
         }
         
         var count:CGFloat = 0
         for validMatche in validMatches{
             
-            self.createMatcheCell(validMatche as GSMatcheSelection, num:count, betSlip: currentBets[Int(count)] as GSBetSlip)
+            self.createMatcheCell(validMatche as! GSMatcheSelection, num:count, betSlip: currentBets[Int(count)] as! GSBetSlip)
             count += 1
         }
         
         self.scrollView.contentSize = CGSizeMake(320, (CELLHEIGHT*count)+100)
         
-        var oddsArray       = GSBetSlip.oddsCalculator(currentBets, validMatches: validMatches)
-        var totalOddLeft    = oddsArray.firstObject as Double
-        var totalOddRight   = oddsArray.lastObject as Double
         
-        totalOdd = Float(totalOddLeft)/Float(totalOddRight)
         
-        accumulatorLabel.text   = NSString(format:"Your accumulator odds: %0.0f/%0.0f", totalOddLeft-totalOddRight, totalOddRight)
-        sliderValueDidChange(sliderStake)
         
+        var oddsArray       = GSBetSlip.oddsCalculator(currentBets, validMatches:validMatches)
+        
+        if(oddsArray.count > 1){
+            
+            var totalOddLeft    = oddsArray.firstObject as! Double
+            var totalOddRight   = oddsArray.lastObject as! Double
+            
+            self.totalOdd = Float(totalOddLeft)/Float(totalOddRight)
+            
+            if(self.accumulatorLabel != nil){
+                self.accumulatorLabel.text   = String(format:"Your accumulator odds:\n %0.0f/%0.0f", totalOddLeft-totalOddRight, totalOddRight)
+                self.sliderValueDidChange(self.sliderStake)
+            }
+        }
         
 
         socialShareViewController = GSSocialShareViewController()
@@ -233,7 +283,7 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         var matchView = UIView(frame:CGRectMake(0, 0, 320, CELLHEIGHT))
         matchView.backgroundColor = UIColor.whiteColor()
         
-        var matchTitle = matche.pfMatche.valueForKey("title") as NSString
+        var matchTitle = matche.pfMatche.valueForKey("title") as! String
         GSCustomLeagueViewControlelr.createTopView(matchView, title: matchTitle, isCrowd:false)
         
         var leftScoreLabel  = UILabel(frame:CGRectMake(95, 44, 60, 100))
@@ -262,16 +312,16 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         var scores = self.getScoreFromSelection(betSlip, matchTitle: matchTitle)
         if(scores.count > 1){
             
-            leftScoreLabel.text     = scores.firstObject as NSString
-            rightScoreLabel.text    = scores.lastObject as NSString
+            leftScoreLabel.text     = scores.firstObject as? String
+            rightScoreLabel.text    = scores.lastObject as? String
         }
         
         
         var selection       = GSBetSlip.getActualisedSelection(betSlip, validMatches: validMatches)
         
-        var currentPrice = selection.objectForKey("currentPrice") as NSDictionary
-        var denPrice = currentPrice.objectForKey("denPrice") as CGFloat
-        var numPrice = currentPrice.objectForKey("numPrice") as CGFloat
+        var currentPrice = selection.objectForKey("currentPrice") as! NSDictionary
+        var denPrice = currentPrice.objectForKey("denPrice") as! CGFloat
+        var numPrice = currentPrice.objectForKey("numPrice") as! CGFloat
         
         var currentOdd = String(Int(numPrice))+"/"+String(Int(denPrice))
 
@@ -304,24 +354,24 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
     func getScoreFromSelection(betSlip: GSBetSlip, matchTitle: NSString) -> NSArray{
     
         var selection       = betSlip.selection
-        var selectionName   = selection.objectForKey("selectionName") as NSString
+        var selectionName:String   = selection.objectForKey("selectionName") as! String
         var winnerTeam      = selectionName
-        if(selectionName.length > 6){
-            winnerTeam = selectionName.substringToIndex(selectionName.length-6)
+        if(count(selectionName) > 6){
+            winnerTeam = (selectionName as NSString).substringToIndex(count(selectionName)-6)
         }
         
         var teams = matchTitle.componentsSeparatedByString(" V ") as NSArray
         
-        var score = selectionName.substringFromIndex(selectionName.length-5)
+        var score = (selectionName as NSString).substringFromIndex(count(selectionName)-5)
         var scores = score.componentsSeparatedByString(" - ") as NSArray
         
-        if(teams.firstObject as NSString == winnerTeam){
+        if(teams.firstObject as? NSString == winnerTeam){
             
             return scores
         }
         else{
             
-            return [scores.lastObject as NSString, scores.firstObject as NSString]
+            return [scores.lastObject as! String, scores.firstObject as! String]
         }
     }
     
@@ -331,10 +381,10 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         var cell    = (sender as UIView).superview!
         var row     = cell.superview!.tag
         
-        var selection:NSDictionary  = (currentBets[row] as GSBetSlip).selection
+        var selection:NSDictionary  = (currentBets[row] as! GSBetSlip).selection
         GSBetSlip.goToLadBrokes([selection])
         
-        var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
+        var matche:GSMatcheSelection    = validMatches[row] as! GSMatcheSelection
         matche.track()
     }
     
@@ -346,7 +396,7 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         var cell    = (sender as UIView).superview!
         var row     = cell.superview!.tag
         
-        var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
+        var matche:GSMatcheSelection    = validMatches[row] as! GSMatcheSelection
         var selection:NSDictionary      = matche.getHomeSelection()
         GSBetSlip.goToLadBrokes([selection])
         
@@ -358,7 +408,7 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         var cell    = (sender as UIView).superview!
         var row     = cell.superview!.tag
         
-        var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
+        var matche:GSMatcheSelection    = validMatches[row] as! GSMatcheSelection
         var selection:NSDictionary      = matche.getAwaySelection()
         GSBetSlip.goToLadBrokes([selection])
         
@@ -370,7 +420,7 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         var cell    = (sender as UIView).superview!
         var row     = cell.superview!.tag
         
-        var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
+        var matche:GSMatcheSelection    = validMatches[row] as! GSMatcheSelection
         var selection:NSDictionary      = matche.getDrawSelection()
         GSBetSlip.goToLadBrokes([selection])
         
@@ -385,14 +435,14 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         for betSlip in currentBets{
         
             //var selection:NSDictionary  = (betSlip as GSBetSlip).selection
-            var selection       = GSBetSlip.getActualisedSelection(betSlip as GSBetSlip, validMatches: validMatches)
-            if(!(selection.objectForKey("oldBet") as Bool)){
+            var selection       = GSBetSlip.getActualisedSelection(betSlip as! GSBetSlip, validMatches: validMatches)
+            if(!(selection.objectForKey("oldBet") as! Bool)){
                 selections.addObject(selection)
                 if(matchsId.isEqualToString("")){
-                    matchsId = (betSlip as GSBetSlip).matchId
+                    matchsId = (betSlip as! GSBetSlip).matchId
                 }
                 else{
-                    matchsId = NSString(format:"%@, %@", matchsId, (betSlip as GSBetSlip).matchId)
+                    matchsId = NSString(format:"%@, %@", matchsId, (betSlip as! GSBetSlip).matchId)
                 }
             }
         }
@@ -416,14 +466,14 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
     func crowdLabelTap(sender: UIButton!){
         
         var crowdPredictionView = (sender as UIView).superview!
-        var cell = crowdPredictionView.superview as UIScrollView
+        var cell = crowdPredictionView.superview as! UIScrollView
         cell.setContentOffset(CGPointMake(320, 0), animated:true)
     }
     
     func backTap(sender: UIButton!){
         
         var crowdPredictionView = (sender as UIView).superview!
-        var cell = crowdPredictionView.superview as UIScrollView
+        var cell = crowdPredictionView.superview as! UIScrollView
         cell.setContentOffset(CGPointMake(0, 0), animated:true)
     }
 }

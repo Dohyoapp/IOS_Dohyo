@@ -9,7 +9,7 @@
 import Foundation
 
 protocol EmailValidationDelegate {
-    func validEmail(email: NSString)
+    func validEmail(email: String)
 }
 
 
@@ -28,7 +28,7 @@ class FieldsValidator {
         var allowTest      = NSPredicate(format:"SELF MATCHES %@", "^\\w{1}[\\w ' \\._\\-]{0,40}")
         var illeaglTest    = NSPredicate(format:"SELF MATCHES %@", ".*(\\.|\\-|\\_|\\-_)$")
         var illeaglTest2   = NSPredicate(format:"SELF MATCHES %@", "^[0-9].*")
-        if ( !allowTest!.evaluateWithObject(name) || illeaglTest!.evaluateWithObject(name) || illeaglTest2!.evaluateWithObject(name) )
+        if ( !allowTest.evaluateWithObject(name) || illeaglTest.evaluateWithObject(name) || illeaglTest2.evaluateWithObject(name) )
         {
             return false;
         }
@@ -42,20 +42,20 @@ class FieldsValidator {
     
         var emailTest  = NSPredicate(format:"SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}")
     
-        return emailTest!.evaluateWithObject(email)
+        return emailTest.evaluateWithObject(email)
     }
     
     class func validateEmailServer(email:NSString, success:(validity:Bool) -> (), failure:(error:NSError) -> () ) {
     
         GPGuardPost.setPublicAPIKey(KGUARDPOST_MAIL_KEY)
-        GPGuardPost.validateAddress(email, success: { (validity, suggestion) -> Void in
+        GPGuardPost.validateAddress(email as String, success: { (validity, suggestion) -> Void in
                 success(validity: validity)
             }, failure:{ (error) -> Void in
                 failure(error: error)
         })
     }
     
-    class func fullValidationEmail(email: NSString, delegate:EmailValidationDelegate) {
+    class func fullValidationEmail(email: String, delegate:EmailValidationDelegate) {
         
         if (!self.validateEmail(email)) {
             delegate.validEmail("")

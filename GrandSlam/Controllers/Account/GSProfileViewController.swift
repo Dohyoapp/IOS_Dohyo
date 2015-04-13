@@ -33,7 +33,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         let leagues = GSMainViewController.getMainViewControllerInstance().leagues
         var league:PFObject
         for league in leagues{
-            tableViewData.addObject(league["name"] as NSString)
+            tableViewData.addObject(league["name"] as! String)
         }
         tableViewData.addObject("")
         tableViewData.addObject(SHARE_TEXT)
@@ -61,7 +61,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         // userNameEmailChanges
         var username: AnyObject! = user.objectForKey("username")
         var email: AnyObject!    = user.objectForKey("email")
-        if(username != nil && email != nil && (userNameLabel.text != username as NSString || emailLabel.text != email as NSString) ){
+        if(username != nil && email != nil && (userNameLabel.text != username as? String || emailLabel.text != email as? String) ){
             
             var name:NSString = userNameLabel.text
             if(name.length < 40 && FieldsValidator.validateName(name)){
@@ -85,7 +85,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         let userImageFile:AnyObject! = user.valueForKey("image")
         if(userImageFile != nil){
             
-            (userImageFile as PFFile).getDataInBackgroundWithBlock { (imageData: NSData!, error: NSError!) -> Void in
+            (userImageFile as! PFFile).getDataInBackgroundWithBlock { (imageData: NSData!, error: NSError!) -> Void in
                 if error == nil {
                     self.imageUserView.image = UIImage(data:imageData)
                 }
@@ -107,7 +107,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         
         userNameLabel = UITextField(frame: CGRectMake(50, 145, 220, 33))
         userNameLabel.delegate = self
-        userNameLabel.text = user["username"] as NSString
+        userNameLabel.text = user["username"] as! String
         userNameLabel.textAlignment = .Center
         userNameLabel.font = UIFont(name:FONT1, size:15)
         userNameLabel.textColor = SPECIALBLUE
@@ -116,7 +116,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         
         emailLabel = UITextField(frame: CGRectMake(50, 170, 220, 33))
         emailLabel.delegate = self
-        emailLabel.text = user["email"] as NSString
+        emailLabel.text = user["email"] as! String
         emailLabel.textAlignment = .Center
         emailLabel.font = UIFont(name:FONT1, size:15)
         emailLabel.textColor = SPECIALBLUE
@@ -178,19 +178,19 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         }
         else{
             
-            var cell = tableView.dequeueReusableCellWithIdentifier("ProfileCell") as GSProfileCell!
+            var cell = tableView.dequeueReusableCellWithIdentifier("ProfileCell") as! GSProfileCell!
             if(cell == nil){
                 cell = GSProfileCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"ProfileCell")
             }
             cell.selectionStyle = .None
             
-            var objectString = tableViewData.objectAtIndex(indexPath.row) as NSString
+            var objectString = tableViewData.objectAtIndex(indexPath.row) as! String
             
             cell.labelText.font = UIFont(name:FONT1, size:18)
-            if(indexPath.row == 0 || objectString.isEqualToString(SHARE_TEXT)){
+            if(indexPath.row == 0 || objectString == SHARE_TEXT){
                 cell.labelText.font = UIFont(name:FONT4, size:18)
             }
-            cell.labelText.text = tableViewData.objectAtIndex(indexPath.row) as NSString
+            cell.labelText.text = tableViewData.objectAtIndex(indexPath.row) as? String
             
             
             cell.viewWithTag(556)?.removeFromSuperview()
@@ -297,7 +297,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         }
     }
     
-    func actionSheet(actionSheet: UIActionSheet!, clickedButtonAtIndex buttonIndex: Int)
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int)
     {
         switch buttonIndex{
             
@@ -352,13 +352,13 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
         }
     }
 
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         GSMainViewController.getMainViewControllerInstance().dismissViewControllerAnimated(true, completion: nil)
         
         var userId:AnyObject! = PFUser.currentUser().objectId
         if(userId != nil){
             SVProgressHUD.show()
-            let imageFile = PFFile(name:NSString(format:"image%@.png", userId as NSString), data:UIImagePNGRepresentation(image))
+            let imageFile = PFFile(name:String(format:"image%@.png", userId as! String), data:UIImagePNGRepresentation(image))
             PFUser.currentUser()["image"] = imageFile
             PFUser.currentUser().saveInBackgroundWithBlock({ (success, error) -> Void in
                 self.imageUserView.image = image

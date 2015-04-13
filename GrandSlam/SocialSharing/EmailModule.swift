@@ -30,10 +30,10 @@ class EmailModule: NSObject, MFMailComposeViewControllerDelegate{
             
             let mailComposerVC = MFMailComposeViewController()
             mailComposerVC.mailComposeDelegate = self
-            mailComposerVC.setSubject(title)
-            mailComposerVC.setMessageBody(body, isHTML: false)
+            mailComposerVC.setSubject(title as String)
+            mailComposerVC.setMessageBody(body as String, isHTML: false)
             if(adresses != nil && adresses.count > 0){
-                mailComposerVC.setToRecipients(adresses)
+                mailComposerVC.setToRecipients(adresses! as [AnyObject])
             }
             GSMainViewController.getMainViewControllerInstance().presentViewController(mailComposerVC, animated: true, completion: nil)
         }

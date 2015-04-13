@@ -46,7 +46,7 @@ class GSLeague {
                     
                     var matches = NSMutableArray()
                     for event in events {
-                        var title = event.valueForKey("title") as NSString
+                        var title = event.valueForKey("title") as! String
                         if(title.componentsSeparatedByString("V").count > 1){
                             matches.addObject(event)
                         }
@@ -56,8 +56,8 @@ class GSLeague {
                         
                         var sortedArray = sorted(matches) { (obj1, obj2) in
                             
-                            var p1 = GSCustomLeague.getDateMatche(obj1 as PFObject)
-                            var p2 = GSCustomLeague.getDateMatche(obj2 as PFObject)
+                            var p1 = GSCustomLeague.getDateMatche(obj1 as! PFObject)
+                            var p2 = GSCustomLeague.getDateMatche(obj2 as! PFObject)
                             return p1.timeIntervalSinceDate(p2) < 0
                         }
                         self.matches = sortedArray
@@ -95,7 +95,7 @@ class GSLeague {
                     cacheLeagues = NSMutableArray()
                     
                     for league in objects{
-                        var gsLeague = GSLeague(league:league as PFObject)
+                        var gsLeague = GSLeague(league:league as! PFObject)
                         gsLeague.getMatchesLeague()
                         cacheLeagues.addObject( gsLeague )
                     }
@@ -119,18 +119,18 @@ class GSLeague {
         
         for league in cacheLeagues{
             
-            var leagueName = (league as GSLeague).pfLeague.valueForKey("title") as NSString
+            var leagueName = (league as! GSLeague).pfLeague.valueForKey("title") as! String
             if(leagueName == nameLeague){
                 
-                if((league as GSLeague).matches == nil){
-                    (league as GSLeague).getMatchesLeague()
+                if((league as! GSLeague).matches == nil){
+                    (league as! GSLeague).getMatchesLeague()
                 }
-                return (league as GSLeague)
+                return (league as! GSLeague)
             }
             
         }
         
-        return cacheLeagues.firstObject as GSLeague
+        return cacheLeagues.firstObject as! GSLeague
     }
     
     
@@ -160,8 +160,8 @@ class GSLeague {
         var myResults:NSMutableArray = NSMutableArray()
         for matcheResult in cacheMatchResults{
             
-            var matcheDateString:NSString = (matcheResult as PFObject) ["date"] as NSString
-            var matcheDate:NSDate = dateFormatter.dateFromString(matcheDateString)!
+            var matcheDateString:NSString = (matcheResult as! PFObject) ["date"] as! String
+            var matcheDate:NSDate = dateFormatter.dateFromString(matcheDateString as String)!
             
             if(matcheDate.timeIntervalSinceDate(startCustomLeagueDate) > -24*3600){
                 

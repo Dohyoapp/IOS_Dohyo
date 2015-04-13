@@ -31,7 +31,7 @@ class GSUserProfileViewController: UIViewController, UITableViewDataSource, UITa
         let leagues = GSMainViewController.getMainViewControllerInstance().leagues
         var league:PFObject
         for league in leagues{
-            tableViewData.addObject(league["name"] as NSString)
+            tableViewData.addObject(league["name"] as! String)
         }
         
         self.view.backgroundColor = UIColor.whiteColor()
@@ -59,7 +59,7 @@ class GSUserProfileViewController: UIViewController, UITableViewDataSource, UITa
         
         let userImageFile:AnyObject! = user.valueForKey("image")
         if(userImageFile != nil){
-            (userImageFile as PFFile).getDataInBackgroundWithBlock { (imageData: NSData!, error: NSError!) -> Void in
+            (userImageFile as! PFFile).getDataInBackgroundWithBlock { (imageData: NSData!, error: NSError!) -> Void in
                 if error == nil {
                     self.imageUserView.image = UIImage(data:imageData)
                 }
@@ -78,7 +78,7 @@ class GSUserProfileViewController: UIViewController, UITableViewDataSource, UITa
         
         userNameLabel = UITextField(frame: CGRectMake(50, 145, 220, 33))
         userNameLabel.userInteractionEnabled = false
-        userNameLabel.text = user["username"] as NSString
+        userNameLabel.text = user["username"] as! String
         userNameLabel.textAlignment = .Center
         userNameLabel.font = UIFont(name:FONT1, size:15)
         userNameLabel.textColor = SPECIALBLUE
@@ -87,7 +87,7 @@ class GSUserProfileViewController: UIViewController, UITableViewDataSource, UITa
         
         emailLabel = UITextField(frame: CGRectMake(50, 170, 220, 33))
         emailLabel.userInteractionEnabled = false
-        emailLabel.text = user["email"] as NSString
+        emailLabel.text = user["email"] as! String
         emailLabel.textAlignment = .Center
         emailLabel.font = UIFont(name:FONT1, size:15)
         emailLabel.textColor = SPECIALBLUE
@@ -132,19 +132,19 @@ class GSUserProfileViewController: UIViewController, UITableViewDataSource, UITa
         }
         else{
             
-            var cell = tableView.dequeueReusableCellWithIdentifier("ProfileCell") as GSProfileCell!
+            var cell = tableView.dequeueReusableCellWithIdentifier("ProfileCell") as! GSProfileCell!
             if(cell == nil){
                 cell = GSProfileCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"ProfileCell")
             }
             cell.selectionStyle = .None
             
-            var objectString = tableViewData.objectAtIndex(indexPath.row) as NSString
+            var objectString = tableViewData.objectAtIndex(indexPath.row) as! NSString
             
             cell.labelText.font = UIFont(name:FONT1, size:18)
             if(indexPath.row == 0 || objectString.isEqualToString(SHARE_TEXT)){
                 cell.labelText.font = UIFont(name:FONT4, size:18)
             }
-            cell.labelText.text = tableViewData.objectAtIndex(indexPath.row) as NSString
+            cell.labelText.text = tableViewData.objectAtIndex(indexPath.row) as? String
             
             
             return cell

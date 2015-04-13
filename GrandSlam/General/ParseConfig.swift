@@ -35,8 +35,10 @@ class ParseConfig: NSObject {
         
         
         PFInstallation.currentInstallation().saveInBackgroundWithBlock { (success, error) -> Void in
-            PFUser.currentUser().setObject(PFInstallation.currentInstallation(), forKey:"installation")
-            PFUser.currentUser().save()
+            if(error == nil){
+                PFUser.currentUser().setObject(PFInstallation.currentInstallation(), forKey:"installation")
+                PFUser.currentUser().save()
+            }
         }
         
         var query = PFQuery(className:"AppConfigData")
@@ -45,9 +47,9 @@ class ParseConfig: NSObject {
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if(error == nil){
                 if(objects.count > 0){
-                    appConfigData = (objects as NSArray).firstObject as PFObject
+                    appConfigData = (objects as NSArray).firstObject as! PFObject
                     if( appConfigData["appRepository"] != nil){
-                        TEAMS_IMAGES_URL_ROOT = appConfigData["appRepository"] as NSString
+                        TEAMS_IMAGES_URL_ROOT = appConfigData["appRepository"] as! String
                     }
                 }
             }
@@ -65,7 +67,7 @@ class ParseConfig: NSObject {
     class func fbLogin1(object: FaceBookDelegate){
         
         SVProgressHUD.show()
-        PFFacebookUtils.logInWithPermissions(["email"], { (user: PFUser!, error: NSError!) -> Void in
+        PFFacebookUtils.logInWithPermissions(["email"], block: { (user: PFUser!, error: NSError!) -> Void in
             if(error != nil){
                 SVProgressHUD.dismiss()
             }
@@ -120,7 +122,7 @@ class ParseConfig: NSObject {
             
             if (error == nil) {
                 
-                var data:NSDictionary = user as NSDictionary
+                var data:NSDictionary = user as! NSDictionary
                 
                 var email:AnyObject! = data.objectForKey("email")
                 if(email != nil){
@@ -135,7 +137,7 @@ class ParseConfig: NSObject {
                         if error == nil {
                             
                             if(objects != nil && objects.count > 0){
-                                var pfUser:PFUser = objects[0] as PFUser
+                                var pfUser:PFUser = objects[0] as! PFUser
                                 
                                 PFFacebookUtils.unlinkUserInBackground(user) { (success, error) -> Void in
                                     
@@ -143,9 +145,9 @@ class ParseConfig: NSObject {
                                     if(userId != nil){
                                         user.delete()
                                     }
-                                    var username = pfUser["username"] as NSString
-                                    var password = email as NSString
-                                    PFUser.logInWithUsernameInBackground(username, password:password) { (user: PFUser!, error: NSError!) -> Void in
+                                    var username = pfUser["username"] as! String
+                                    var password = email as! String
+                                    PFUser.logInWithUsernameInBackground(username, password:password ) { (user: PFUser!, error: NSError!) -> Void in
                                         if user != nil {
                                             self.saveUserData(data, object:object)
                                         } else {
@@ -190,32 +192,9 @@ class ParseConfig: NSObject {
         
         user["username"]   = data.objectForKey("name")
         user["email"]      = data.objectForKey("email")
-        user.password      = data.objectForKey("email") as NSString
+        user.password      = data.objectForKey("email") as! String
         
-        var idFBUser:NSString = data.objectForKey("id") as NSString
-        var imageLink = NSString(format:"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", idFBUser)
-        
-        var imageView   = UIImageView(frame: CGRectMake(0, 0, 80, 80))
-        var urlRequest  = NSURLRequest(URL:NSURL(string: imageLink)!)
-        imageView.setImageWithURLRequest( urlRequest, placeholderImage: nil, success: { (url, response, image) -> Void in
-            
-                SVProgressHUD.dismiss()
-                var userId:AnyObject! = user.objectId
-                if(userId != nil){
-                    let imageFile = PFFile(name:NSString(format:"image%@.png", userId as NSString), data:UIImagePNGRepresentation(image))
-                    user.setObject(imageFile, forKey: "image")
-                    user.saveInBackgroundWithBlock({ (success, error) -> Void in
-                        object.endGetFacebookData()
-                    })
-                }
-                else{
-                    object.endGetFacebookData()
-                }
-            }, failure: { (url, response, error) -> Void in
-                
-                user.save()
-                object.endGetFacebookData()
-        })
+        self.saveFBImage(data, object: object, user: user)
     }
     
     
@@ -227,21 +206,33 @@ class ParseConfig: NSObject {
         
         user["username"]   = data.objectForKey("name")
         user["email"]      = data.objectForKey("email")
-        user.password      = data.objectForKey("email") as NSString
-        
-        user.signUpInBackgroundWithBlock({ (success, error) -> Void in
-            
-            var idFBUser:NSString = data.objectForKey("id") as NSString
-            var imageLink = NSString(format:"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", idFBUser)
-            
-            var imageView   = UIImageView(frame: CGRectMake(0, 0, 80, 80))
-            var urlRequest  = NSURLRequest(URL:NSURL(string: imageLink)!)
-            imageView.setImageWithURLRequest( urlRequest, placeholderImage: nil, success: { (url, response, image) -> Void in
+        user.password      = data.objectForKey("email") as! String
+        //user.setObject(PFInstallation.currentInstallation(), forKey:"installation")
+        if(user.objectId != nil){
+            self.saveFBImage(data, object: object, user: user)
+        }
+        else{
+            user.signUpInBackgroundWithBlock({ (success, error) -> Void in
                 
+                self.saveFBImage(data, object: object, user: user)
+            })
+        }
+    }
+    
+    
+    class func saveFBImage(data: NSDictionary, object: FaceBookDelegate, user: PFUser){
+        
+        var idFBUser:NSString = data.objectForKey("id") as! String
+        var imageLink = NSString(format:"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", idFBUser)
+        
+        var imageView   = UIImageView(frame: CGRectMake(0, 0, 80, 80))
+        var urlRequest  = NSURLRequest(URL:NSURL(string: imageLink as String)!)
+        imageView.setImageWithURLRequest( urlRequest, placeholderImage: nil, success: { (url, response, image) -> Void in
+            
                 SVProgressHUD.dismiss()
                 var userId:AnyObject! = user.objectId
                 if(userId != nil){
-                    let imageFile = PFFile(name:NSString(format:"image%@.png", userId as NSString), data:UIImagePNGRepresentation(image))
+                    let imageFile = PFFile(name:String(format:"image%@.png", userId as! NSString), data:UIImagePNGRepresentation(image))
                     user.setObject(imageFile, forKey: "image")
                     user.saveInBackgroundWithBlock({ (success, error) -> Void in
                         object.endGetFacebookData()
@@ -250,13 +241,15 @@ class ParseConfig: NSObject {
                 else{
                     object.endGetFacebookData()
                 }
-                }, failure: { (url, response, error) -> Void in
-                    
-                    user.save()
-                    object.endGetFacebookData()
-            })
-            
+            }, failure: { (url, response, error) -> Void in
+                
+                NSLog("failed loading FaceBook image")
+                SVProgressHUD.dismiss()
+                user.save()
+                object.endGetFacebookData()
         })
     }
+    
+    
 }
 

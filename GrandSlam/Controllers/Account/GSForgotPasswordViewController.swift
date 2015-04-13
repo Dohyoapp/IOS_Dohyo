@@ -52,9 +52,9 @@ class GSForgotPasswordViewController: UIViewController, UITextFieldDelegate, Ema
     
     func validateTap(sender: UIButton!){
         
-        var email:NSString = emailField.text
+        var email:String = emailField.text
         
-        if(email.length < 2){
+        if(count(email) < 2){
             var alertView = UIAlertView(title: "", message: "Please enter your email.", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()
             return;
@@ -65,9 +65,9 @@ class GSForgotPasswordViewController: UIViewController, UITextFieldDelegate, Ema
     }
     
     
-    func validEmail(email: NSString){
+    func validEmail(email: String){
         
-        if(email.isEqualToString("")){//failed
+        if(email == ""){//failed
             
             SVProgressHUD.dismiss()
             var alertView = UIAlertView(title: "Invalid email", message: "The email address you entered appears to be invalid.", delegate:nil, cancelButtonTitle: "Ok")

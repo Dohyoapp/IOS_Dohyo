@@ -25,6 +25,10 @@ let MIXPANEL_TOKEN = "261b3280edfef7caa0f7a8e9a422287a"
 
 var TEAMS_IMAGES_URL_ROOT = "https://s3.amazonaws.com/grandslam-explovia/"
 
+let LADBROKES_API_KEY = "l7xx338f4665095b4e4bb2733e9a7fe4bf3c"
+
+
+
 let KEYBOARD_HEIGHT = 216 as CGFloat
 
 let NAVIGATIONBAR_HEIGHT = 55 as CGFloat
@@ -33,7 +37,7 @@ let YSTART = NAVIGATIONBAR_HEIGHT+20
 
 let SPECIALBLUE = UIColor(red:54/255.0, green:137/255.0, blue:193/255.0, alpha:1)
 
-let LADBROKES_API_KEY = "l7xx338f4665095b4e4bb2733e9a7fe4bf3c"
+
 
 let FONT1 = "Avenir-Book"
 let FONT2 = "Avenir-Black"

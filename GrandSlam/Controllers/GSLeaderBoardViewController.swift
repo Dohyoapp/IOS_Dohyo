@@ -35,7 +35,7 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
         
         
         var yPrize = YSTART+50
-        if(customLeague.pfCustomLeague["mainUser"] as NSString == PFUser.currentUser().objectId){
+        if(customLeague.pfCustomLeague["mainUser"] as? NSString == PFUser.currentUser().objectId){
             
             socialShareViewController = GSSocialShareViewController()
             socialShareViewController.customLeagueId = customLeague.pfCustomLeague.objectId
@@ -70,7 +70,7 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
         self.view.addSubview(prizeLabel)
         
         var prizeNameLabel    = UILabel(frame:CGRectMake(140, yPrize, 150, 38))
-        prizeNameLabel.text   = customLeague.pfCustomLeague["prize"] as NSString
+        prizeNameLabel.text   = customLeague.pfCustomLeague["prize"] as? String
         prizeNameLabel.font   = UIFont(name:FONT3, size:18)
         prizeNameLabel.textColor = SPECIALBLUE
         self.view.addSubview(prizeNameLabel)
@@ -108,7 +108,7 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
         PFCloud.callFunctionInBackground("getUsersByUsersId", withParameters:["customLeagueId" : customLeaguePf.objectId]) { (result: AnyObject!, error: NSError!) -> Void in
             
             if error == nil {
-                self.tableViewData = result as NSArray
+                self.tableViewData = result as! NSArray
                 
                 if(self.tableViewData != nil){
                     var myData = NSMutableArray(array:self.tableViewData)
@@ -118,11 +118,11 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
                             
                             var p1:NSString = "0"
                             if(obj1.isKindOfClass(NSDictionary) && obj1.objectForKey("userPoints") != nil){
-                                p1 = obj1.objectForKey("userPoints") as NSString
+                                p1 = obj1.objectForKey("userPoints") as! NSString
                             }
                             var p2:NSString = "0"
                             if(obj2.isKindOfClass(NSDictionary) && obj2.objectForKey("userPoints") != nil){
-                                p2 = obj2.objectForKey("userPoints") as NSString
+                                p2 = obj2.objectForKey("userPoints") as! NSString
                             }
                             return p1.integerValue > p2.integerValue
                         }
@@ -154,19 +154,19 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
             
-            var cell = tableView.dequeueReusableCellWithIdentifier("LeaderBoardCell") as GSLeaderBoardCell!
+            var cell = tableView.dequeueReusableCellWithIdentifier("LeaderBoardCell") as! GSLeaderBoardCell!
             if(cell == nil){
                 cell = GSLeaderBoardCell(style:UITableViewCellStyle.Value1, reuseIdentifier:"LeaderBoardCell")
             }
             cell.selectionStyle = .None
             
             cell.numberLabel.text = String(indexPath.row+1)
-            var dico = tableViewData[indexPath.row] as NSDictionary
-            var user = dico.objectForKey("user") as PFObject
-            cell.nameLabel.text = user["username"] as NSString
+            var dico = tableViewData[indexPath.row] as! NSDictionary
+            var user = dico.objectForKey("user") as! PFObject
+            cell.nameLabel.text = user["username"] as? String
         
         if(dico.objectForKey("userPoints") != nil){
-            cell.pointsLabel.text = NSString(format:"%@ points", dico.objectForKey("userPoints") as NSString)
+            cell.pointsLabel.text = NSString(format:"%@ points", dico.objectForKey("userPoints") as! String) as String
         }
             return cell
     }
@@ -174,8 +174,8 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
     var userProfileViewController:GSUserProfileViewController!
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        var dico = tableViewData[indexPath.row] as NSDictionary
-        var user = dico.objectForKey("user") as PFObject
+        var dico = tableViewData[indexPath.row] as! NSDictionary
+        var user = dico.objectForKey("user") as! PFObject
         
         if(user.objectId != PFUser.currentUser().objectId){
             

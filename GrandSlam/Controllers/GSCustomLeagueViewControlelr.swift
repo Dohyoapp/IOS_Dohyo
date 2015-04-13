@@ -101,7 +101,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     
     func loadViewWithMatchs(){
         
-        var leagueName = customLeague.pfCustomLeague.valueForKey("leagueTitle") as NSString
+        var leagueName = customLeague.pfCustomLeague.valueForKey("leagueTitle") as! NSString
         var league = GSLeague.getLeagueFromCache(leagueName)
         
         if(league.matches == nil){
@@ -114,7 +114,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         var tempMatches:NSArray = customLeague.getValidMatches(league.matches)
         for matche in tempMatches{
             
-            validMatches.addObject(GSMatcheSelection(matche: matche as PFObject, customLeague: customLeague.pfCustomLeague))
+            validMatches.addObject(GSMatcheSelection(matche: matche as! PFObject, customLeague: customLeague.pfCustomLeague))
         }
         
         /*
@@ -133,15 +133,15 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             dateLeagueLabel.text   = NSString(format:"Matches: %@ - %@/%@", dateFormatter.stringFromDate(startDate), dateArray.lastObject as NSString, dateArray.firstObject as NSString)
         }*/
         
-        if(league.pfLeague["weekNumber"] != nil){
-            dateLeagueLabel.text   = league.pfLeague["weekNumber"] as NSString
+        if(!Utils.isParseNull(league.pfLeague["weekNumber"])){
+            dateLeagueLabel.text   = league.pfLeague["weekNumber"] as? String
         }
         
         
         var count:CGFloat = 0
         for validMatche in validMatches{
             
-            self.createMatcheCell(validMatche as GSMatcheSelection, num:count)
+            self.createMatcheCell(validMatche as! GSMatcheSelection, num:count)
             count += 1
         }
         
@@ -228,8 +228,8 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         
         var teamsNames = GSCustomLeague.getShortTitle(title)
         
-        var leftName:NSString   = teamsNames.firstObject as NSString
-        var rightName:NSString  = teamsNames.lastObject as NSString
+        var leftName   = teamsNames.firstObject as! String
+        var rightName  = teamsNames.lastObject as! String
         var title = leftName+" V "+rightName
         
         var imageLeft   = TEAMS_IMAGES_URL_ROOT+leftName+".png"
@@ -270,7 +270,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         var matchView = UIView(frame:CGRectMake(0, 0, 320, CELLHEIGHT))
         matchView.backgroundColor = UIColor.whiteColor()
         
-        GSCustomLeagueViewControlelr.createTopView(matchView, title:matche.pfMatche.valueForKey("title") as NSString, isCrowd:false)
+        GSCustomLeagueViewControlelr.createTopView(matchView, title:(matche.pfMatche.valueForKey("title") as? String)!, isCrowd:false)
         
         
         var leftUpButton = UIButton(frame: CGRectMake(50, 60, 35, 35))
@@ -330,7 +330,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     func leftUpTap(sender: UIButton!){
         
         var cell = (sender as UIView).superview!
-        var leftScoreLabel:UILabel = cell.viewWithTag(888) as UILabel
+        var leftScoreLabel:UILabel = cell.viewWithTag(888) as! UILabel
         var score = leftScoreLabel.text!.toInt()!+1
         if(score < 10){
             leftScoreLabel.text = String(score)
@@ -340,7 +340,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     func leftDownTap(sender: UIButton!){
         
         var cell = (sender as UIView).superview!
-        var leftScoreLabel:UILabel = cell.viewWithTag(888) as UILabel
+        var leftScoreLabel:UILabel = cell.viewWithTag(888) as! UILabel
         var score = leftScoreLabel.text!.toInt()!-1
         if(score >= 0){
             leftScoreLabel.text = String(score)
@@ -350,7 +350,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     func rightUpTap(sender: UIButton!){
         
         var cell = (sender as UIView).superview!
-        var rightScoreLabel:UILabel = cell.viewWithTag(999) as UILabel
+        var rightScoreLabel:UILabel = cell.viewWithTag(999) as! UILabel
         var score = rightScoreLabel.text!.toInt()!+1
         if(score < 10){
             rightScoreLabel.text = String(score)
@@ -360,7 +360,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     func rightDownTap(sender: UIButton!){
         
         var cell = (sender as UIView).superview!
-        var rightScoreLabel:UILabel = cell.viewWithTag(999) as UILabel
+        var rightScoreLabel:UILabel = cell.viewWithTag(999) as! UILabel
         var score = rightScoreLabel.text!.toInt()!-1
         if(score >= 0){
             rightScoreLabel.text = String(score)
@@ -371,14 +371,14 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     func crowdLabelTap(sender: UIButton!){
         
         var crowdPredictionView = (sender as UIView).superview!
-        var cell = crowdPredictionView.superview as UIScrollView
+        var cell = crowdPredictionView.superview as! UIScrollView
         cell.setContentOffset(CGPointMake(320, 0), animated:true)
     }
     
     func backTap(sender: UIButton!){
         
         var crowdPredictionView = (sender as UIView).superview!
-        var cell = crowdPredictionView.superview as UIScrollView
+        var cell = crowdPredictionView.superview as! UIScrollView
         cell.setContentOffset(CGPointMake(0, 0), animated:true)
     }
     
@@ -472,12 +472,12 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             
             
             
-            var teamsNames:NSArray = GSCustomLeague.getShortTitle(matche.pfMatche.valueForKey("title") as NSString)
+            var teamsNames:NSArray = GSCustomLeague.getShortTitle(matche.pfMatche.valueForKey("title") as! String)
             
             var firstTeamLabel     = UILabel(frame:CGRectMake(45, 0, 60, 60))
             firstTeamLabel.numberOfLines = 2
             firstTeamLabel.textAlignment = .Center
-            firstTeamLabel.text    = (teamsNames.firstObject as NSString)+"\nwin"
+            firstTeamLabel.text    = (teamsNames.firstObject as! String)+"\nwin"
             firstTeamLabel.font    = UIFont(name:FONT4, size:15)
             firstTeamLabel.textColor = UIColor.whiteColor()
             crowdPredictionView.addSubview(firstTeamLabel)
@@ -511,9 +511,9 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             
 
             var firstTeamSelection = matche.getHomeSelection()
-            var firstTeamCurrentPrice = firstTeamSelection.objectForKey("currentPrice") as NSDictionary
-            var firstTeamDenPrice = firstTeamCurrentPrice.objectForKey("denPrice") as CGFloat
-            var firstTeamNumPrice = firstTeamCurrentPrice.objectForKey("numPrice") as CGFloat
+            var firstTeamCurrentPrice = firstTeamSelection.objectForKey("currentPrice") as! NSDictionary
+            var firstTeamDenPrice = firstTeamCurrentPrice.objectForKey("denPrice") as! CGFloat
+            var firstTeamNumPrice = firstTeamCurrentPrice.objectForKey("numPrice") as! CGFloat
             
             var firstTeamOdd = String(Int(firstTeamNumPrice))+"/"+String(Int(firstTeamDenPrice))
             
@@ -572,9 +572,9 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             
             
             var drawSelection = matche.getDrawSelection()
-            var drawCurrentPrice = drawSelection.objectForKey("currentPrice") as NSDictionary
-            var drawDenPrice = drawCurrentPrice.objectForKey("denPrice") as CGFloat
-            var drawNumPrice = drawCurrentPrice.objectForKey("numPrice") as CGFloat
+            var drawCurrentPrice = drawSelection.objectForKey("currentPrice") as! NSDictionary
+            var drawDenPrice = drawCurrentPrice.objectForKey("denPrice") as! CGFloat
+            var drawNumPrice = drawCurrentPrice.objectForKey("numPrice") as! CGFloat
             
             var drawOdd = String(Int(drawNumPrice))+"/"+String(Int(drawDenPrice))
             
@@ -601,7 +601,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             var secondTeamLabel     = UILabel(frame:CGRectMake(45, 94, 60, 60))
             secondTeamLabel.numberOfLines = 2
             secondTeamLabel.textAlignment = .Center
-            secondTeamLabel.text    = (teamsNames.lastObject as NSString)+"\nwin"
+            secondTeamLabel.text    = (teamsNames.lastObject as! String)+"\nwin"
             secondTeamLabel.font    = UIFont(name:FONT4, size:15)
             secondTeamLabel.textColor = UIColor.whiteColor()
             crowdPredictionView.addSubview(secondTeamLabel)
@@ -633,9 +633,9 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             
             
             var secondTeamSelection = matche.getAwaySelection()
-            var secondTeamCurrentPrice = secondTeamSelection.objectForKey("currentPrice") as NSDictionary
-            var secondTeamDenPrice = secondTeamCurrentPrice.objectForKey("denPrice") as CGFloat
-            var secondTeamNumPrice = secondTeamCurrentPrice.objectForKey("numPrice") as CGFloat
+            var secondTeamCurrentPrice = secondTeamSelection.objectForKey("currentPrice") as! NSDictionary
+            var secondTeamDenPrice = secondTeamCurrentPrice.objectForKey("denPrice") as! CGFloat
+            var secondTeamNumPrice = secondTeamCurrentPrice.objectForKey("numPrice") as! CGFloat
             
             var secondTeamOdd = String(Int(secondTeamNumPrice))+"/"+String(Int(secondTeamDenPrice))
             
@@ -675,7 +675,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         var cell    = (sender as UIView).superview!
         var row     = cell.superview!.tag
         
-        var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
+        var matche:GSMatcheSelection    = validMatches[row] as! GSMatcheSelection
         var selection:NSDictionary      = matche.getHomeSelection()
         GSBetSlip.goToLadBrokes([selection])
         
@@ -687,7 +687,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         var cell    = (sender as UIView).superview!
         var row     = cell.superview!.tag
         
-        var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
+        var matche:GSMatcheSelection    = validMatches[row] as! GSMatcheSelection
         var selection:NSDictionary      = matche.getAwaySelection()
         GSBetSlip.goToLadBrokes([selection])
         
@@ -699,7 +699,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         var cell    = (sender as UIView).superview!
         var row     = cell.superview!.tag
         
-        var matche:GSMatcheSelection    = validMatches[row] as GSMatcheSelection
+        var matche:GSMatcheSelection    = validMatches[row] as! GSMatcheSelection
         var selection:NSDictionary      = matche.getDrawSelection()
         GSBetSlip.goToLadBrokes([selection])
         
@@ -719,21 +719,21 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         var count:Int = 0
         for matche in validMatches{
             
-            var cellScrollView = scrollView.viewWithTag(count) as UIScrollView
-            var cell    =   cellScrollView.subviews[0] as UIView
+            var cellScrollView = scrollView.viewWithTag(count) as! UIScrollView
+            var cell    =   cellScrollView.subviews[0] as! UIView
             
-            var leftScore:NSString  = (cell.viewWithTag(888) as UILabel).text!
-            var rightScore:NSString = (cell.viewWithTag(999) as UILabel).text!
+            var leftScore:String  = (cell.viewWithTag(888) as! UILabel).text!
+            var rightScore:String = (cell.viewWithTag(999) as! UILabel).text!
             
             
-            var matcheDate = (matche as GSMatcheSelection).getDateMatche()
+            var matcheDate = (matche as! GSMatcheSelection).getDateMatche()
             if(matcheDate.timeIntervalSinceDate(NSDate()) > 0){
             //if(leftScore != "0" || rightScore != "0"){
                 
-                var titleMatch = (matche as GSMatcheSelection).pfMatche.valueForKey("title") as NSString
+                var titleMatch = (matche as! GSMatcheSelection).pfMatche.valueForKey("title") as! String
                 var currentSelectionName = getSelectionNameFromScore(leftScore, rightScore: rightScore, titleMatche: titleMatch)
                 
-                var selection:NSDictionary = (matche as GSMatcheSelection).getScoreCorrectSelectionByName(currentSelectionName)
+                var selection:NSDictionary = (matche as! GSMatcheSelection).getScoreCorrectSelectionByName(currentSelectionName)
 
                 /*
                 var selection:NSDictionary = (matche as GSMatcheSelection).getDrawSelection()
@@ -747,12 +747,12 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
                 if(selection.objectForKey("selectionKey") != nil){
                     var bet = NSMutableDictionary()
                     bet.setObject(selection, forKey: "selection")
-                    bet.setObject((matche as GSMatcheSelection).pfMatche.objectId, forKey: "matchId")
+                    bet.setObject((matche as! GSMatcheSelection).pfMatche.objectId, forKey: "matchId")
                     bet.setObject(leftScore+" - "+rightScore, forKey:"score")
                     betSelections.addObject(bet)
                 }
                 
-                (matche as GSMatcheSelection).setPredictionTeamWin(leftScore, rightScore: rightScore)
+                (matche as! GSMatcheSelection).setPredictionTeamWin(leftScore, rightScore: rightScore)
             }
             count += 1
         }
@@ -762,23 +762,25 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             var betSlip = PFObject(className:"BetSlip")
             betSlip["customLeagueId"] = customLeague.pfCustomLeague.objectId
             betSlip["bets"] = betSelections
-            betSlip.save()
-            
-            var user = PFUser.currentUser()
-            var relation = user.relationForKey("betSlips")
-            relation.addObject(betSlip)
-            user.saveInBackgroundWithBlock({ (success, error) -> Void in
+            betSlip.saveInBackgroundWithBlock({ (success, error) -> Void in
                 
-                SVProgressHUD.dismiss()
-                
-                GSUser.loadUserBetSlips(user, delegate: self)
-                
-                dispatch_async(dispatch_get_main_queue(), {
-                    Mixpanel.sharedInstance().track("0104 - Submit predictions", properties: [
-                        "user": PFUser.currentUser()["username"],
-                        "league": self.customLeague.pfCustomLeague["name"]
-                    ])
+                var user = PFUser.currentUser()
+                var relation = user.relationForKey("betSlips")
+                relation.addObject(betSlip)
+                user.saveInBackgroundWithBlock({ (success, error) -> Void in
+                    
+                    SVProgressHUD.dismiss()
+                    
+                    GSUser.loadUserBetSlips(user, delegate: self)
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        Mixpanel.sharedInstance().track("0104 - Submit predictions", properties: [
+                            "user": PFUser.currentUser()["username"],
+                            "league": self.customLeague.pfCustomLeague["name"]
+                            ])
+                    })
                 })
+                
             })
             
            // GSBetSlip.buildSlip(betSelections)
@@ -803,17 +805,17 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     
     
     
-    func getSelectionNameFromScore(leftScore:NSString, rightScore:NSString, titleMatche:NSString) -> NSString{
+    func getSelectionNameFromScore(leftScore:String, rightScore:String, titleMatche:String) -> String{
         
-        var selectionName:NSString = "Draw "+leftScore+" - "+rightScore
+        var selectionName:String = "Draw "+leftScore+" - "+rightScore
         if(leftScore != rightScore){
             
             var names:NSArray = titleMatche.componentsSeparatedByString(" V ")
             
-            if(leftScore.intValue > rightScore.intValue ){
-                selectionName = (names.firstObject as NSString)+" "+leftScore+" - "+rightScore
+            if(leftScore.toInt() > rightScore.toInt() ){
+                selectionName = (names.firstObject as! String)+" "+leftScore+" - "+rightScore
             }else{
-                selectionName = (names.lastObject as NSString)+" "+rightScore+" - "+leftScore
+                selectionName = (names.lastObject as! String)+" "+rightScore+" - "+leftScore
             }
         }
         return selectionName
@@ -823,8 +825,8 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         
         var arrayDraw = selectionName.componentsSeparatedByString("Draw ") as NSArray
         if(arrayDraw.count > 1){
-            var scoreDraw = (arrayDraw.lastObject as NSString).componentsSeparatedByString(" - ") as NSArray
-            return [scoreDraw.firstObject as NSString, scoreDraw.firstObject as NSString]
+            var scoreDraw = (arrayDraw.lastObject as! String).componentsSeparatedByString(" - ") as NSArray
+            return [scoreDraw.firstObject as! String, scoreDraw.firstObject as! String]
         }
         else{
             
@@ -833,15 +835,15 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             var arraySpaces = selectionName.componentsSeparatedByString(" ") as NSArray
             var count = arraySpaces.count
             
-            var maxScore    = (arraySpaces[count-3] as NSString)
-            var smallScore  = (arraySpaces[count-1] as NSString)
+            var maxScore    = (arraySpaces[count-3] as! String)
+            var smallScore  = (arraySpaces[count-1] as! String)
             
             
             var teamName = selectionName
             if(selectionName.length > 6){
                 teamName = selectionName.substringToIndex(selectionName.length-6)
             }
-            if(teamName == names[0] as NSString){
+            if(teamName == names[0] as! String){
                 
                 return [maxScore, smallScore]
             }

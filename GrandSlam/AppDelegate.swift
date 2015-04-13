@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LeagueCaller {
         return true
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String, annotation: AnyObject?) -> Bool {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
         
         if ((url.scheme == "Dohyo" || url.scheme == "dohyo") && url.path?.componentsSeparatedByString("costumLeagueId").count > 1) {
             GSUser.parseUrl(url.path!)
@@ -87,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LeagueCaller {
         //clean webviews cache
         var cookieJar:NSHTTPCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
         for cookie in cookieJar.cookies! {
-            NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie as NSHTTPCookie)
+            NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie as! NSHTTPCookie)
         }
     }
 

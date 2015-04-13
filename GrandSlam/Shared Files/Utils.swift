@@ -21,12 +21,23 @@ class Utils {
         return image
     }
     
-    class func findPGCD(a: Int32, b: Int32) -> Int32
+    class func findPGCD(a: NSInteger, b: NSInteger) -> NSInteger
     {
         if(b == 0){
             return a
         }
         return findPGCD(b, b:a%b)
+    }
+    
+    
+    class func isParseNull(obj : AnyObject!) -> Bool {
+        if obj == nil {
+            return true
+        }
+        if obj as! NSObject == NSNull() {
+            return true
+        }
+        return false
     }
 
 }

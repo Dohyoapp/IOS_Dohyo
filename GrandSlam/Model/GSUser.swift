@@ -97,8 +97,8 @@ class GSUser:NSObject, UserCaller{
     
                 if(dataArray.count > 3){
                     
-                    var friendId:NSString   = dataArray[1] as NSString
-                    var customLeagueId      = dataArray[3] as NSString
+                    var friendId:NSString   = dataArray[1] as! NSString
+                    var customLeagueId      = dataArray[3] as! NSString
                     
                     var user = PFUser.currentUser()
                     
@@ -124,14 +124,14 @@ class GSUser:NSObject, UserCaller{
         if(friends == nil){
             friends = NSMutableArray()
         }
-        if( !(friends as NSArray).containsObject(friendId) ){
+        if( !(friends as! NSArray).containsObject(friendId) ){
             friends.addObject(friendId)
         }
         PFUser.currentUser()["friends"] = friends
         PFUser.currentUser().saveInBackground()
         
         var query = PFQuery(className:"CustomLeague")
-        query.getObjectInBackgroundWithId(customLeagueId) {
+        query.getObjectInBackgroundWithId(customLeagueId as String) {
             (customLeague: PFObject!, error: NSError!) -> Void in
             if error == nil {
                 GSCustomLeague.joinCurrentUserToCustomLeague(customLeague)
@@ -151,9 +151,9 @@ class GSUser:NSObject, UserCaller{
             let defaults = NSUserDefaults.standardUserDefaults()
             var data: AnyObject? = defaults.objectForKey("pendingInvitation")
         
-            if(data != nil && (data as NSArray).count > 0){
-                var friendId: NSString = (data as NSArray).firstObject as NSString
-                var customLeagueId: NSString = (data as NSArray).lastObject as NSString
+            if(data != nil && (data as! NSArray).count > 0){
+                var friendId: NSString = (data as! NSArray).firstObject as! String
+                var customLeagueId: NSString = (data as! NSArray).lastObject as! String
                 
                 if(user.objectId as NSString != friendId){
                     self.addInvitation(friendId, customLeagueId:customLeagueId)
@@ -173,7 +173,7 @@ class GSUser:NSObject, UserCaller{
         var lastDate: AnyObject! = user["LastJoinViewDate"]
 
         if(lastDate != nil){
-            if( NSDate().timeIntervalSinceDate(lastDate as NSDate) > 3600*24 ){
+            if( NSDate().timeIntervalSinceDate(lastDate as! NSDate) > 3600*24 ){
                 user["LastJoinViewDate"] = NSDate()
                 user.save()
             }
@@ -216,14 +216,14 @@ class GSUser:NSObject, UserCaller{
         }
         else{
             
-            var userId = cacheBetSlipsUser.objectForKey("userId") as NSString
+            var userId = cacheBetSlipsUser.objectForKey("userId") as! String
             if(userId != user.objectId){
                 loadUserBetSlips(user, delegate: GSUser())
                 return []
             }
         }
         
-        return cacheBetSlipsUser.objectForKey("bets") as NSArray
+        return cacheBetSlipsUser.objectForKey("bets") as! NSArray
     }
     
     func endGetUserBetSlips(){

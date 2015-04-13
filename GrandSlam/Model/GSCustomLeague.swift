@@ -41,7 +41,7 @@ class GSCustomLeague: NSObject {
         
         if(GSLeague.getCacheLeagues() != nil){
             
-            league = GSLeague.getLeagueFromCache(customLeague["leagueTitle"] as NSString)
+            league = GSLeague.getLeagueFromCache(customLeague["leagueTitle"] as! String)
         }
     }
 
@@ -60,7 +60,7 @@ class GSCustomLeague: NSObject {
         // params: ["JoinViewDate" : date as NSDate]
         PFCloud.callFunctionInBackground("NewJoinLeagueNumber", withParameters:[:]) { (result: AnyObject!, error: NSError!) -> Void in
             if error == nil {
-                GSMainViewController.getMainViewControllerInstance().refreshJoinCount(result as NSArray)
+                GSMainViewController.getMainViewControllerInstance().refreshJoinCount(result as! NSArray)
             }
             isNewJoinLeagueNumber = false
         }
@@ -90,13 +90,13 @@ class GSCustomLeague: NSObject {
                 var otherArray = NSMutableArray()
                 for customLeague in objects as NSArray{
                     
-                    if(customLeague["mainUser"] as NSString == user.objectId){
+                    if(customLeague["mainUser"] as! String == user.objectId){
                         orrderArray.addObject(customLeague)
                     }else{
                         otherArray.addObject(customLeague)
                     }
                 }
-                orrderArray.addObjectsFromArray(otherArray)
+                orrderArray.addObjectsFromArray(otherArray as [AnyObject])
                 
                 self.cacheCustomLeagues(orrderArray)
                 delegate.endGetCustomLeagues!(orrderArray)
@@ -110,7 +110,7 @@ class GSCustomLeague: NSObject {
 
         cacheCustomLeaguesArray = NSMutableArray()
         for object in objects{
-            var customLeague = GSCustomLeague(customLeague:object as PFObject)
+            var customLeague = GSCustomLeague(customLeague:object as! PFObject)
            // customLeague.getCluMatches()
             cacheCustomLeaguesArray.addObject(customLeague)
         }
@@ -124,15 +124,15 @@ class GSCustomLeague: NSObject {
     
     func getMatchesByNumber(matches:NSArray, customLeague:PFObject) -> NSArray{
         
-        var numberOfMatches:NSString = customLeague["numberOfMatches"] as NSString
+        var numberOfMatches:NSString = customLeague["numberOfMatches"] as! String
         var number:Int = Int(numberOfMatches.intValue)
-        var startCustomLeagueDate:NSDate = customLeague["startDate"] as NSDate
+        var startCustomLeagueDate:NSDate = customLeague["startDate"] as! NSDate
 
         var count = 0
         var validMatches = NSMutableArray()
         for matche in matches{
             
-            var matcheDate = GSCustomLeague.getDateMatche(matche as PFObject)
+            var matcheDate = GSCustomLeague.getDateMatche(matche as! PFObject)
             if(matcheDate.timeIntervalSinceDate(startCustomLeagueDate) >= 0 && count < number){
                 validMatches.addObject(matche)
                 count = count+1
@@ -144,13 +144,13 @@ class GSCustomLeague: NSObject {
     
     func getMatchesByDate(matches:NSArray, customLeague:PFObject) -> NSArray{
         
-        var startCustomLeagueDate:NSDate    = customLeague["startDate"] as NSDate
-        var endCustomLeagueDate:NSDate      = customLeague["endDate"] as NSDate
+        var startCustomLeagueDate:NSDate    = customLeague["startDate"] as! NSDate
+        var endCustomLeagueDate:NSDate      = customLeague["endDate"] as! NSDate
         
         var validMatches = NSMutableArray()
         for matche in matches{
             
-            var matcheDate = GSCustomLeague.getDateMatche(matche as PFObject)
+            var matcheDate = GSCustomLeague.getDateMatche(matche as! PFObject)
             if(matcheDate.timeIntervalSinceDate(startCustomLeagueDate) >= 0 && matcheDate.timeIntervalSinceDate(endCustomLeagueDate) <= 0 ){
                 validMatches.addObject(matche)
             }
@@ -163,19 +163,19 @@ class GSCustomLeague: NSObject {
         
         var returnArray:NSArray = matches
         
-        var numberOfMatches:NSString = pfCustomLeague["numberOfMatches"] as NSString
+        var numberOfMatches:NSString = pfCustomLeague["numberOfMatches"] as! String
         
         if(numberOfMatches != "" && numberOfMatches != "0"){
             returnArray = self.getMatchesByNumber(matches, customLeague:pfCustomLeague)
         }
-        else if(!(pfCustomLeague["endOfSeason"] as Bool)){
+        else if(!(pfCustomLeague["endOfSeason"] as! Bool)){
             returnArray = self.getMatchesByDate(matches, customLeague:pfCustomLeague)
         }
         
         var oldMatches = NSMutableArray()
         var newMatches = NSMutableArray()
         for matche in returnArray{
-            var matcheDate = GSCustomLeague.getDateMatche(matche as PFObject)
+            var matcheDate = GSCustomLeague.getDateMatche(matche as! PFObject)
             if(matcheDate.timeIntervalSinceDate(NSDate()) < 0){
                 oldMatches.addObject(matche)
             }
@@ -198,7 +198,7 @@ class GSCustomLeague: NSObject {
         var userBetSlips = GSUser.getUserBetSlips(PFUser.currentUser())
         for betSlip in userBetSlips{
             
-            if((betSlip as PFObject)["customLeagueId"] as NSString == self.pfCustomLeague.objectId){
+            if((betSlip as! PFObject)["customLeagueId"] as! String == self.pfCustomLeague.objectId){
                 currentBetSlip = betSlip
             }
         }
@@ -206,12 +206,12 @@ class GSCustomLeague: NSObject {
         var result = NSMutableArray()
         if(currentBetSlip != nil){
             
-            var bets: NSArray = (currentBetSlip as PFObject)["bets"] as NSArray
+            var bets: NSArray = (currentBetSlip as! PFObject)["bets"] as! NSArray
             for bet in bets{
                 
-                var matchId = (bet as NSDictionary).objectForKey("matchId") as NSString
-                var selection = (bet as NSDictionary).objectForKey("selection") as NSDictionary
-                var score = (bet as NSDictionary).objectForKey("score") as NSString
+                var matchId = (bet as! NSDictionary).objectForKey("matchId") as! String
+                var selection = (bet as! NSDictionary).objectForKey("selection") as! NSDictionary
+                var score = (bet as! NSDictionary).objectForKey("score") as! String
                 var betSlip = GSBetSlip(aMatchId: matchId, aSelection: selection, aScore: score)
                 result.addObject(betSlip)
             }
@@ -224,7 +224,7 @@ class GSCustomLeague: NSObject {
             var tempMatches:NSArray = GSBetSlip.getbetMatches(league.matches, bets: result)
             for matche in tempMatches{
                 
-                var matcheDate = GSCustomLeague.getDateMatche(matche as PFObject)
+                var matcheDate = GSCustomLeague.getDateMatche(matche as! PFObject)
                 if(matcheDate.timeIntervalSinceDate(NSDate()) < 0){
                     numberOldBets += 1
                 }
@@ -253,7 +253,7 @@ class GSCustomLeague: NSObject {
         if(joinedUsers == nil){
             joinedUsers = NSMutableArray()
         }
-        if( !(joinedUsers as NSArray).containsObject(user.objectId) ){
+        if( !(joinedUsers as! NSArray).containsObject(user.objectId) ){
             joinedUsers.addObject(user.objectId)
         }
         toCustomLeague["joinUsers"] = joinedUsers
@@ -275,10 +275,15 @@ class GSCustomLeague: NSObject {
         
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
-        var matcheDateString:NSString = matche["eventDateTime"] as NSString
+        var matcheDateString:NSString = matche["eventDateTime"] as! String
         matcheDateString = matcheDateString.stringByReplacingOccurrencesOfString("T", withString: " ")
         matcheDateString = matcheDateString.stringByReplacingOccurrencesOfString("Z", withString: "")
-        return dateFormatter.dateFromString(matcheDateString)!
+
+        if let parsedDateTimeString = dateFormatter.dateFromString(matcheDateString as String) {
+            return parsedDateTimeString
+        } else {
+            return NSDate()
+        }
     }
     
     
@@ -288,8 +293,8 @@ class GSCustomLeague: NSObject {
     class func getShortTitle(longTitle:NSString) -> NSArray{
         
         var names:NSArray       = longTitle.componentsSeparatedByString(" V ")
-        var leftName    = self.getShortNameTeam(names.firstObject as NSString)
-        var rightName   = self.getShortNameTeam(names.lastObject as NSString)
+        var leftName    = self.getShortNameTeam(names.firstObject as! String)
+        var rightName   = self.getShortNameTeam(names.lastObject as! String)
         
         return [leftName, rightName]
     }
@@ -300,7 +305,7 @@ class GSCustomLeague: NSObject {
         var shortTeamtName    = teamName.stringByReplacingOccurrencesOfString(" ", withString: "")
         
         if( teamsDict.objectForKey(shortTeamtName) != nil ){
-            shortTeamtName = teamsDict.objectForKey(shortTeamtName) as NSString
+            shortTeamtName = teamsDict.objectForKey(shortTeamtName) as! String
         }
         
         return shortTeamtName
@@ -340,10 +345,10 @@ class GSCustomLeague: NSObject {
                     var currentUserJoined = false
                     
                     var joinedUsers = customLeague["joinUsers"]
-                    if(joinedUsers? != nil){
-                        for userId in joinedUsers as NSArray{
+                    if(!Utils.isParseNull(joinedUsers)){
+                        for userId in (joinedUsers as! NSArray){
                             
-                            if(userId as NSString == user.objectId){
+                            if(userId as! String == user.objectId){
                                 currentUserJoined = true
                             }
                         }
@@ -390,10 +395,10 @@ class GSCustomLeague: NSObject {
                     var currentUserJoined = false
                     
                     var joinedUsers = customLeague["joinUsers"]
-                    if(joinedUsers? != nil){
-                        for userId in joinedUsers as NSArray{
+                    if(!Utils.isParseNull(joinedUsers)){
+                        for userId in joinedUsers as! NSArray{
                             
-                            if(userId as NSString == user.objectId){
+                            if(userId as! String == user.objectId){
                                 currentUserJoined = true
                             }
                         }
@@ -407,9 +412,9 @@ class GSCustomLeague: NSObject {
                 for customLeague2 in data{
 
                     if(user["friends"] != nil){
-                        for friendId in (user["friends"] as NSArray){
-                            var mainUser = customLeague2["mainUser"] as NSString
-                            if(friendId as NSString == mainUser){
+                        for friendId in (user["friends"] as! NSArray){
+                            var mainUser = customLeague2["mainUser"] as! String
+                            if(friendId as! String == mainUser){
                                 finalData.addObject(customLeague2)
                             }
                         }
@@ -437,11 +442,11 @@ class GSCustomLeague: NSObject {
             
             for customLeague in data{
                 
-                var createdAt: AnyObject! = (customLeague as PFObject).createdAt
+                var createdAt: AnyObject! = (customLeague as! PFObject).createdAt
                 if(createdAt != nil){
                     
-                    var ceatedAtDate = createdAt as NSDate
-                    var lastUserDate = lastDate as NSDate
+                    var ceatedAtDate = createdAt as! NSDate
+                    var lastUserDate = lastDate as! NSDate
                     if( ceatedAtDate.timeIntervalSinceDate(lastUserDate) > 0 ){
                         
                         arrayNew.addObject(customLeague)
@@ -453,7 +458,7 @@ class GSCustomLeague: NSObject {
             }
             
         }else{
-            arrayOld = data as NSMutableArray
+            arrayOld = data as! NSMutableArray
         }
         
         return [arrayNew, arrayOld]

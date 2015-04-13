@@ -27,8 +27,8 @@ class GSMatcheSelection {
         }
         for selection in self.matchBettingSelections{
             
-            if( ((selection as NSDictionary).objectForKey("outcomeMeaningMinorCode") as NSString) == "D"){
-                return (selection as NSDictionary)
+            if( ((selection as! NSDictionary).objectForKey("outcomeMeaningMinorCode") as! String) == "D"){
+                return (selection as! NSDictionary)
             }
         }
         return NSDictionary()
@@ -41,8 +41,8 @@ class GSMatcheSelection {
         }
         for selection in self.matchBettingSelections{
             
-            if( ((selection as NSDictionary).objectForKey("outcomeMeaningMinorCode") as NSString) == "H"){
-                return (selection as NSDictionary)
+            if( ((selection as! NSDictionary).objectForKey("outcomeMeaningMinorCode") as! String) == "H"){
+                return (selection as! NSDictionary)
             }
         }
         return NSDictionary()
@@ -55,8 +55,8 @@ class GSMatcheSelection {
         }
         for selection in self.matchBettingSelections{
             
-            if( ((selection as NSDictionary).objectForKey("outcomeMeaningMinorCode") as NSString) == "A"){
-                return (selection as NSDictionary)
+            if( ((selection as! NSDictionary).objectForKey("outcomeMeaningMinorCode") as! String) == "A"){
+                return (selection as! NSDictionary)
             }
         }
         return NSDictionary()
@@ -70,17 +70,17 @@ class GSMatcheSelection {
         if(matche.objectForKey("CorrectScore") == nil || matche.objectForKey("MatchBetting") == nil){
             
             if(matche.objectForKey("CorrectScore") != nil){
-                correctScoreSelections = matche.objectForKey("CorrectScore") as NSArray
+                correctScoreSelections = matche.objectForKey("CorrectScore") as! NSArray
                 bestCorrectScoreSelection = getBestCorrectScoreSelection()
             }
             if(matche.objectForKey("MatchBetting") != nil){
-                matchBettingSelections = matche.objectForKey("MatchBetting") as NSArray
+                matchBettingSelections = matche.objectForKey("MatchBetting") as! NSArray
             }
             loadMatcheSelection(customLeague)
         }
         else{
-            correctScoreSelections = matche.objectForKey("CorrectScore") as NSArray
-            matchBettingSelections = matche.objectForKey("MatchBetting") as NSArray
+            correctScoreSelections = matche.objectForKey("CorrectScore") as! NSArray
+            matchBettingSelections = matche.objectForKey("MatchBetting") as! NSArray
             bestCorrectScoreSelection = getBestCorrectScoreSelection()
         }
     }
@@ -88,14 +88,14 @@ class GSMatcheSelection {
     
     func loadMatcheSelection(customLeague:PFObject){
         
-        var leagueName      = customLeague.valueForKey("leagueTitle") as NSString
+        var leagueName      = customLeague.valueForKey("leagueTitle") as! String
         var league:PFObject = (GSLeague.getLeagueFromCache(leagueName) as GSLeague).pfLeague
         
-        var classKey:NSString   = String(Int(league["classKey"] as NSNumber))
-        var typeKey:NSString    = String(Int(league["typeKey"] as NSNumber))
-        var subTypeKey:NSString = String(Int(league["subTypeKey"] as NSNumber))
-        var matchKey:NSString   = String(Int(pfMatche["eventKey"] as NSNumber))
-        var urlString:NSString = URL_ROOT+"v2/sportsbook-api/classes/"+classKey+"/types/"+typeKey+"/subtypes/"+subTypeKey+"/events/"+matchKey
+        var classKey   = String(format:"%d", (league["classKey"] as! NSNumber))
+        var typeKey    = String(format:"%d",(league["typeKey"] as! NSNumber))
+        var subTypeKey = String(format:"%d",(league["subTypeKey"] as! NSNumber))
+        var matchKey   = String(format:"%d",(pfMatche["eventKey"] as! NSNumber))
+        var urlString:String = URL_ROOT+"v2/sportsbook-api/classes/"+classKey+"/types/"+typeKey+"/subtypes/"+subTypeKey+"/events/"+matchKey
         urlString = urlString+"?locale=en-GB&"+"api-key="+LADBROKES_API_KEY+"&expand=selection"
         
         SVProgressHUD.show()
@@ -105,25 +105,25 @@ class GSMatcheSelection {
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {  (data, response, error) in
             
             var err: NSError?
-            var jsonData:NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as NSDictionary
+            var jsonData:NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as! NSDictionary
             
             if(jsonData["event"] != nil){
                 
-                var marketsEventArray:NSArray = ((jsonData["event"] as NSDictionary)["markets"] as NSDictionary)["market"] as NSArray
+                var marketsEventArray:NSArray = ((jsonData["event"] as! NSDictionary)["markets"] as! NSDictionary)["market"] as! NSArray
                 
                 var marketJson:NSDictionary
                 for marketJson in marketsEventArray {
                     
-                    if((marketJson["marketName"] as NSString == "Correct score")){
+                    if((marketJson["marketName"] as! String == "Correct score")){
                         
-                        self.correctScoreSelections = (marketJson["selections"] as NSDictionary)["selection"] as NSArray
+                        self.correctScoreSelections = (marketJson["selections"] as! NSDictionary)["selection"] as! NSArray
                         self.pfMatche["CorrectScore"] = self.correctScoreSelections
                         self.bestCorrectScoreSelection = self.getBestCorrectScoreSelection()
                     }
                     
-                    if((marketJson["marketName"] as NSString == "Match betting")){
+                    if((marketJson["marketName"] as! String == "Match betting")){
                         
-                        self.matchBettingSelections = (marketJson["selections"] as NSDictionary)["selection"] as NSArray
+                        self.matchBettingSelections = (marketJson["selections"] as! NSDictionary)["selection"] as! NSArray
                         self.pfMatche["MatchBetting"] = self.matchBettingSelections
                     }
                 }
@@ -153,9 +153,9 @@ class GSMatcheSelection {
         
         for selection in (self.correctScoreSelections as NSArray) {
             
-            if(selection.objectForKey("selectionName") as NSString == selectionName){
+            if(selection.objectForKey("selectionName") as! String == selectionName){
                 
-                return selection as NSDictionary
+                return selection as! NSDictionary
             }
         }
         return retSelection
@@ -170,10 +170,10 @@ class GSMatcheSelection {
         var i = 0
         for selection in (self.correctScoreSelections as NSArray) {
             
-            var currentPrice = selection.objectForKey("currentPrice") as NSDictionary
+            var currentPrice = selection.objectForKey("currentPrice") as! NSDictionary
             
-            var denPrice = currentPrice.objectForKey("denPrice") as CGFloat
-            var numPrice = currentPrice.objectForKey("numPrice") as CGFloat
+            var denPrice = currentPrice.objectForKey("denPrice") as! CGFloat
+            var numPrice = currentPrice.objectForKey("numPrice") as! CGFloat
             
             var percent: CGFloat = 0.0
             if(denPrice > numPrice){
@@ -185,12 +185,12 @@ class GSMatcheSelection {
             
             if(i == 0){
                 bestValue = percent
-                retSelection = selection as NSDictionary
+                retSelection = selection as! NSDictionary
             }
             else{
                 if(percent < bestValue){
                     bestValue = percent
-                    retSelection = selection as NSDictionary
+                    retSelection = selection as! NSDictionary
                 }
             }
             
@@ -200,10 +200,10 @@ class GSMatcheSelection {
     }
     
     
-    func setPredictionTeamWin(leftScore:NSString, rightScore:NSString){
+    func setPredictionTeamWin(leftScore:String, rightScore:String){
     
-        var homeTeamScore = leftScore.intValue
-        var awayTeamScore = rightScore.intValue
+        var homeTeamScore = leftScore.toInt()
+        var awayTeamScore = rightScore.toInt()
         
         if(homeTeamScore == awayTeamScore){
             pfMatche.incrementKey("drawPrediction")
@@ -224,15 +224,15 @@ class GSMatcheSelection {
         
         var drawP:NSNumber = 0
         if(pfMatche["drawPrediction"] != nil){
-            drawP = pfMatche["drawPrediction"] as NSNumber
+            drawP = pfMatche["drawPrediction"] as! NSNumber
         }
         var homeTeamWin:NSNumber = 0
         if(pfMatche["homeTeamWinPrediction"] != nil){
-            homeTeamWin = pfMatche["homeTeamWinPrediction"] as NSNumber
+            homeTeamWin = pfMatche["homeTeamWinPrediction"] as! NSNumber
         }
         var awayTeamWin:NSNumber = 0
         if(pfMatche["awayTeamWinPrediction"] != nil){
-            awayTeamWin = pfMatche["awayTeamWinPrediction"] as NSNumber
+            awayTeamWin = pfMatche["awayTeamWinPrediction"] as! NSNumber
         }
         
         return CGFloat(homeTeamWin)/(CGFloat(homeTeamWin)+CGFloat(drawP)+CGFloat(awayTeamWin))
@@ -242,15 +242,15 @@ class GSMatcheSelection {
         
         var drawP:NSNumber = 0
         if(pfMatche["drawPrediction"] != nil){
-            drawP = pfMatche["drawPrediction"] as NSNumber
+            drawP = pfMatche["drawPrediction"] as! NSNumber
         }
         var homeTeamWin:NSNumber = 0
         if(pfMatche["homeTeamWinPrediction"] != nil){
-            homeTeamWin = pfMatche["homeTeamWinPrediction"] as NSNumber
+            homeTeamWin = pfMatche["homeTeamWinPrediction"] as! NSNumber
         }
         var awayTeamWin:NSNumber = 0
         if(pfMatche["awayTeamWinPrediction"] != nil){
-            awayTeamWin = pfMatche["awayTeamWinPrediction"] as NSNumber
+            awayTeamWin = pfMatche["awayTeamWinPrediction"] as! NSNumber
         }
         
         return CGFloat(drawP)/(CGFloat(homeTeamWin)+CGFloat(drawP)+CGFloat(awayTeamWin))
@@ -260,15 +260,15 @@ class GSMatcheSelection {
         
         var drawP:NSNumber = 0
         if(pfMatche["drawPrediction"] != nil){
-            drawP = pfMatche["drawPrediction"] as NSNumber
+            drawP = pfMatche["drawPrediction"] as! NSNumber
         }
         var homeTeamWin:NSNumber = 0
         if(pfMatche["homeTeamWinPrediction"] != nil){
-            homeTeamWin = pfMatche["homeTeamWinPrediction"] as NSNumber
+            homeTeamWin = pfMatche["homeTeamWinPrediction"] as! NSNumber
         }
         var awayTeamWin:NSNumber = 0
         if(pfMatche["awayTeamWinPrediction"] != nil){
-            awayTeamWin = pfMatche["awayTeamWinPrediction"] as NSNumber
+            awayTeamWin = pfMatche["awayTeamWinPrediction"] as! NSNumber
         }
         
         return CGFloat(awayTeamWin)/(CGFloat(homeTeamWin)+CGFloat(drawP)+CGFloat(awayTeamWin))
@@ -281,7 +281,7 @@ class GSMatcheSelection {
         
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
-        var matcheDateString:NSString = self.pfMatche["eventDateTime"] as NSString
+        var matcheDateString = self.pfMatche["eventDateTime"] as! String
         matcheDateString = matcheDateString.stringByReplacingOccurrencesOfString("T", withString: " ")
         matcheDateString = matcheDateString.stringByReplacingOccurrencesOfString("Z", withString: "")
         return dateFormatter.dateFromString(matcheDateString)!

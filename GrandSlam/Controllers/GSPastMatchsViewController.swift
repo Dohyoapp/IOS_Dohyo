@@ -42,7 +42,7 @@ class GSPastMatchsViewController: UIViewController {
         scrollView = UIScrollView(frame:CGRectMake(0, YSTART+35, 320, self.view.frame.size.height - YSTART - 35))
         self.view.addSubview(scrollView)
         
-        matchResults = GSLeague.getCacheMatchResultsFromDate(customLeague.pfCustomLeague["startDate"] as NSDate)
+        matchResults = GSLeague.getCacheMatchResultsFromDate(customLeague.pfCustomLeague["startDate"] as! NSDate)
         loadViewWithMatchs()
     }
     
@@ -52,7 +52,7 @@ class GSPastMatchsViewController: UIViewController {
         var countMatchResult:CGFloat = 0
         for matchResult in matchResults{
             
-            createMatcheResultCell(matchResult as PFObject, num:countMatchResult, startY:0)
+            createMatcheResultCell(matchResult as! PFObject, num:countMatchResult, startY:0)
             countMatchResult += 1
         }
         
@@ -66,12 +66,12 @@ class GSPastMatchsViewController: UIViewController {
         var matchResultView = UIView(frame:CGRectMake(0, startY+(num*CELLHEIGHT), 320, CELLHEIGHT))
         matchResultView.backgroundColor = UIColor.whiteColor()
         
-        var title = String(format: "%@ V %@", matcheResult["homeTeam"] as NSString, matcheResult["awayTeam"] as NSString)
+        var title = String(format: "%@ V %@", matcheResult["homeTeam"] as! String, matcheResult["awayTeam"] as! String)
         GSCustomLeagueViewControlelr.createTopView(matchResultView, title: title, isCrowd:false)
         
         var leftScoreLabel  = UILabel(frame:CGRectMake(95, 50, 60, 100))
         leftScoreLabel.tag  = 888
-        leftScoreLabel.text = matcheResult["homeTeamScore"] as NSString
+        leftScoreLabel.text = matcheResult["homeTeamScore"] as? String
         leftScoreLabel.textAlignment = .Center
         leftScoreLabel.font = UIFont(name:FONT2, size:44)
         leftScoreLabel.textColor = SPECIALBLUE
@@ -86,7 +86,7 @@ class GSPastMatchsViewController: UIViewController {
         
         var rightScoreLabel     = UILabel(frame:CGRectMake(160, 50, 60, 100))
         rightScoreLabel.tag     = 999
-        rightScoreLabel.text    = matcheResult["awayTeamScore"] as NSString
+        rightScoreLabel.text    = matcheResult["awayTeamScore"] as? String
         rightScoreLabel.textAlignment = .Center
         rightScoreLabel.font    = UIFont(name:FONT2, size:44)
         rightScoreLabel.textColor = SPECIALBLUE

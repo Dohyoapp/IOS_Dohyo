@@ -97,9 +97,9 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         }
         else{
             
-            var reuseIdentifier = NSString(format: "CustomCell%d", indexPath.row)
+            var reuseIdentifier = String(format: "CustomCell%d", indexPath.row)
             
-            var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as GSCreateAccountCell!
+            var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as! GSCreateAccountCell!
             if(cell == nil){
                 cell = GSCreateAccountCell(style:UITableViewCellStyle.Value1, reuseIdentifier: reuseIdentifier)
             }
@@ -244,19 +244,19 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         
         //var cell:GSCreateAccountCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow:0, inSection:1)) as GSCreateAccountCell
         
-        var cell:GSCreateAccountCell = tableViewCell.objectAtIndex(0) as GSCreateAccountCell
+        var cell:GSCreateAccountCell = tableViewCell.objectAtIndex(0) as! GSCreateAccountCell
         var name:NSString = cell.textField.text
         
         //var cell1:GSCreateAccountCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow:1, inSection:1)) as GSCreateAccountCell
-        var cell1:GSCreateAccountCell = tableViewCell.objectAtIndex(1) as GSCreateAccountCell
-        var email:NSString = cell1.textField.text
+        var cell1:GSCreateAccountCell = tableViewCell.objectAtIndex(1) as! GSCreateAccountCell
+        var email:String = cell1.textField.text
         
         //var cell2:GSCreateAccountCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow:2, inSection:1)) as GSCreateAccountCell
-        var cell2:GSCreateAccountCell = tableViewCell.objectAtIndex(2) as GSCreateAccountCell
+        var cell2:GSCreateAccountCell = tableViewCell.objectAtIndex(2) as! GSCreateAccountCell
         var password:NSString = cell2.textField.text
         
         //var cell3:GSCreateAccountCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow:3, inSection:1)) as GSCreateAccountCell
-        var cell3:GSCreateAccountCell = tableViewCell.objectAtIndex(3) as GSCreateAccountCell
+        var cell3:GSCreateAccountCell = tableViewCell.objectAtIndex(3) as! GSCreateAccountCell
         var confirmPassword:NSString = cell3.textField.text
         
         if(name.length < 2){
@@ -278,7 +278,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
             return;
         }
         
-        if(email.length < 2){
+        if(count(email) < 2){
             var alertView = UIAlertView(title: "", message: "Please enter your email.", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()
             return;
@@ -297,7 +297,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
             return;
         }
         
-        if ( !password.isEqualToString(confirmPassword) ) {
+        if ( !password.isEqualToString(confirmPassword as String) ) {
             
             var alertView = UIAlertView(title: "", message: "Uh oh...the passwords don't match. \nPlease try again.", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()
@@ -313,7 +313,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         self.oldUserName = PFUser.currentUser()["username"]
         self.oldPassword = PFUser.currentUser().password
         PFUser.currentUser()["username"] = name
-        PFUser.currentUser().password = password
+        PFUser.currentUser().password  = password as String
         
         SVProgressHUD.show()
         FieldsValidator.fullValidationEmail(email, delegate: self)
@@ -323,9 +323,9 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
     var oldPassword:String!
     var oldEmail:AnyObject!
     
-    func validEmail(email: NSString){
+    func validEmail(email: String){
         
-        if(email.isEqualToString("")){//failed
+        if(email == ""){//failed
             
             SVProgressHUD.dismiss()
             var alertView = UIAlertView(title: "Invalid email", message: "The email address you entered appears to be invalid.", delegate:nil, cancelButtonTitle: "Ok")
@@ -338,12 +338,13 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
             self.oldEmail = user["email"]
             user["email"] = email
             user["pPTC"]  = hasAcceptedOptEmail
+           // user.setObject(PFInstallation.currentInstallation(), forKey:"installation")
             user.signUpInBackgroundWithBlock({ (success, error) -> Void in
                 SVProgressHUD.dismiss()
                 if(error != nil){
                     
                     var userInfoDico:NSDictionary = error.userInfo!
-                    var message = userInfoDico.objectForKey("error") as NSString
+                    var message = userInfoDico.objectForKey("error") as! NSString
                     
                     if(self.oldEmail == nil){
                          PFUser.currentUser().removeObjectForKey("email")
@@ -353,7 +354,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
                     
                     user.password = self.oldPassword
                     
-                    var alertView = UIAlertView(title: "", message: message, delegate:nil, cancelButtonTitle: "Ok")
+                    var alertView = UIAlertView(title: "", message: message as String, delegate:nil, cancelButtonTitle: "Ok")
                     alertView.show()
                     
                     if(self.oldUserName == nil){
@@ -399,11 +400,11 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
     
     func textFieldShouldReturn(textField: UITextField) -> Bool{
         
-        var indexPath:NSIndexPath = tableView.indexPathForCell(textField.superview as UITableViewCell)! as NSIndexPath
+        var indexPath:NSIndexPath = tableView.indexPathForCell(textField.superview as! UITableViewCell)! as NSIndexPath
         if(indexPath.row < LASTROW_INDEX-1){
-                
+            
             var nextIndexPath = NSIndexPath(forRow:indexPath.row+1, inSection:indexPath.section)
-            var cell:GSCreateAccountCell = tableView.cellForRowAtIndexPath(nextIndexPath) as GSCreateAccountCell
+            var cell:GSCreateAccountCell = tableView.cellForRowAtIndexPath(nextIndexPath) as! GSCreateAccountCell
             cell.textField.becomeFirstResponder()
         }
         else{
@@ -638,12 +639,12 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
     
     func ppTap(){
         
-        loadWebView(appConfigData["PrivacyPolicy"] as NSString)
+        loadWebView(appConfigData["PrivacyPolicy"] as! String)
     }
     
     func tcTap(){
         
-        loadWebView(appConfigData["TermsConditions"] as NSString)
+        loadWebView(appConfigData["TermsConditions"] as! String)
     }
     
     
@@ -653,49 +654,49 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         
         var urlString = NSString(format:"https://secure.gamblingcommission.gov.uk/gccustomweb/PublicRegister/PRSearch.aspx?ExternalAccountId=1611")
         
-        loadWebView(urlString)
+        loadWebView(urlString as String)
     }
     
     func lbTcButtonTap(){
         
         var urlString = NSString(format:"http://help.ladbrokes.com/display/4/kb/article.aspx?aid=2665")
         
-        loadWebView(urlString)
+        loadWebView(urlString as String)
     }
     
     func lbPpButtonTap(){
     
         var urlString = NSString(format:"http://help.ladbrokes.com/display/4/kb/article.aspx?aid=1120")
         
-        loadWebView(urlString)
+        loadWebView(urlString as String)
     }
     
     func lbRGButtonTap(){
         
         var urlString = NSString(format:"http://help.ladbrokes.com/display/4/kb/article.aspx?aid=1077")
         
-        loadWebView(urlString)
+        loadWebView(urlString as String)
     }
     
     func coockiePButtonTap(){
     
         var urlString = NSString(format:"http://help.ladbrokes.com/display/4/kb/article.aspx?aid=1120#r5")
         
-        loadWebView(urlString)
+        loadWebView(urlString as String)
     }
     
     func gameCareButtonTap(){
         
         var urlString = NSString(format:"http://www.gamcare.org.uk")
         
-        loadWebView(urlString)
+        loadWebView(urlString as String)
     }
     
     func rgtButtonTap(){
         
         var urlString = NSString(format:"http://www.responsiblegamblingtrust.org.uk")
         
-        loadWebView(urlString)
+        loadWebView(urlString as String)
     }
     
     
@@ -703,28 +704,28 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         
         var urlString = NSString(format:"https://www.gibraltar.gov.gi/new/remote-gambling?w_id=20120704133407")
         
-        loadWebView(urlString)
+        loadWebView(urlString as String)
     }
     
     func gComissionButtonTap(){
         
         var urlString = NSString(format:"http://www.gamblingcommission.gov.uk/Home.aspx")
         
-        loadWebView(urlString)
+        loadWebView(urlString as String)
     }
     
     func gTherappyButtonTap(){
         
         var urlString = NSString(format:"https://www.gamblingtherapy.org/?ReferrerID=310")
         
-        loadWebView(urlString)
+        loadWebView (urlString as String)
     }
     
     func essaButtonTap(){
         
         var urlString = NSString(format:"http://www.ladbrokes.com/essaPopup.html")
         
-        loadWebView(urlString)
+        loadWebView(urlString as String)
     }
     
     
@@ -732,7 +733,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
         
         var urlString = NSString(format:"http://help.ladbrokes.com/display/4/kb/article.aspx?aid=1077&n=1&docid=28682&tab=search#r2")
         
-        loadWebView(urlString)
+        loadWebView(urlString as String)
     }
     
     
