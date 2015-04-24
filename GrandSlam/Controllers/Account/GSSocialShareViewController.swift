@@ -23,7 +23,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     
     
     var isProfileView = false
-    var customLeagueId:NSString!
+    var customLeagueId:String!
     
     override func viewDidLoad() {
 
@@ -145,10 +145,11 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     func whatsAppButtonTap(sender: UIButton!){
         
         SVProgressHUD.show()
-        var message = String(format:"%@ %@", MESSAGE_TEXT1, appConfigData["itunesAppUrl"] as! NSString)
+        var message = String(format:"%@ %@", MESSAGE_TEXT1, appConfigData["itunesAppUrl"] as! String)
         if(!isProfileView){
             //var link = String(format:"Dohyo://userId/%@/costumLeagueId/%@", PFUser.currentUser().objectId, customLeagueId)
-            var link = String(format:"%@appLaunch.html?userId=%@&costumLeagueId=%@", TEAMS_IMAGES_URL_ROOT, PFUser.currentUser().objectId, customLeagueId)
+            var link = String(format:"%@appLaunch.html?userId/%@/costumLeagueId/%@", appConfigData["whatsAppUrl"] as! String, PFUser.currentUser().objectId, customLeagueId)
+            
             message = String(format:"%@ %@", MESSAGE_TEXT2, link)
             
             Mixpanel.sharedInstance().track("0106 - Invite Friend", properties: [
@@ -168,7 +169,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
                 ])
         }
         
-        var text  = NSString(format:"whatsapp://send?text=%@", message)
+        var text  = String(format:"whatsapp://send?text=%@", message)
         var escapedUrlString  = text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         var whatsappURL  = NSURL(string:escapedUrlString!)
         if (UIApplication.sharedApplication().canOpenURL(whatsappURL!)) {
@@ -189,7 +190,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     func smsButtonTap(sender: UIButton!){
         
         SVProgressHUD.show()
-        var message = String(format:"%@ %@", MESSAGE_TEXT1, appConfigData["itunesAppUrl"] as! NSString)
+        var message = String(format:"%@ %@", MESSAGE_TEXT1, appConfigData["itunesAppUrl"] as! String)
         if(!isProfileView){
            // var link = String(format:"Dohyo://userId/%@/costumLeagueId/%@", PFUser.currentUser().objectId, customLeagueId)
             var link = String(format:"%@appLaunch.html?userId=%@&costumLeagueId=%@", TEAMS_IMAGES_URL_ROOT, PFUser.currentUser().objectId, customLeagueId)
@@ -227,7 +228,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
     func mailButtonTap(sender: UIButton!){
         
         SVProgressHUD.show()
-        var message = String(format:"%@ %@", MESSAGE_TEXT1, appConfigData["itunesAppUrl"] as! NSString)
+        var message = String(format:"%@ %@", MESSAGE_TEXT1, appConfigData["itunesAppUrl"] as! String)
         if(!isProfileView){
             var link = String(format:"%@appLaunch.html?userId=%@&costumLeagueId=%@", TEAMS_IMAGES_URL_ROOT, PFUser.currentUser().objectId, customLeagueId)
             message = String(format:"%@ %@", MESSAGE_TEXT2, link)

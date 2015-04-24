@@ -145,6 +145,12 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         var gestures:NSArray = (createButton as UIView).gestureRecognizers!
         var tapGestureRecognizer:UITapGestureRecognizer = gestures[0] as! UITapGestureRecognizer
         createTap(tapGestureRecognizer)
+        
+        var wCustomLeague = GSMainViewController.getMainViewControllerInstance().waitingCreateCustomLeague
+        if( !Utils.isParseNull(wCustomLeague) && !Utils.isParseNull(wCustomLeague["name"]) ){
+            createCustomLeague.endCreationCustomLeague(wCustomLeague)
+            wCustomLeague = PFObject()
+        }
     }
     
     
@@ -160,6 +166,10 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
     func navBarHideKeyBoard(){
         
         dispatch_async(dispatch_get_main_queue(), {
+            if( Utils.isParseNull(fakeTextField)){
+                fakeTextField = UITextField(frame:CGRectZero)
+                self.addSubview(fakeTextField)
+            }
             fakeTextField.becomeFirstResponder()
             fakeTextField.resignFirstResponder()
         })
@@ -171,7 +181,7 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
         
         if(GSMainViewController.getMainViewControllerInstance().createAccountView){
             
-            if(PFUser.currentUser().valueForKey("email") == nil){
+            if( Utils.isParseNull(PFUser.currentUser()["email"])){
                 if(GSMainViewController.getMainViewControllerInstance().createAccountViewController != nil){
                     GSMainViewController.getMainViewControllerInstance().createAccountViewController.closeView()
                 }
@@ -218,7 +228,13 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
             customLeagueViewControlelr.closeView()
         }
         
-        self.setContentOffset(CGPointMake(joinLabel.center.x-150, 0), animated:true)
+        var x = joinLabel.center.x-150
+        if(x > 0){
+            self.setContentOffset(CGPointMake(x, 0), animated:true)
+        }
+        else{
+            self.setContentOffset(CGPointMake(0, 0), animated:true)
+        }
     }
     
     func otherButtonTap(recognizer: UITapGestureRecognizer!){
@@ -245,7 +261,9 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
             customLeagueViewControlelr.customLeague = GSCustomLeague.getCacheCustomLeagues()[label.tag] as! GSCustomLeague
             GSMainViewController.getMainViewControllerInstance().view.addSubview(customLeagueViewControlelr.view)
             
-            self.setContentOffset(CGPointMake(label.center.x-157, 0), animated:true)
+            if(label.center.x-157 > 0){
+                self.setContentOffset(CGPointMake(label.center.x-157, 0), animated:true)
+            }
         }
         else{
             customLeagueViewControlelr.backToMainView()
@@ -253,12 +271,13 @@ class GSNavigationBar: UIScrollView, UIScrollViewDelegate {
     }
     
     
-    func goToLeague(num: Int){
-        
+    func goToLeague(num: NSInteger){
+        SVProgressHUD.show()
         if(buttonsArray.count > num+2){
             var label:UILabel = buttonsArray.objectAtIndex(num+2) as! UILabel
             labelSelected(label)
         }
+        SVProgressHUD.dismiss()
     }
     
     

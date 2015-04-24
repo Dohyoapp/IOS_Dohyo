@@ -86,7 +86,7 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
         tableViewData = []
         
         
-        dispatch_async(dispatch_get_main_queue(), {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             self.getUsersAndPoints()
         })
     }
@@ -102,12 +102,14 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
     
     func getUsersAndPoints(){
         
-        SVProgressHUD.show()
+        dispatch_async(dispatch_get_main_queue(), {
+            SVProgressHUD.show()
+            })
         var customLeaguePf = customLeague.pfCustomLeague as PFObject
 
         PFCloud.callFunctionInBackground("getUsersByUsersId", withParameters:["customLeagueId" : customLeaguePf.objectId]) { (result: AnyObject!, error: NSError!) -> Void in
             
-            if error == nil {
+            if  Utils.isParseNull(error) {
                 self.tableViewData = result as! NSArray
                 
                 if(self.tableViewData != nil){
@@ -132,7 +134,9 @@ class GSLeaderBoardViewController: UIViewController, UITableViewDataSource, UITa
                 }
                 self.tableView.reloadData()
             }
-            SVProgressHUD.dismiss()
+            dispatch_async(dispatch_get_main_queue(), {
+                SVProgressHUD.dismiss()
+            })
         }
     }
     

@@ -21,13 +21,18 @@ var profileView = UIView(frame:CGRectMake(260, 20, 60, NAVIGATIONBAR_HEIGHT))
 
 
 
+
+
 var mainViewControllerInstance:GSMainViewController!
+
 
 class GSMainViewController: UIViewController, CustomLeagueCaller{
     
     var launchImageView:UIImageView!
     
     var leagues:NSArray!
+    
+    var waitingCreateCustomLeague:PFObject!
     
     class func getMainViewControllerInstance() -> GSMainViewController{
         return mainViewControllerInstance
@@ -44,8 +49,8 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
         //self.presentViewController(GSTuttorial(), animated: false, completion: nil)
         
         var user = PFUser.currentUser()
-        if(user.valueForKey("email") == nil){
-            if(user.sessionToken != nil){
+        if( Utils.isParseNull(user["email"])){
+            if( !Utils.isParseNull(user.sessionToken)){
                 PFUser.becomeInBackground(user.sessionToken, block: { (user:PFUser!, error: NSError!) -> Void in
            
                 })
@@ -146,7 +151,7 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
             (createCustomLeague as MainVCgetCustomLeaguesCaller).getCustomLeaguesEnd!()
         }
         
-        if(lastJoinedLeague != nil && lastJoinedLeague.objectId != nil){
+        if( !Utils.isParseNull(lastJoinedLeague) &&  !Utils.isParseNull(lastJoinedLeague.objectId)){
             if(data.containsObject(lastJoinedLeague)){
                 var index = data.indexOfObject(lastJoinedLeague)
                 navigationBar.goToLeague(index)
@@ -161,17 +166,13 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
     
     func profileTap(sender: UIButton!){
         
-        if(navigationBar.customLeagueViewControlelr != nil){
-            navigationBar.customLeagueViewControlelr.closeView()
-        }
-        
         navigationBar.navBarHideKeyBoard()
         
         var email: AnyObject? = PFUser.currentUser().valueForKey("email")
         
         if(!createAccountView){
             //self.navigationController?.pushViewController(GSCreateAccountViewController(), animated: true)
-            if(email == nil){
+            if( Utils.isParseNull(email) ){
                 createAccountViewController = GSCreateAccountViewController()
                 if(sender == nil){
                     createAccountViewController.isFromCreateLeague = true
@@ -186,8 +187,14 @@ class GSMainViewController: UIViewController, CustomLeagueCaller{
         }
         else{
             
-            if(email == nil){
-                createAccountViewController.closeView()
+            if( Utils.isParseNull(email) ){
+                if(navigationBar.customLeagueViewControlelr != nil){
+                    navigationBar.customLeagueViewControlelr.closeView()
+                }
+                
+                if(createAccountViewController != nil){
+                    createAccountViewController.closeView()
+                }
             }
             else{
                 if(profileViewController != nil){

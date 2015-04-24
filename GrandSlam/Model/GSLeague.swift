@@ -18,7 +18,7 @@ import Foundation
 var cacheLeagues:NSMutableArray!
 var cacheMatchResults:NSArray!
 
-class GSLeague {
+class GSLeague: NSObject {
 
     var pfLeague: PFObject
     var matches: NSArray!
@@ -77,7 +77,7 @@ class GSLeague {
     
     class func getLeagues(delegate: LeagueCaller){
 
-            if(PFUser.currentUser().valueForKey("email") != nil){
+            if( !Utils.isParseNull(PFUser.currentUser()["email"]) ){
                 SVProgressHUD.show()
             }
             var query = PFQuery(className:"League")
@@ -142,7 +142,7 @@ class GSLeague {
         query.limit = 1000
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             
-            if (error != nil) {
+            if (!Utils.isParseNull(error) ) {
                 
             }
             else{

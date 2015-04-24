@@ -102,7 +102,7 @@ class GSUser:NSObject, UserCaller{
                     
                     var user = PFUser.currentUser()
                     
-                    if(user["email"] != nil){
+                    if(!Utils.isParseNull(user["email"])){
                         
                         if(user.objectId as NSString != friendId){
                             self.addInvitation(friendId, customLeagueId:customLeagueId)
@@ -146,7 +146,7 @@ class GSUser:NSObject, UserCaller{
     
         var user = PFUser.currentUser()
         
-        if(user["email"] != nil){
+        if(!Utils.isParseNull(user["email"])){
             
             let defaults = NSUserDefaults.standardUserDefaults()
             var data: AnyObject? = defaults.objectForKey("pendingInvitation")

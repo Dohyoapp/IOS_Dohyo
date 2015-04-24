@@ -63,7 +63,7 @@ class TwitterFaceBookModule: NSObject{
     }
     
     func facebook(text: String, image: UIImage, link: String){
-        
+        /*
         if(SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)){
             
             var socialVC :SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
@@ -92,13 +92,12 @@ class TwitterFaceBookModule: NSObject{
             GSMainViewController.getMainViewControllerInstance().presentViewController(socialVC, animated: true, completion: nil)
         }
         else{
-            /*
+            
             var alertView = UIAlertView(title: "Sorry", message: "You can't send a facebook post right now, make sure your device has an internet connection and you have at least one facebook account setup", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()
-*/
-            oldSendFaceBook(text, image: image, link: link)
-        }
-        SVProgressHUD.dismiss()
+        
+        }*/
+        oldSendFaceBook(text, image: image, link: link)
     }
     
     
@@ -127,6 +126,7 @@ class TwitterFaceBookModule: NSObject{
                         self.myDelegate.shareFBSuccesFinish()
                     }
                 }
+                SVProgressHUD.dismiss()
             })
             
         } else {
@@ -158,6 +158,7 @@ class TwitterFaceBookModule: NSObject{
                     }
                     
                 }
+                SVProgressHUD.dismiss()
             }
             
         }

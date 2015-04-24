@@ -380,12 +380,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
     
     func startTap(sender: UIButton!){
         
-        if(PFUser.currentUser().valueForKey("email") == nil){
-            GSMainViewController.getMainViewControllerInstance().profileTap(nil)
-            return
-        }
-        
-        if(selectedLeague == nil){
+        if( Utils.isParseNull(selectedLeague) ){
             
             var alertView = UIAlertView(title: "", message: "Please select a league", delegate: nil, cancelButtonTitle: "Ok")
             alertView.show()
@@ -473,9 +468,7 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         self.startButton.enabled = false
         hideKeyBoard()
         
-        var user = PFUser.currentUser()
         
-        SVProgressHUD.show()
         var customLeague = PFObject(className:"CustomLeague")
         customLeague["name"]            = leagueName
         customLeague["public"]          = publicLeague
@@ -485,6 +478,21 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
         customLeague["endOfSeason"]     = endOfSeason
         customLeague["prize"]           = prize
         customLeague["leagueTitle"]     = leagueTitle
+        
+        
+        if( Utils.isParseNull(PFUser.currentUser()["email"]) ){
+            GSMainViewController.getMainViewControllerInstance().profileTap(nil)
+            GSMainViewController.getMainViewControllerInstance().waitingCreateCustomLeague = customLeague
+        }
+        else{
+            endCreationCustomLeague(customLeague)
+        }
+    }
+    
+    func endCreationCustomLeague(customLeague : PFObject){
+        
+        SVProgressHUD.show()
+        var user = PFUser.currentUser()
         customLeague["mainUser"]        = user.objectId
         customLeague.save()
         var relation = user.relationForKey("myCustomLeagues")
@@ -495,7 +503,6 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
             
             self.socialShareViewController.customLeagueId = customLeague.objectId
         }
-
     }
     
     

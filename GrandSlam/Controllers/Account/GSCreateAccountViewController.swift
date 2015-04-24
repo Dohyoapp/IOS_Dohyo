@@ -335,14 +335,25 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
             
             var user =  PFUser.currentUser()
             
+            if(Utils.isParseNull(user.objectId)){
+                user = PFUser.new()
+                user["username"] = PFUser.currentUser()["username"]
+                user.password = PFUser.currentUser().password
+            }
+            
             self.oldEmail = user["email"]
             user["email"] = email
             user["pPTC"]  = hasAcceptedOptEmail
-           // user.setObject(PFInstallation.currentInstallation(), forKey:"installation")
+            if(PFInstallation.currentInstallation().objectId == nil){
+                if( !Utils.isParseNull(user["installation"]) ){
+                    user.removeObjectForKey("installation")
+                }
+            }
             user.signUpInBackgroundWithBlock({ (success, error) -> Void in
+                
                 SVProgressHUD.dismiss()
                 if(error != nil){
-                    
+                    // there is an error
                     var userInfoDico:NSDictionary = error.userInfo!
                     var message = userInfoDico.objectForKey("error") as! NSString
                     
@@ -364,6 +375,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
                     }
                 
                 }else{
+                   // user.removeObjectForKey("installation")
                     self.closeView()
                     GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false, joinedLeague:nil)
                 }

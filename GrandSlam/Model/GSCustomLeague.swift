@@ -35,6 +35,8 @@ class GSCustomLeague: NSObject {
     var cluMatches: NSArray!
     var league: GSLeague!
     
+    var isLeagueEnded = false
+    
     
     init(customLeague: PFObject) {
         pfCustomLeague = customLeague
@@ -48,7 +50,7 @@ class GSCustomLeague: NSObject {
     
     class func getNewJoinLeagueNumber(){
         
-        if(PFUser.currentUser().valueForKey("email") != nil){
+        if( !Utils.isParseNull(PFUser.currentUser()["email"] ) ){
             PFUser.currentUser().fetchIfNeeded()
         }
         
@@ -70,7 +72,7 @@ class GSCustomLeague: NSObject {
         
         var user = PFUser.currentUser()
         
-        if(user.valueForKey("email") == nil){
+        if( Utils.isParseNull(user["email"]) ){
             self.cacheCustomLeagues([])
             delegate.endGetCustomLeagues!([])
         }
@@ -80,10 +82,13 @@ class GSCustomLeague: NSObject {
         
         var relation = user.relationForKey("myCustomLeagues")
         relation.query().findObjectsInBackgroundWithBlock {    (objects: [AnyObject]!, error: NSError!) -> Void in
+            
             if error != nil {
+                
                 SVProgressHUD.dismiss()
                 self.cacheCustomLeagues([])
                 delegate.endGetCustomLeagues!([])
+                
             } else {
                 
                 var orrderArray = NSMutableArray()
@@ -124,8 +129,8 @@ class GSCustomLeague: NSObject {
     
     func getMatchesByNumber(matches:NSArray, customLeague:PFObject) -> NSArray{
         
-        var numberOfMatches:NSString = customLeague["numberOfMatches"] as! String
-        var number:Int = Int(numberOfMatches.intValue)
+        var numberOfMatches:String = customLeague["numberOfMatches"] as! String
+        var number:Int = numberOfMatches.toInt()!
         var startCustomLeagueDate:NSDate = customLeague["startDate"] as! NSDate
 
         var count = 0
@@ -163,7 +168,8 @@ class GSCustomLeague: NSObject {
         
         var returnArray:NSArray = matches
         
-        var numberOfMatches:NSString = pfCustomLeague["numberOfMatches"] as! String
+        var numberOfMatches:String = pfCustomLeague["numberOfMatches"] as! String
+        
         
         if(numberOfMatches != "" && numberOfMatches != "0"){
             returnArray = self.getMatchesByNumber(matches, customLeague:pfCustomLeague)
@@ -183,6 +189,18 @@ class GSCustomLeague: NSObject {
                 newMatches.addObject(matche)
             }
         }
+        
+        
+        if(numberOfMatches != "" && numberOfMatches != "0"){
+            
+            if(returnArray.count >= numberOfMatches.toInt() && newMatches.count == 0){
+                self.isLeagueEnded = true
+            }
+        }
+        else if(!(pfCustomLeague["endOfSeason"] as! Bool) && NSDate().timeIntervalSinceDate(pfCustomLeague["endDate"] as! NSDate) >= 0){
+            self.isLeagueEnded = true
+        }
+        
         
         return newMatches//.arrayByAddingObjectsFromArray(oldMatches)
     }
@@ -218,7 +236,7 @@ class GSCustomLeague: NSObject {
         }
         
         //step 2 check if all matches are past
-        if(league != nil && league.matches != nil){
+        if( !Utils.isParseNull(league) && league.matches != nil){
             
             var numberOldBets = 0
             var tempMatches:NSArray = GSBetSlip.getbetMatches(league.matches, bets: result)
@@ -250,7 +268,7 @@ class GSCustomLeague: NSObject {
         var user = PFUser.currentUser()
         
         var joinedUsers: AnyObject! = toCustomLeague["joinUsers"]
-        if(joinedUsers == nil){
+        if( Utils.isParseNull(joinedUsers) ){
             joinedUsers = NSMutableArray()
         }
         if( !(joinedUsers as! NSArray).containsObject(user.objectId) ){
@@ -319,21 +337,25 @@ class GSCustomLeague: NSObject {
         
         var user = PFUser.currentUser()
         
-        if(user["email"] == nil || isAllPublicCustomLeaguesLoading == true){
+        if( Utils.isParseNull(user["email"]) || isAllPublicCustomLeaguesLoading == true){
             return
         }
         
         isAllPublicCustomLeaguesLoading = true
 
-        SVProgressHUD.show()
+        dispatch_async(dispatch_get_main_queue(), {
+            SVProgressHUD.show()
+            })
         var query = PFQuery(className:"CustomLeague")
         query.limit = 1000
         query.whereKey("public", equalTo:true)
         query.whereKey("mainUser", notEqualTo:user.objectId)
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             
-            SVProgressHUD.dismiss()
-            if (error != nil) {
+            dispatch_async(dispatch_get_main_queue(), {
+                SVProgressHUD.dismiss()
+                })
+            if ( !Utils.isParseNull(error)) {
                 isAllPublicCustomLeaguesLoading = false
                 delegate.endGetAllPublicCustomLeagues!(self.splitCustomLeagueByDate([]))
             }
@@ -369,7 +391,7 @@ class GSCustomLeague: NSObject {
         
         var user = PFUser.currentUser()
         
-        if(user.valueForKey("email") == nil || isAllPrivateCustomLeagues == true){
+        if( Utils.isParseNull(user["email"]) || isAllPrivateCustomLeagues == true){
             return
         }
         
@@ -383,7 +405,7 @@ class GSCustomLeague: NSObject {
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             
             SVProgressHUD.dismiss()
-            if (error != nil) {
+            if (!Utils.isParseNull(error)) {
                 isAllPrivateCustomLeagues = false
                 delegate.endGetAllPrivateCustomLeagues!(self.splitCustomLeagueByDate([]))
             }
@@ -411,7 +433,8 @@ class GSCustomLeague: NSObject {
                 var finalData = NSMutableArray()
                 for customLeague2 in data{
 
-                    if(user["friends"] != nil){
+                    if( !Utils.isParseNull(user["friends"])){
+                        
                         for friendId in (user["friends"] as! NSArray){
                             var mainUser = customLeague2["mainUser"] as! String
                             if(friendId as! String == mainUser){
@@ -438,12 +461,12 @@ class GSCustomLeague: NSObject {
         var arrayNew = NSMutableArray()
         var arrayOld = NSMutableArray()
         
-        if(lastDate != nil){
+        if(!Utils.isParseNull(lastDate) ){
             
             for customLeague in data{
                 
                 var createdAt: AnyObject! = (customLeague as! PFObject).createdAt
-                if(createdAt != nil){
+                if( !Utils.isParseNull(createdAt) ){
                     
                     var ceatedAtDate = createdAt as! NSDate
                     var lastUserDate = lastDate as! NSDate

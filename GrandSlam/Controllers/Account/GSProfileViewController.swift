@@ -241,7 +241,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
             if(indexPath.row > 0 && indexPath.row < tableViewData.count-5){
                 
                 closeView()
-                var value = Int(indexPath.row)-1
+                var value = NSInteger(indexPath.row)-1
                 navigationBar.goToLeague(value)
             }
             

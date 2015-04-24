@@ -35,7 +35,7 @@ class ParseConfig: NSObject {
         
         
         PFInstallation.currentInstallation().saveInBackgroundWithBlock { (success, error) -> Void in
-            if(error == nil){
+            if(success && Utils.isParseNull(error)){
                 PFUser.currentUser().setObject(PFInstallation.currentInstallation(), forKey:"installation")
                 PFUser.currentUser().save()
             }
@@ -45,10 +45,10 @@ class ParseConfig: NSObject {
         //PFObject.pinAllInBackground(query.findObjects())
         //query.fromLocalDatastore()
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            if(error == nil){
+            if(Utils.isParseNull(error)){
                 if(objects.count > 0){
                     appConfigData = (objects as NSArray).firstObject as! PFObject
-                    if( appConfigData["appRepository"] != nil){
+                    if( !Utils.isParseNull(appConfigData["appRepository"]) ){
                         TEAMS_IMAGES_URL_ROOT = appConfigData["appRepository"] as! String
                     }
                 }
@@ -68,13 +68,17 @@ class ParseConfig: NSObject {
         
         SVProgressHUD.show()
         PFFacebookUtils.logInWithPermissions(["email"], block: { (user: PFUser!, error: NSError!) -> Void in
-            if(error != nil){
-                SVProgressHUD.dismiss()
+            if(!Utils.isParseNull(error)){
+                self.errorMessage()
+                return
             }
-            if user == nil {
+            if Utils.isParseNull(user) {
                 SVProgressHUD.dismiss()
-                var alertView = UIAlertView(title: "", message: "Login with facebook failed. \nPlease check your Settings -> Facebook and try again.", delegate:nil, cancelButtonTitle: "Ok")
-                alertView.show()
+                PFUser.new().saveInBackgroundWithBlock({ (success, error) -> Void in
+                    if(success){
+                        object.endFaceBookLogIn()
+                    }
+                })
                 
             } else if user.isNew {
                 NSLog("User signed up and logged in through Facebook!")
@@ -120,45 +124,76 @@ class ParseConfig: NSObject {
         SVProgressHUD.show()
         FBRequest.requestForMe().startWithCompletionHandler { (connection, user, error) -> Void in
             
-            if (error == nil) {
+            if ( Utils.isParseNull(error)) {
                 
                 var data:NSDictionary = user as! NSDictionary
                 
-                var email:AnyObject! = data.objectForKey("email")
-                if(email != nil){
+                var email:String = data.objectForKey("email") as! String
+                if(!Utils.isParseNull(email)){
                     
-                    var user = PFUser.currentUser()
                     
                     var query = PFUser.query()
-                   // PFObject.pinAllInBackground(query.findObjects())
-                   // query.fromLocalDatastore()
-                    query.whereKey("email", equalTo:email)
+                    query.whereKey("email", containedIn: [email, email+"fb"])
                     query.findObjectsInBackgroundWithBlock { (objects: [AnyObject]!, error: NSError!) -> Void in
-                        if error == nil {
+                        if Utils.isParseNull(error) {
                             
+                            //email Allready exist
                             if(objects != nil && objects.count > 0){
-                                var pfUser:PFUser = objects[0] as! PFUser
                                 
-                                PFFacebookUtils.unlinkUserInBackground(user) { (success, error) -> Void in
-                                    
-                                    var userId:AnyObject! = user.objectId
-                                    if(userId != nil){
-                                        user.delete()
-                                    }
-                                    var username = pfUser["username"] as! String
-                                    var password = email as! String
-                                    PFUser.logInWithUsernameInBackground(username, password:password ) { (user: PFUser!, error: NSError!) -> Void in
-                                        if user != nil {
-                                            self.saveUserData(data, object:object)
-                                        } else {
-                                            // The login failed. Check error to see why.
-                                            self.errorMessage()
+                                var pfUser:PFUser = objects[0] as! PFUser
+                                if(objects.count > 1){
+                                    for userObject in objects{
+                                        if(userObject["email"] as! String == email+"fb"){
+                                            pfUser = userObject as! PFUser
                                         }
                                     }
                                 }
+                                
+                                email = pfUser["email"] as! String
+                                
+                                var isFacebookAccount = false
+                                if( !Utils.isParseNull(pfUser["isFaceBookAccount"]) && (pfUser["isFaceBookAccount"] as! Bool) ){
+                                    isFacebookAccount = true
+                                }
+                                if( (!Utils.isParseNull(pfUser["authData"]) && (pfUser["authData"] as! NSString).containsString("Facebook")) ){
+                                    isFacebookAccount = true
+                                }
+                                if( (!Utils.isParseNull(pfUser["username"]) && (pfUser["username"] as? NSString == data.objectForKey("name") as! String)) ){
+                                    isFacebookAccount = true
+                                }
+                                
+                                if( !isFacebookAccount ){//email Allready exist not faceBook
+       
+                                    var newData:NSMutableDictionary = NSMutableDictionary(dictionary: data)
+                                    newData.removeObjectForKey("email")
+                                    newData.setObject(email+"fb", forKey: "email")
+                                    self.saveOrCreateFbUserData(newData, object:object)
+                                    
+                                }
+                                else{
+                                
+                                    PFFacebookUtils.unlinkUserInBackground(PFUser.currentUser()) { (success, error) -> Void in
+                                        
+                                        var username = pfUser["username"] as! String
+                                        var password = email
+                                        PFUser.logInWithUsernameInBackground(username, password:password ) { (user: PFUser!, error: NSError!) -> Void in
+                                            if !Utils.isParseNull(user) {
+                                                // as email could be email or email+"fb"
+                                                var newData:NSMutableDictionary = NSMutableDictionary(dictionary: data)
+                                                newData.removeObjectForKey("email")
+                                                newData.setObject(email, forKey: "email")
+                                                self.saveOrCreateFbUserData(newData, object:object)
+                                            } else {
+                                                // The login failed. Check error to see why.
+                                                self.errorMessage()
+                                            }
+                                        }
+                                    }
+                                    
+                                }
                             }
                             else{
-                                self.createUserData(data, object:object)
+                                self.saveOrCreateFbUserData(data, object:object)
                             }
                             
                         }//querry error
@@ -186,35 +221,42 @@ class ParseConfig: NSObject {
         alertView.show()
     }
     
-    class func saveUserData(data: NSDictionary, object: FaceBookDelegate){
+    
+    
+    
+    
+    // svaee or create user function used Only here
+    class func saveOrCreateFbUserData(data: NSDictionary, object: FaceBookDelegate){
         
         var user = PFUser.currentUser() as PFUser
+        if(Utils.isParseNull(user.objectId)){
+            user = PFUser.new()
+        }
         
         user["username"]   = data.objectForKey("name")
-        user["email"]      = data.objectForKey("email")
+        user["email"]      = data.objectForKey("email") as! String
         user.password      = data.objectForKey("email") as! String
+        user["isFaceBookAccount"] = true
         
-        self.saveFBImage(data, object: object, user: user)
-    }
-    
-    
-    
-    
-    class func createUserData(data: NSDictionary, object: FaceBookDelegate){
-        
-        var user = PFUser.currentUser() as PFUser
-        
-        user["username"]   = data.objectForKey("name")
-        user["email"]      = data.objectForKey("email")
-        user.password      = data.objectForKey("email") as! String
-        //user.setObject(PFInstallation.currentInstallation(), forKey:"installation")
-        if(user.objectId != nil){
+        if(PFInstallation.currentInstallation().objectId == nil){
+            if( !Utils.isParseNull(user["installation"]) ){
+                user.removeObjectForKey("installation")
+            }
+        }
+        if(!Utils.isParseNull(user.objectId)){
             self.saveFBImage(data, object: object, user: user)
         }
         else{
             user.signUpInBackgroundWithBlock({ (success, error) -> Void in
                 
-                self.saveFBImage(data, object: object, user: user)
+                if(success && Utils.isParseNull(error)){
+                    self.saveFBImage(data, object: object, user: user)
+                }
+                else{
+                    SVProgressHUD.dismiss()
+                    var alertView = UIAlertView(title: "", message: error.description, delegate:nil, cancelButtonTitle: "Ok")
+                    alertView.show()
+                }
             })
         }
     }
@@ -229,18 +271,20 @@ class ParseConfig: NSObject {
         var urlRequest  = NSURLRequest(URL:NSURL(string: imageLink as String)!)
         imageView.setImageWithURLRequest( urlRequest, placeholderImage: nil, success: { (url, response, image) -> Void in
             
-                SVProgressHUD.dismiss()
                 var userId:AnyObject! = user.objectId
-                if(userId != nil){
+                if( !Utils.isParseNull(userId)){
                     let imageFile = PFFile(name:String(format:"image%@.png", userId as! NSString), data:UIImagePNGRepresentation(image))
                     user.setObject(imageFile, forKey: "image")
                     user.saveInBackgroundWithBlock({ (success, error) -> Void in
+                        SVProgressHUD.dismiss()
                         object.endGetFacebookData()
                     })
                 }
                 else{
+                    SVProgressHUD.dismiss()
                     object.endGetFacebookData()
                 }
+            
             }, failure: { (url, response, error) -> Void in
                 
                 NSLog("failed loading FaceBook image")

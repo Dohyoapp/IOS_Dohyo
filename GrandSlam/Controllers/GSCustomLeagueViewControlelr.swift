@@ -38,7 +38,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     
     var leaderBoardScrollView:GSLeaderBoardScrollView!
     
-    
+    var endLeagueLabel:UILabel!
     
     
     
@@ -63,10 +63,18 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         self.view.addSubview(leaderBoardButton)
         
         
+        endLeagueLabel = UILabel(frame:CGRectMake(20, YSTART+150, 280, 60))
+        endLeagueLabel.numberOfLines = 2
+        endLeagueLabel.textAlignment = .Center
+        endLeagueLabel.font   = UIFont(name:FONT3, size:17)
+        endLeagueLabel.textColor = SPECIALBLUE
+        endLeagueLabel.text = "Contest Ended, Tap See Leaderboard & Prize above"
+        
+        
         
         dateLeagueLabel    = UILabel(frame:CGRectMake(0, YSTART+33, 320, 38))
         dateLeagueLabel.textAlignment = .Center
-        dateLeagueLabel.font   = UIFont(name:FONT2, size:18)
+        dateLeagueLabel.font   = UIFont(name:FONT3, size:17)
         dateLeagueLabel.textColor = SPECIALBLUE
         self.view.addSubview(dateLeagueLabel)
         
@@ -84,12 +92,12 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         }else{
             
             SVProgressHUD.show()
-            dispatch_async(dispatch_get_main_queue(), {
+            //dispatch_async(dispatch_get_main_queue(), {
                 self.loadViewWithMatchs()
-            })
+            //})
         }
         
-        dispatch_async(dispatch_get_main_queue(), {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             Mixpanel.sharedInstance().track("0103 - View league", properties: [
                 "user": PFUser.currentUser()["username"],
                 "league": self.customLeague.pfCustomLeague["name"]
@@ -117,6 +125,13 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             validMatches.addObject(GSMatcheSelection(matche: matche as! PFObject, customLeague: customLeague.pfCustomLeague))
         }
         
+        if(customLeague.isLeagueEnded){
+            self.view.addSubview(endLeagueLabel)
+        }
+        else{
+            endLeagueLabel.removeFromSuperview()
+        }
+        
         /*
         var dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "dd/MM"
@@ -134,7 +149,26 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         }*/
         
         if(!Utils.isParseNull(league.pfLeague["weekNumber"])){
-            dateLeagueLabel.text   = league.pfLeague["weekNumber"] as? String
+            
+            var weekNumber = league.pfLeague["weekNumber"] as! String
+            var weekNumberArray:NSArray = weekNumber.componentsSeparatedByString(" - ")
+            if(weekNumberArray.count > 1){
+                
+                var aDateFormatter = NSDateFormatter()
+                aDateFormatter.dateFormat = "yyyy"
+                var currentYear = aDateFormatter.stringFromDate(NSDate())
+                var fullWeekNumber = String(format:"%@ %@", weekNumberArray[1] as! String, currentYear)
+                
+                aDateFormatter.dateFormat = "dd MMM yyyy"
+                var newDate = aDateFormatter.dateFromString(fullWeekNumber)
+                newDate = newDate?.dateByAddingTimeInterval(6*24*3600)
+                
+                aDateFormatter.dateFormat = "dd MMM"
+                
+                var textWeek = String(format:"%@: %@ - %@", weekNumberArray[0] as! String, weekNumberArray[1] as! String, aDateFormatter.stringFromDate(newDate!))
+            
+                dateLeagueLabel.text   = textWeek
+            }
         }
         
         
@@ -320,6 +354,16 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         rightScoreLabel.font    = UIFont(name:FONT2, size:44)
         rightScoreLabel.textColor = SPECIALBLUE
         matchView.addSubview(rightScoreLabel)
+        
+        var dateLabel     = UILabel(frame:CGRectMake(80, 130, 160, 30))
+        dateLabel.textAlignment = .Center
+        dateLabel.font    = UIFont(name:FONT3, size:17)
+        dateLabel.textColor = SPECIALBLUE
+        matchView.addSubview(dateLabel)
+        
+        var aDateFormatter = NSDateFormatter()
+        aDateFormatter.dateFormat = "dd MMM"
+        dateLabel.text = aDateFormatter.stringFromDate(matche.getDateMatche())
         
         return matchView
     }
@@ -773,7 +817,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
                     
                     GSUser.loadUserBetSlips(user, delegate: self)
                     
-                    dispatch_async(dispatch_get_main_queue(), {
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                         Mixpanel.sharedInstance().track("0104 - Submit predictions", properties: [
                             "user": PFUser.currentUser()["username"],
                             "league": self.customLeague.pfCustomLeague["name"]

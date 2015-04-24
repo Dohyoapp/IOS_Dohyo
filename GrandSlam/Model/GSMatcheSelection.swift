@@ -9,7 +9,7 @@
 import Foundation
 
 
-class GSMatcheSelection {
+class GSMatcheSelection: AnyObject {
     
     var pfMatche: PFObject
     var pfCustomLeague: PFObject
@@ -67,13 +67,13 @@ class GSMatcheSelection {
         pfMatche = matche
         pfCustomLeague = customLeague
         
-        if(matche.objectForKey("CorrectScore") == nil || matche.objectForKey("MatchBetting") == nil){
+        if( Utils.isParseNull(matche.objectForKey("CorrectScore")) ||  Utils.isParseNull(matche.objectForKey("MatchBetting"))){
             
-            if(matche.objectForKey("CorrectScore") != nil){
+            if( !Utils.isParseNull(matche.objectForKey("CorrectScore"))){
                 correctScoreSelections = matche.objectForKey("CorrectScore") as! NSArray
                 bestCorrectScoreSelection = getBestCorrectScoreSelection()
             }
-            if(matche.objectForKey("MatchBetting") != nil){
+            if( !Utils.isParseNull(matche.objectForKey("MatchBetting"))){
                 matchBettingSelections = matche.objectForKey("MatchBetting") as! NSArray
             }
             loadMatcheSelection(customLeague)
@@ -223,15 +223,15 @@ class GSMatcheSelection {
     func percentThinkHomeTeamWin() -> CGFloat{
         
         var drawP:NSNumber = 0
-        if(pfMatche["drawPrediction"] != nil){
+        if( !Utils.isParseNull(pfMatche["drawPrediction"]) ){
             drawP = pfMatche["drawPrediction"] as! NSNumber
         }
         var homeTeamWin:NSNumber = 0
-        if(pfMatche["homeTeamWinPrediction"] != nil){
+        if(!Utils.isParseNull(pfMatche["homeTeamWinPrediction"])){
             homeTeamWin = pfMatche["homeTeamWinPrediction"] as! NSNumber
         }
         var awayTeamWin:NSNumber = 0
-        if(pfMatche["awayTeamWinPrediction"] != nil){
+        if(!Utils.isParseNull(pfMatche["awayTeamWinPrediction"])){
             awayTeamWin = pfMatche["awayTeamWinPrediction"] as! NSNumber
         }
         
@@ -241,15 +241,15 @@ class GSMatcheSelection {
     func percentThinkDraw() -> CGFloat{
         
         var drawP:NSNumber = 0
-        if(pfMatche["drawPrediction"] != nil){
+        if(!Utils.isParseNull(pfMatche["drawPrediction"])){
             drawP = pfMatche["drawPrediction"] as! NSNumber
         }
         var homeTeamWin:NSNumber = 0
-        if(pfMatche["homeTeamWinPrediction"] != nil){
+        if(!Utils.isParseNull(pfMatche["homeTeamWinPrediction"])){
             homeTeamWin = pfMatche["homeTeamWinPrediction"] as! NSNumber
         }
         var awayTeamWin:NSNumber = 0
-        if(pfMatche["awayTeamWinPrediction"] != nil){
+        if(!Utils.isParseNull(pfMatche["awayTeamWinPrediction"])){
             awayTeamWin = pfMatche["awayTeamWinPrediction"] as! NSNumber
         }
         
@@ -259,15 +259,15 @@ class GSMatcheSelection {
     func percentThinkAwayTeamWin() -> CGFloat{
         
         var drawP:NSNumber = 0
-        if(pfMatche["drawPrediction"] != nil){
+        if(!Utils.isParseNull(pfMatche["drawPrediction"])){
             drawP = pfMatche["drawPrediction"] as! NSNumber
         }
         var homeTeamWin:NSNumber = 0
-        if(pfMatche["homeTeamWinPrediction"] != nil){
+        if(!Utils.isParseNull(pfMatche["homeTeamWinPrediction"])){
             homeTeamWin = pfMatche["homeTeamWinPrediction"] as! NSNumber
         }
         var awayTeamWin:NSNumber = 0
-        if(pfMatche["awayTeamWinPrediction"] != nil){
+        if(!Utils.isParseNull(pfMatche["awayTeamWinPrediction"])){
             awayTeamWin = pfMatche["awayTeamWinPrediction"] as! NSNumber
         }
         

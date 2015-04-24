@@ -11,9 +11,14 @@ import Foundation
 
 var webViewController = GSWebViewController()
 
+let affLink = "https://online.ladbrokes.com/promoRedirect?key=ej0xMzc4NzQzOSZsPTEzNzg3MzcxJnA9NjY1NjY1" as String
+
+let customAllowedSet =  NSCharacterSet(charactersInString:":=/?").invertedSet
+let escapedAffLink = affLink.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)
 
 
-class GSBetSlip{
+
+class GSBetSlip: NSObject{
     
     
     var matchId: NSString
@@ -115,13 +120,14 @@ class GSBetSlip{
         }
         
         
+        
         if(count(selectionsKey) > 1){
             
             webViewController = GSWebViewController()
             
-            var urlString = String(format:"https://betslip.ladbrokes.com/RemoteBetslip/bets/betslip.html?selections=%@&locale=en-GB",  selectionsKey)
+            var urlString = String(format:"https://betslip.ladbrokes.com/RemoteBetslip/bets/betslip.html?selections=%@&locale=en-GB&aff-link=%@",  selectionsKey, escapedAffLink!)
             
-            webViewController.loadViewWithUrl(NSURL(string:urlString)!)
+            webViewController.loadViewWithUrl(NSURL(string:urlString as String)!)
             GSMainViewController.getMainViewControllerInstance().presentViewController(webViewController, animated: true, completion: nil)
         }
         else{
