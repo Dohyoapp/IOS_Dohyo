@@ -15,6 +15,8 @@ class GSLeaderBoardScrollView: UIScrollView, UIScrollViewDelegate {
     
     var leaderBoardViewController:GSLeaderBoardViewController!
     
+    var mixpanelTracked = false;
+    
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -30,6 +32,7 @@ class GSLeaderBoardScrollView: UIScrollView, UIScrollViewDelegate {
         
         self.aCustomLeague = customLeague
         
+        mixpanelTracked = false
         
         leaderBoardViewController = GSLeaderBoardViewController()
         leaderBoardViewController.customLeague = customLeague
@@ -58,10 +61,17 @@ class GSLeaderBoardScrollView: UIScrollView, UIScrollViewDelegate {
     
     
     
+    
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
         if(scrollView.contentOffset.x < 0){
             self.setContentOffset(CGPointMake(0, 0), animated:false)
+        }
+        
+        if(scrollView.contentOffset.x > 300 && !mixpanelTracked){
+            
+            Mixpanel.sharedInstance().track("0208 - view past matches")
+            mixpanelTracked = true
         }
         
         if(scrollView.contentOffset.x > 640){

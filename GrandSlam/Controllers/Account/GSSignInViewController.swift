@@ -97,10 +97,14 @@ class GSSignInViewController: UIViewController, UITextFieldDelegate {
                 self.closeView()
                 GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false, joinedLeague:nil)
                 navigationBar.goToCreateViewController()
+                Mixpanel.sharedInstance().identify(user.objectId)
+                Mixpanel.sharedInstance().track("0111 - Email login")
+                Mixpanel.sharedInstance().people.set(["$name": name, "$email":user["email"], "$created":user.createdAt, "Last Login":NSDate()])
             } else {
                 // The login failed. Check error to see why.
                 var alertView = UIAlertView(title: "", message: "User name / Password don't match. Please try again.", delegate: nil, cancelButtonTitle: "Ok")
                 alertView.show()
+                Mixpanel.sharedInstance().track("0112 - Email login error");
             }
             SVProgressHUD.dismiss()
         }

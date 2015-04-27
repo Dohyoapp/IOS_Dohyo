@@ -262,6 +262,7 @@ class GSProfileViewController: UIViewController, UITableViewDataSource, UITableV
             
             self.closeView()
             PFUser.logOut()
+            Mixpanel.sharedInstance().track("0113 - Sign out");
             GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false, joinedLeague:nil)
             navigationBar.goToCreateViewController()
         }

@@ -277,12 +277,31 @@ class GSCustomLeague: NSObject {
         toCustomLeague["joinUsers"] = joinedUsers
         toCustomLeague.saveInBackgroundWithBlock({ (success, error) -> Void in
             
-            var relation = user.relationForKey("myCustomLeagues")
-            relation.addObject(toCustomLeague)
-            user.saveInBackgroundWithBlock { (success, error) -> Void in
+            if( Utils.isParseNull(error) ){
                 
-                SVProgressHUD.dismiss()
-                GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false, joinedLeague:toCustomLeague)
+                var relation = user.relationForKey("myCustomLeagues")
+                relation.addObject(toCustomLeague)
+                user.saveInBackgroundWithBlock { (success, error) -> Void in
+                    
+                    if( Utils.isParseNull(error) ){
+                        SVProgressHUD.dismiss()
+                        GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false, joinedLeague:toCustomLeague)
+                        
+                        var publicLeague:Bool = toCustomLeague["public"] as! Bool
+                        if(publicLeague){
+                            Mixpanel.sharedInstance().track("0204 - join a public league")
+                        }
+                        else{
+                            Mixpanel.sharedInstance().track("0205 - join a private league")
+                        }
+                    }
+                    else{
+                        Mixpanel.sharedInstance().track("0206 - join a league error")
+                    }
+                }
+            }
+            else{
+                Mixpanel.sharedInstance().track("0206 - join a league error")
             }
         })
     }

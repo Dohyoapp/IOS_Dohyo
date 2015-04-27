@@ -107,9 +107,10 @@ class GSMatcheSelection: AnyObject {
             var err: NSError?
             var jsonData:NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as! NSDictionary
             
-            if(jsonData["event"] != nil){
+            var eventJson: AnyObject? = jsonData["event"]
+            if(eventJson != nil && (eventJson as! NSDictionary)["markets"] != nil){
                 
-                var marketsEventArray:NSArray = ((jsonData["event"] as! NSDictionary)["markets"] as! NSDictionary)["market"] as! NSArray
+                var marketsEventArray:NSArray = ((eventJson as! NSDictionary)["markets"] as! NSDictionary)["market"] as! NSArray
                 
                 var marketJson:NSDictionary
                 for marketJson in marketsEventArray {

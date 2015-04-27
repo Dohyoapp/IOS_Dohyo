@@ -502,6 +502,15 @@ class GSCreateCustomLeagueViewController: UIViewController, UITextFieldDelegate,
             GSMainViewController.getMainViewControllerInstance().getCustomLeagues(true, joinedLeague:nil)
             
             self.socialShareViewController.customLeagueId = customLeague.objectId
+            
+            var publicLeague:Bool = customLeague["public"] as! Bool
+            if(publicLeague){
+                Mixpanel.sharedInstance().track("0202 - Create Public league")
+            }
+            else{
+                Mixpanel.sharedInstance().track("0201 - Create Private league")
+            }
+            Mixpanel.sharedInstance().track("0203 - User starts league")
         }
     }
     

@@ -79,7 +79,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
             var link = String(format:"%@appLaunch.html?userId=%@&costumLeagueId=%@", TEAMS_IMAGES_URL_ROOT, PFUser.currentUser().objectId, customLeagueId)
             twitterFaceBookModule.facebook(MESSAGE_TEXT2, image: UIImage(), link: link)
             
-            Mixpanel.sharedInstance().track("0106 - Invite Friend", properties: [
+            Mixpanel.sharedInstance().track(String(format:"0106 - Invite Friend %@ %@", "FB", "PredictionsPage"), properties: [
                 "Type": "FB",
                 "from": "PredictionsPage",
                 "user": PFUser.currentUser().objectId,
@@ -89,7 +89,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
         }else{
             twitterFaceBookModule.facebook(MESSAGE_TEXT1, image: UIImage(), link: appConfigData["itunesAppUrl"] as! String)
             
-            Mixpanel.sharedInstance().track("0106 - Invite Friend", properties: [
+            Mixpanel.sharedInstance().track(String(format:"0106 - Invite Friend %@ %@", "FB", "Profile"), properties: [
                 "Type": "FB",
                 "from": "Profile",
                 "user": PFUser.currentUser().objectId,
@@ -115,7 +115,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
             var link = String(format:"%@appLaunch.html?userId=%@&costumLeagueId=%@", TEAMS_IMAGES_URL_ROOT, PFUser.currentUser().objectId, customLeagueId)
             twitterFaceBookModule.twitter(MESSAGE_TEXT2, image: UIImage(), link: link)
             
-            Mixpanel.sharedInstance().track("0106 - Invite Friend", properties: [
+            Mixpanel.sharedInstance().track(String(format:"0106 - Invite Friend %@ %@", "Twitter", "PredictionsPage"), properties: [
                 "Type": "Twitter",
                 "from": "PredictionsPage",
                 "user": PFUser.currentUser()["username"],
@@ -125,7 +125,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
         }else{
             twitterFaceBookModule.twitter(MESSAGE_TEXT1, image: UIImage(), link: appConfigData["itunesAppUrl"] as! String)
             
-            Mixpanel.sharedInstance().track("0106 - Invite Friend", properties: [
+            Mixpanel.sharedInstance().track(String(format:"0106 - Invite Friend %@ %@", "Twitter", "Profile"), properties: [
                 "Type": "Twitter",
                 "from": "Profile",
                 "user": PFUser.currentUser()["username"],
@@ -152,7 +152,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
             
             message = String(format:"%@ %@", MESSAGE_TEXT2, link)
             
-            Mixpanel.sharedInstance().track("0106 - Invite Friend", properties: [
+            Mixpanel.sharedInstance().track(String(format:"0106 - Invite Friend %@ %@", "Whatsapp", "PredictionsPage"), properties: [
                 "Type": "Whatsapp",
                 "from": "PredictionsPage",
                 "user": PFUser.currentUser()["username"],
@@ -161,7 +161,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
         }
         else{
             
-            Mixpanel.sharedInstance().track("0106 - Invite Friend", properties: [
+            Mixpanel.sharedInstance().track(String(format:"0106 - Invite Friend %@ %@", "Whatsapp", "Profile"), properties: [
                 "Type": "Whatsqpp",
                 "from": "Profile",
                 "user": PFUser.currentUser()["username"],
@@ -196,7 +196,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
             var link = String(format:"%@appLaunch.html?userId=%@&costumLeagueId=%@", TEAMS_IMAGES_URL_ROOT, PFUser.currentUser().objectId, customLeagueId)
             message = String(format:"%@ %@", MESSAGE_TEXT2, link)
             
-            Mixpanel.sharedInstance().track("0106 - Invite Friend", properties: [
+            Mixpanel.sharedInstance().track(String(format:"0106 - Invite Friend %@ %@", "SMS", "PredictionsPage"), properties: [
                 "Type": "SMS",
                 "from": "PredictionsPage",
                 "user": PFUser.currentUser()["username"],
@@ -205,7 +205,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
         }
         else{
             
-            Mixpanel.sharedInstance().track("0106 - Invite Friend", properties: [
+            Mixpanel.sharedInstance().track(String(format:"0106 - Invite Friend %@ %@", "SMS", "Profile"), properties: [
                 "Type": "SMS",
                 "from": "Profile",
                 "user": PFUser.currentUser()["username"],
@@ -233,7 +233,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
             var link = String(format:"%@appLaunch.html?userId=%@&costumLeagueId=%@", TEAMS_IMAGES_URL_ROOT, PFUser.currentUser().objectId, customLeagueId)
             message = String(format:"%@ %@", MESSAGE_TEXT2, link)
             
-            Mixpanel.sharedInstance().track("0106 - Invite Friend", properties: [
+            Mixpanel.sharedInstance().track(String(format:"0106 - Invite Friend %@ %@", "Email", "PredictionsPage"), properties: [
                 "Type": "Email",
                 "from": "PredictionsPage",
                 "user": PFUser.currentUser()["username"],
@@ -242,7 +242,7 @@ class GSSocialShareViewController: UIViewController, SendEmailDelegate, ShareOnF
         }
         else{
             
-            Mixpanel.sharedInstance().track("0106 - Invite Friend", properties: [
+            Mixpanel.sharedInstance().track(String(format:"0106 - Invite Friend %@ %@", "Email", "Profile"), properties: [
                 "Type": "Email",
                 "from": "Profile",
                 "user": PFUser.currentUser()["username"],

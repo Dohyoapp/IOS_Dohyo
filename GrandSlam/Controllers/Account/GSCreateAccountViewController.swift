@@ -353,6 +353,7 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
                 
                 SVProgressHUD.dismiss()
                 if(error != nil){
+                    Mixpanel.sharedInstance().track("0111 - Email login");
                     // there is an error
                     var userInfoDico:NSDictionary = error.userInfo!
                     var message = userInfoDico.objectForKey("error") as! NSString
@@ -373,11 +374,14 @@ class GSCreateAccountViewController: UIViewController, UITableViewDataSource, UI
                     }else{
                         user["username"] = self.oldUserName
                     }
+                    Mixpanel.sharedInstance().identify(user.objectId)
+                    Mixpanel.sharedInstance().people.set(["$name": user["username"], "$email":user["email"], "$created":NSDate(), "Last Login":NSDate()])
                 
                 }else{
                    // user.removeObjectForKey("installation")
                     self.closeView()
                     GSMainViewController.getMainViewControllerInstance().getCustomLeagues(false, joinedLeague:nil)
+                    Mixpanel.sharedInstance().track("0112 - Email login error");
                 }
             })
             

@@ -89,20 +89,21 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         
         if(customLeague.hasBetSlip().count > 0){
             self.endGetUserBetSlips()
+            Mixpanel.sharedInstance().track("0105 - View crowd prediction", properties: [
+                "user": PFUser.currentUser()["username"],
+                "league": self.customLeague.pfCustomLeague["name"]
+                ])
         }else{
             
             SVProgressHUD.show()
-            //dispatch_async(dispatch_get_main_queue(), {
-                self.loadViewWithMatchs()
-            //})
+            self.loadViewWithMatchs()
+
+            Mixpanel.sharedInstance().track("0103 - View league", properties: [
+                    "user": PFUser.currentUser()["username"],
+                    "league": self.customLeague.pfCustomLeague["name"]
+                    ])
         }
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            Mixpanel.sharedInstance().track("0103 - View league", properties: [
-                "user": PFUser.currentUser()["username"],
-                "league": self.customLeague.pfCustomLeague["name"]
-            ])
-        })
     }
     
     
@@ -555,18 +556,21 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             
 
             var firstTeamSelection = matche.getHomeSelection()
-            var firstTeamCurrentPrice = firstTeamSelection.objectForKey("currentPrice") as! NSDictionary
-            var firstTeamDenPrice = firstTeamCurrentPrice.objectForKey("denPrice") as! CGFloat
-            var firstTeamNumPrice = firstTeamCurrentPrice.objectForKey("numPrice") as! CGFloat
-            
-            var firstTeamOdd = String(Int(firstTeamNumPrice))+"/"+String(Int(firstTeamDenPrice))
-            
-            var firstTeamOddLabel     = UILabel(frame:CGRectMake(200, 9, 50, 40))
-            firstTeamOddLabel.text    = firstTeamOdd
-            firstTeamOddLabel.textAlignment = .Center
-            firstTeamOddLabel.font    = UIFont(name:FONT2, size:12)
-            firstTeamOddLabel.textColor = UIColor.whiteColor()
-            crowdPredictionView.addSubview(firstTeamOddLabel)
+            if(firstTeamSelection.objectForKey("currentPrice") != nil){
+                
+                var firstTeamCurrentPrice = firstTeamSelection.objectForKey("currentPrice") as! NSDictionary
+                var firstTeamDenPrice = firstTeamCurrentPrice.objectForKey("denPrice") as! CGFloat
+                var firstTeamNumPrice = firstTeamCurrentPrice.objectForKey("numPrice") as! CGFloat
+                
+                var firstTeamOdd = String(Int(firstTeamNumPrice))+"/"+String(Int(firstTeamDenPrice))
+                
+                var firstTeamOddLabel     = UILabel(frame:CGRectMake(200, 9, 50, 40))
+                firstTeamOddLabel.text    = firstTeamOdd
+                firstTeamOddLabel.textAlignment = .Center
+                firstTeamOddLabel.font    = UIFont(name:FONT2, size:12)
+                firstTeamOddLabel.textColor = UIColor.whiteColor()
+                crowdPredictionView.addSubview(firstTeamOddLabel)
+            }
             
             var firstTeamOddButton = UIButton(frame: CGRectMake(270, 9, 70, 40))
             firstTeamOddButton.titleLabel!.font = UIFont(name:FONT2, size:15)
@@ -616,18 +620,21 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             
             
             var drawSelection = matche.getDrawSelection()
-            var drawCurrentPrice = drawSelection.objectForKey("currentPrice") as! NSDictionary
-            var drawDenPrice = drawCurrentPrice.objectForKey("denPrice") as! CGFloat
-            var drawNumPrice = drawCurrentPrice.objectForKey("numPrice") as! CGFloat
-            
-            var drawOdd = String(Int(drawNumPrice))+"/"+String(Int(drawDenPrice))
-            
-            var drawOddLabel     = UILabel(frame:CGRectMake(200, 56, 50, 40))
-            drawOddLabel.text    = drawOdd
-            drawOddLabel.textAlignment = .Center
-            drawOddLabel.font    = UIFont(name:FONT2, size:12)
-            drawOddLabel.textColor = UIColor.whiteColor()
-            crowdPredictionView.addSubview(drawOddLabel)
+            if(drawSelection.objectForKey("currentPrice") != nil){
+                
+                var drawCurrentPrice = drawSelection.objectForKey("currentPrice") as! NSDictionary
+                var drawDenPrice = drawCurrentPrice.objectForKey("denPrice") as! CGFloat
+                var drawNumPrice = drawCurrentPrice.objectForKey("numPrice") as! CGFloat
+                
+                var drawOdd = String(Int(drawNumPrice))+"/"+String(Int(drawDenPrice))
+                
+                var drawOddLabel     = UILabel(frame:CGRectMake(200, 56, 50, 40))
+                drawOddLabel.text    = drawOdd
+                drawOddLabel.textAlignment = .Center
+                drawOddLabel.font    = UIFont(name:FONT2, size:12)
+                drawOddLabel.textColor = UIColor.whiteColor()
+                crowdPredictionView.addSubview(drawOddLabel)
+            }
             
             var drawOddButton = UIButton(frame: CGRectMake(270, 56, 70, 40))
             drawOddButton.titleLabel!.font  = UIFont(name:FONT2, size:15)
@@ -677,18 +684,21 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             
             
             var secondTeamSelection = matche.getAwaySelection()
-            var secondTeamCurrentPrice = secondTeamSelection.objectForKey("currentPrice") as! NSDictionary
-            var secondTeamDenPrice = secondTeamCurrentPrice.objectForKey("denPrice") as! CGFloat
-            var secondTeamNumPrice = secondTeamCurrentPrice.objectForKey("numPrice") as! CGFloat
-            
-            var secondTeamOdd = String(Int(secondTeamNumPrice))+"/"+String(Int(secondTeamDenPrice))
-            
-            var secondTeamOddLabel     = UILabel(frame:CGRectMake(200, 103, 50, 40))
-            secondTeamOddLabel.text    = secondTeamOdd
-            secondTeamOddLabel.textAlignment = .Center
-            secondTeamOddLabel.font    = UIFont(name:FONT2, size:12)
-            secondTeamOddLabel.textColor = UIColor.whiteColor()
-            crowdPredictionView.addSubview(secondTeamOddLabel)
+            if(secondTeamSelection.objectForKey("currentPrice") != nil){
+                
+                var secondTeamCurrentPrice = secondTeamSelection.objectForKey("currentPrice") as! NSDictionary
+                var secondTeamDenPrice = secondTeamCurrentPrice.objectForKey("denPrice") as! CGFloat
+                var secondTeamNumPrice = secondTeamCurrentPrice.objectForKey("numPrice") as! CGFloat
+                
+                var secondTeamOdd = String(Int(secondTeamNumPrice))+"/"+String(Int(secondTeamDenPrice))
+                
+                var secondTeamOddLabel     = UILabel(frame:CGRectMake(200, 103, 50, 40))
+                secondTeamOddLabel.text    = secondTeamOdd
+                secondTeamOddLabel.textAlignment = .Center
+                secondTeamOddLabel.font    = UIFont(name:FONT2, size:12)
+                secondTeamOddLabel.textColor = UIColor.whiteColor()
+                crowdPredictionView.addSubview(secondTeamOddLabel)
+            }
             
             var secondTeamwOddButton = UIButton(frame: CGRectMake(270, 103, 70, 40))
             secondTeamwOddButton.titleLabel!.font   = UIFont(name:FONT2, size:15)

@@ -162,7 +162,7 @@ class ParseConfig: NSObject {
                                     isFacebookAccount = true
                                 }
                                 
-                                if( !isFacebookAccount ){//email Allready exist not faceBook
+                                if( !isFacebookAccount ){//email Allready exist not Facebook
        
                                     var newData:NSMutableDictionary = NSMutableDictionary(dictionary: data)
                                     newData.removeObjectForKey("email")
@@ -196,6 +196,8 @@ class ParseConfig: NSObject {
                                 self.saveOrCreateFbUserData(data, object:object)
                             }
                             
+                            Mixpanel.sharedInstance().track("0109 - Facebook login");
+                            
                         }//querry error
                         else{
                             self.errorMessage()
@@ -215,6 +217,8 @@ class ParseConfig: NSObject {
     }
     
     class func errorMessage(){
+        
+        Mixpanel.sharedInstance().track("0110 - Facebook login error");
         
         SVProgressHUD.dismiss()
         var alertView = UIAlertView(title: "", message: "failed to get your information from facebook . \nPlease try again.", delegate:nil, cancelButtonTitle: "Ok")
@@ -263,6 +267,9 @@ class ParseConfig: NSObject {
     
     
     class func saveFBImage(data: NSDictionary, object: FaceBookDelegate, user: PFUser){
+        
+        Mixpanel.sharedInstance().identify(user.objectId)
+        Mixpanel.sharedInstance().people.set(["$name": user["username"], "$email":user["email"], "$created":user.createdAt, "Last Login":NSDate()])
         
         var idFBUser:NSString = data.objectForKey("id") as! String
         var imageLink = NSString(format:"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", idFBUser)

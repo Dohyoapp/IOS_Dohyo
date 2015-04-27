@@ -105,7 +105,7 @@ class GSUser:NSObject, UserCaller{
                     if(!Utils.isParseNull(user["email"])){
                         
                         if(user.objectId as NSString != friendId){
-                            self.addInvitation(friendId, customLeagueId:customLeagueId)
+                            self.addInvitation(friendId, customLeagueId:customLeagueId, isNewUser:false)
                         }
                     }
                     else{
@@ -118,7 +118,7 @@ class GSUser:NSObject, UserCaller{
  
     }
     
-    class func addInvitation(friendId: NSString, customLeagueId: NSString){
+    class func addInvitation(friendId: NSString, customLeagueId: NSString, isNewUser:Bool){
         
         var friends: AnyObject! = PFUser.currentUser()["friends"]
         if(friends == nil){
@@ -135,6 +135,16 @@ class GSUser:NSObject, UserCaller{
             (customLeague: PFObject!, error: NSError!) -> Void in
             if error == nil {
                 GSCustomLeague.joinCurrentUserToCustomLeague(customLeague)
+                
+                var trackProperties = [
+                    "user": PFUser.currentUser()["username"],
+                    "league": customLeague["name"]
+                ]
+                if(isNewUser){
+                    Mixpanel.sharedInstance().track("0302 - Sign up after receiving invite", properties: trackProperties)
+                }else{
+                    Mixpanel.sharedInstance().track("0301 - Join League Via Invite", properties: trackProperties)
+                }
             } else {
                 NSLog("%@", error)
             }
@@ -156,7 +166,7 @@ class GSUser:NSObject, UserCaller{
                 var customLeagueId: NSString = (data as! NSArray).lastObject as! String
                 
                 if(user.objectId as NSString != friendId){
-                    self.addInvitation(friendId, customLeagueId:customLeagueId)
+                    self.addInvitation(friendId, customLeagueId:customLeagueId, isNewUser:true)
                     defaults.removeObjectForKey("pendingInvitation")
                 }
             }
