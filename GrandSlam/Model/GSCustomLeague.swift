@@ -46,6 +46,8 @@ class GSCustomLeague: NSObject {
             league = GSLeague.getLeagueFromCache(customLeague["leagueTitle"] as! String)
         }
     }
+    
+    
 
     
     class func getNewJoinLeagueNumber(){
@@ -201,7 +203,19 @@ class GSCustomLeague: NSObject {
             self.isLeagueEnded = true
         }
         
-        
+        if(!Utils.isParseNull(league)){
+            var weekArray = NSMutableArray()
+            for matche in newMatches{
+                var matcheDate = GSCustomLeague.getDateMatche(matche as! PFObject)
+                if(matcheDate.timeIntervalSinceDate(league.weekDateEnd) < 0){
+                    weekArray.addObject(matche)
+                }
+            }
+            
+            if(weekArray.count > 0) {
+                return weekArray
+            }
+        }
         return newMatches//.arrayByAddingObjectsFromArray(oldMatches)
     }
     
@@ -212,15 +226,26 @@ class GSCustomLeague: NSObject {
     
     func hasBetSlip () -> NSArray!{
         
-        var currentBetSlip: AnyObject!
+        var customLeagueBetSlips = NSMutableArray()
         var userBetSlips = GSUser.getUserBetSlips(PFUser.currentUser())
         for betSlip in userBetSlips{
             
             if((betSlip as! PFObject)["customLeagueId"] as! String == self.pfCustomLeague.objectId){
-                currentBetSlip = betSlip
+                customLeagueBetSlips.addObject(betSlip)
             }
         }
         
+        var sortedArray = sorted(customLeagueBetSlips) { (obj1, obj2) in
+            
+            var p1 = (obj1 as! PFObject).createdAt
+            var p2 = (obj2 as! PFObject).createdAt
+            return p1.timeIntervalSinceDate(p2) > 0
+        }
+        
+        var currentBetSlip: AnyObject!
+        if(sortedArray.count > 0){
+            currentBetSlip = sortedArray[0]
+        }
         var result = NSMutableArray()
         if(currentBetSlip != nil){
             
@@ -239,7 +264,7 @@ class GSCustomLeague: NSObject {
         if( !Utils.isParseNull(league) && league.matches != nil){
             
             var numberOldBets = 0
-            var tempMatches:NSArray = GSBetSlip.getbetMatches(league.matches, bets: result)
+            var tempMatches:NSArray = GSBetSlip.getbetMatches(league, bets: result)
             for matche in tempMatches{
                 
                 var matcheDate = GSCustomLeague.getDateMatche(matche as! PFObject)

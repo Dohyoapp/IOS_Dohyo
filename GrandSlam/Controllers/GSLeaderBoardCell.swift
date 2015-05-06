@@ -34,7 +34,7 @@ class GSLeaderBoardCell: UITableViewCell {
         self.addSubview(nameLabel)
         
         
-        pointsLabel = UILabel(frame: CGRectMake(245, 0, 65, 33))
+        pointsLabel = UILabel(frame: CGRectMake(240, 0, 75, 33))
         pointsLabel.font = UIFont(name:FONT3, size:15)
         pointsLabel.textColor = SPECIALBLUE
         self.addSubview(pointsLabel)

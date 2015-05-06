@@ -207,7 +207,7 @@ class GSBetCstomLeagueViewController: UIViewController, LeagueCaller, CrowdPredi
         
         
         validMatches = NSMutableArray()
-        var tempMatches:NSArray = GSBetSlip.getbetMatches(league.matches, bets: currentBets)
+        var tempMatches:NSArray = GSBetSlip.getbetMatches(league, bets: currentBets)
         for matche in tempMatches{
             
             validMatches.addObject(GSMatcheSelection(matche: matche as! PFObject, customLeague: customLeague.pfCustomLeague))

@@ -23,8 +23,32 @@ class GSLeague: NSObject {
     var pfLeague: PFObject
     var matches: NSArray!
     
+    var weekDateBegin: NSDate!
+    var weekDateEnd: NSDate!
+    var weekNumberString: String!
+    
+    
     init(league: PFObject) {
         pfLeague = league
+        
+        if(!Utils.isParseNull(pfLeague["weekNumber"])){
+            
+            var weekNumber = pfLeague["weekNumber"] as! String
+            var weekNumberArray:NSArray = weekNumber.componentsSeparatedByString(" - ")
+            if(weekNumberArray.count > 1){
+                
+                var aDateFormatter = NSDateFormatter()
+                aDateFormatter.dateFormat = "yyyy"
+                var currentYear = aDateFormatter.stringFromDate(NSDate())
+                weekNumberString = weekNumberArray[0] as! String
+                var fullWeekNumber = String(format:"%@ %@", weekNumberArray[1] as! String, currentYear)
+                
+                aDateFormatter.dateFormat = "dd MMM yyyy"
+                weekDateBegin = aDateFormatter.dateFromString(fullWeekNumber)
+                weekDateEnd = weekDateBegin?.dateByAddingTimeInterval(6*24*3600)
+                
+            }
+        }
     }
 
     

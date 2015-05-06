@@ -34,27 +34,31 @@ class GSBetSlip: NSObject{
     
     
     
-    class func getbetMatches(matches:NSArray, bets:NSArray) -> NSArray{
-        /*
-        var weekNumber = ""
-        if(!Utils.isParseNull(league.pfLeague["weekNumber"])){
-            weekNumber   = league.pfLeague["weekNumber"] as? String
-        }
-        */
+    class func getbetMatches(league: GSLeague , bets: NSArray) -> NSArray{
+        
+        var matches:NSArray = league.matches
         
         var returnArray = NSMutableArray()
+        var weekArray = NSMutableArray()
         
-        for match in matches{
+        for matche in matches{
             
             for bet in bets{
                 
                 var betMatchId:NSString = (bet as! GSBetSlip).matchId as! String
-                if(betMatchId == match.objectId){
+                if(betMatchId == matche.objectId){
                     //may need to check buy week number
-
-                    returnArray.addObject(match)
+                    var matcheDate = GSCustomLeague.getDateMatche(matche as! PFObject)
+                    if(matcheDate.timeIntervalSinceDate(league.weekDateEnd) < 0){
+                        weekArray.addObject(matche)
+                    }
+                    returnArray.addObject(matche)
                 }
             }
+        }
+        
+        if(weekArray.count > 0) {
+            return weekArray
         }
         
         return returnArray
@@ -64,8 +68,8 @@ class GSBetSlip: NSObject{
     
     class func buildSlip(betSelections: NSArray){
         
-        var betSlip = betSelections[0] as! NSDictionary
-        var selection = betSlip.objectForKey("selection") as! NSDictionary
+        var betSlip     = betSelections[0] as! NSDictionary
+        var selection   = betSlip.objectForKey("selection") as! NSDictionary
         var selectionKey = Int(selection.objectForKey("selectionKey") as! NSNumber)
         
         var urlString:String = URL_ROOT+"v2/betting-api/sportsbook/betslips/build"

@@ -110,8 +110,8 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
     
     func loadViewWithMatchs(){
         
-        var leagueName = customLeague.pfCustomLeague.valueForKey("leagueTitle") as! NSString
-        var league = GSLeague.getLeagueFromCache(leagueName)
+        var leagueName  = customLeague.pfCustomLeague.valueForKey("leagueTitle") as! NSString
+        var league      = GSLeague.getLeagueFromCache(leagueName)
         
         if(league.matches == nil){
             GSLeague.getLeagues(self)
@@ -149,27 +149,14 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
             dateLeagueLabel.text   = NSString(format:"Matches: %@ - %@/%@", dateFormatter.stringFromDate(startDate), dateArray.lastObject as NSString, dateArray.firstObject as NSString)
         }*/
         
-        if(!Utils.isParseNull(league.pfLeague["weekNumber"])){
-            
-            var weekNumber = league.pfLeague["weekNumber"] as! String
-            var weekNumberArray:NSArray = weekNumber.componentsSeparatedByString(" - ")
-            if(weekNumberArray.count > 1){
+        if(!Utils.isParseNull(league.weekDateBegin) && !Utils.isParseNull(league.weekDateEnd)){
                 
                 var aDateFormatter = NSDateFormatter()
-                aDateFormatter.dateFormat = "yyyy"
-                var currentYear = aDateFormatter.stringFromDate(NSDate())
-                var fullWeekNumber = String(format:"%@ %@", weekNumberArray[1] as! String, currentYear)
-                
-                aDateFormatter.dateFormat = "dd MMM yyyy"
-                var newDate = aDateFormatter.dateFromString(fullWeekNumber)
-                newDate = newDate?.dateByAddingTimeInterval(6*24*3600)
-                
                 aDateFormatter.dateFormat = "dd MMM"
                 
-                var textWeek = String(format:"%@: %@ - %@", weekNumberArray[0] as! String, weekNumberArray[1] as! String, aDateFormatter.stringFromDate(newDate!))
+                var textWeek = String(format:"%@: %@ - %@", league.weekNumberString, aDateFormatter.stringFromDate(league.weekDateBegin), aDateFormatter.stringFromDate(league.weekDateEnd))
             
                 dateLeagueLabel.text   = textWeek
-            }
         }
         
         
