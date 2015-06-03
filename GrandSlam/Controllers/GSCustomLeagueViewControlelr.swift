@@ -88,6 +88,7 @@ class GSCustomLeagueViewControlelr: UIViewController, LeagueCaller, UserCaller, 
         
         
         if(customLeague.hasBetSlip().count > 0){
+            
             self.endGetUserBetSlips()
             Mixpanel.sharedInstance().track("0105 - View crowd prediction", properties: [
                 "user": PFUser.currentUser()["username"],
