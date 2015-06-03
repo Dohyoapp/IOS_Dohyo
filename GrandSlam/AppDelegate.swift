@@ -9,7 +9,7 @@
 import UIKit
 import Fabric
 import Crashlytics
-import TwitterKit
+
 
 
 @UIApplicationMain
@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LeagueCaller {
         //GSUser.autho(objectManager)
        // GSUser.getClasses(objectManager)
         ParseConfig.initialization()
-        Fabric.with([Crashlytics(), Twitter()])
+        Fabric.with([Crashlytics()])
         
         SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.Clear)
         

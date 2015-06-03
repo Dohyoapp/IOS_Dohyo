@@ -49,10 +49,6 @@
 		ABEC09351AC5D87100842A64 /* box_unticked.png in Resources */ = {isa = PBXBuildFile; fileRef = ABEC09311AC5D87100842A64 /* box_unticked.png */; };
 		D10E0BCA1A95F714008FB20D /* GSUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10E0BC91A95F714008FB20D /* GSUserProfileViewController.swift */; };
 		D10E0BCB1A95F714008FB20D /* GSUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10E0BC91A95F714008FB20D /* GSUserProfileViewController.swift */; };
-		D115A2561A8E506800EE4664 /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D115A2541A8E506800EE4664 /* TwitterKit.framework */; };
-		D115A2571A8E506800EE4664 /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D115A2541A8E506800EE4664 /* TwitterKit.framework */; };
-		D115A2581A8E506800EE4664 /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D115A2551A8E506800EE4664 /* TwitterKitResources.bundle */; };
-		D115A2591A8E506800EE4664 /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D115A2551A8E506800EE4664 /* TwitterKitResources.bundle */; };
 		D12905841A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12905831A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift */; };
 		D12905851A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12905831A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift */; };
 		D12905871A827B3E00DA1F0C /* TeamsShortCut.plist in Resources */ = {isa = PBXBuildFile; fileRef = D12905861A827B3E00DA1F0C /* TeamsShortCut.plist */; };
@@ -228,8 +224,6 @@
 		B0075AB03032BAD4A88F45A3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE6B5BA41C0358D67B43E080 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		D10E0BC91A95F714008FB20D /* GSUserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSUserProfileViewController.swift; sourceTree = "<group>"; };
-		D115A2541A8E506800EE4664 /* TwitterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TwitterKit.framework; path = GrandSlam/TwitterKit.framework; sourceTree = "<group>"; };
-		D115A2551A8E506800EE4664 /* TwitterKitResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TwitterKitResources.bundle; path = GrandSlam/TwitterKitResources.bundle; sourceTree = "<group>"; };
 		D12905831A8261B900DA1F0C /* GSCustomLeagueViewControlelr.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSCustomLeagueViewControlelr.swift; sourceTree = "<group>"; };
 		D12905861A827B3E00DA1F0C /* TeamsShortCut.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TeamsShortCut.plist; sourceTree = "<group>"; };
 		D130EE4B1A88D2D4002FCD6F /* GSJoinCustomLeagueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSJoinCustomLeagueViewController.swift; sourceTree = "<group>"; };
@@ -332,7 +326,6 @@
 				D19668B01A769E5F003D4F8D /* Social.framework in Frameworks */,
 				D19668AF1A769E51003D4F8D /* libsqlite3.dylib in Frameworks */,
 				D19668AE1A769E48003D4F8D /* libz.dylib in Frameworks */,
-				D115A2561A8E506800EE4664 /* TwitterKit.framework in Frameworks */,
 				D16A92EC1A84D21400B11604 /* Fabric.framework in Frameworks */,
 				D19668AC1A769E22003D4F8D /* CoreLocation.framework in Frameworks */,
 				D19668AB1A769E1D003D4F8D /* AudioToolbox.framework in Frameworks */,
@@ -371,7 +364,6 @@
 				D19668901A7673D7003D4F8D /* FacebookSDK.framework in Frameworks */,
 				D19668921A7673D7003D4F8D /* FBAudienceNetwork.framework in Frameworks */,
 				D196687D1A767354003D4F8D /* CoreLocation.framework in Frameworks */,
-				D115A2571A8E506800EE4664 /* TwitterKit.framework in Frameworks */,
 				D16A92EB1A84D21400B11604 /* Crashlytics.framework in Frameworks */,
 				D196687B1A76734D003D4F8D /* CoreGraphics.framework in Frameworks */,
 				D19668771A767340003D4F8D /* AudioToolbox.framework in Frameworks */,
@@ -398,8 +390,6 @@
 		8442204DD4C7204A47C12B9D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D115A2541A8E506800EE4664 /* TwitterKit.framework */,
-				D115A2551A8E506800EE4664 /* TwitterKitResources.bundle */,
 				D16A92E81A84D21400B11604 /* Crashlytics.framework */,
 				D16A92E91A84D21400B11604 /* Fabric.framework */,
 				D196689B1A767512003D4F8D /* Accounts.framework */,
@@ -835,7 +825,6 @@
 				AB8341411AC01C77006423A0 /* Tutorial_Dot_Full@2x.png in Resources */,
 				ABEC09341AC5D87100842A64 /* box_unticked.png in Resources */,
 				D13D8B881A7013B600303DF3 /* Main.storyboard in Resources */,
-				D115A2581A8E506800EE4664 /* TwitterKitResources.bundle in Resources */,
 				ABEC09321AC5D87100842A64 /* ticker.png in Resources */,
 				AB4CBA8D1AC186DF009CC69C /* whatsapp.png in Resources */,
 				D17BEA541AA0DB6400EB8961 /* index.html in Resources */,
@@ -880,7 +869,6 @@
 				AB8341421AC01C77006423A0 /* Tutorial_Dot_Full@2x.png in Resources */,
 				ABEC09351AC5D87100842A64 /* box_unticked.png in Resources */,
 				D13D8BB81A70163E00303DF3 /* Main.storyboard in Resources */,
-				D115A2591A8E506800EE4664 /* TwitterKitResources.bundle in Resources */,
 				ABEC09331AC5D87100842A64 /* ticker.png in Resources */,
 				AB4CBA8E1AC186DF009CC69C /* whatsapp.png in Resources */,
 				D17BEA551AA0DB6400EB8961 /* index.html in Resources */,
@@ -1223,7 +1211,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DLIVE_VERSION";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9476b8e1-3cd8-451e-a3a1-421e85efb679";
+				PROVISIONING_PROFILE = "2ca190d2-37de-41b0-9c25-ff9dd4ab500e";
 				SWIFT_OBJC_BRIDGING_HEADER = "GrandSlam/GrandSlam-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1249,7 +1237,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DLIVE_VERSION";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9476b8e1-3cd8-451e-a3a1-421e85efb679";
+				PROVISIONING_PROFILE = "2ca190d2-37de-41b0-9c25-ff9dd4ab500e";
 				SWIFT_OBJC_BRIDGING_HEADER = "GrandSlam/GrandSlam-Bridging-Header.h";
 			};
 			name = Release;
