@@ -1232,7 +1232,7 @@
 					"$(PROJECT_DIR)/GrandSlam/FacebookSDK",
 					"$(PROJECT_DIR)/GrandSlam",
 				);
-				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				INFOPLIST_FILE = "GrandSlam/GrandSlam-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DLIVE_VERSION";
